@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dummyFeeds from '@/_data/dummyFeeds.json';
 import fetchFeeds from './mainApi';
 
 export async function GET(request: NextRequest) {

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Feed from './Feed';
 import IFeed from '@/types/feed';
+import nurriCurriculum from '../_lib/nurriCurriculum';
 
 function FeedList() {
   const [feeds, setFeeds] = useState<IFeed[]>([]);
@@ -14,7 +15,7 @@ function FeedList() {
         const data = await res.json();
 
         if (!res.ok) {
-          throw new Error(`Failed to fetch: ${res.status} ${res.statusText}`);
+          setFeeds(nurriCurriculum.mockData);
         }
         setFeeds(data.mockData);
       } catch (error) {
