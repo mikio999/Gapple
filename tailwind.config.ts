@@ -13,6 +13,9 @@ const config: Config = {
         maple: ['MaplestoryOTF', 'sans-serif'],
       },
     },
+    colors: {
+      primary: '#ED4264',
+    },
   },
   plugins: [],
 };
