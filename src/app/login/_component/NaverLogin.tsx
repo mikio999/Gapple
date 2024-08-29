@@ -1,9 +1,19 @@
 import Image from 'next/image';
+import { signIn } from '@/auth';
 
 export default function LoginButton() {
   return (
-    <div className="flex justify-center items-center">
-      <div className="transition duration-150 ease-in-out transform hover:scale-105 cursor-pointer">
+    <form
+      className="flex justify-center items-center"
+      action={async () => {
+        'use server';
+        await signIn('naver', { redirectTo: '/' });
+      }}
+    >
+      <button
+        type="submit"
+        className="transition duration-150 ease-in-out transform hover:scale-105 cursor-pointer"
+      >
         <Image
           src={'/images/loginBtnWhite.png'}
           width={200}
@@ -11,7 +21,7 @@ export default function LoginButton() {
           alt={'login'}
           priority
         />
-      </div>
-    </div>
+      </button>
+    </form>
   );
 }
