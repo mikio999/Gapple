@@ -1,7 +1,17 @@
-export default function NaverLoginButton() {
+import Image from 'next/image';
+
+export default function LoginButton() {
   return (
-    <button className="bg-green-600 hover:bg-green-700 text-white font-pretendard py-2 px-4 rounded">
-      네이버 로그인
-    </button>
+    <div className="flex justify-center items-center">
+      <div className="transition duration-150 ease-in-out transform hover:scale-105 cursor-pointer">
+        <Image
+          src={'/images/loginBtnWhite.png'}
+          width={200}
+          height={50}
+          alt={'login'}
+          priority
+        />
+      </div>
+    </div>
   );
 }
