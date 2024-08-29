@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import '../styles/globals.css';
-
-const inter = Inter({ subsets: ['latin'] });
+import Topbar from '@/_component/Topbar';
 
 export const metadata: Metadata = {
   title: 'GA:Pl',
@@ -19,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body style={{ fontFamily: 'Pretendard' }}>{children}</body>
+      <body style={{ fontFamily: 'Pretendard' }}>
+        <Topbar />
+        {children}
+      </body>
     </html>
   );
 }

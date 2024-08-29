@@ -7,7 +7,7 @@ const isLoggedIn = false;
 
 export default function Topbar() {
   return (
-    <div className="flex align-items justify-between m-4">
+    <div className="flex align-items justify-between p-4 fixed top-0 left-0 right-0 bg-white shadow-md z-50">
       <Link href="/">
         <Image
           src={'/images/GappleLogo.png'}
