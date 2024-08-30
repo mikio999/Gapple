@@ -23,13 +23,23 @@ const config: Config = {
         gray300: '#CBD5E0',
         gray200: '#E2E8F0',
       },
+      scale: {
+        '110': '1.10',
+        '95': '0.95',
+      },
+      transitionProperty: {
+        size: 'transform',
+      },
+      transitionDuration: {
+        '300': '300ms',
+      },
+      transitionTimingFunction: {
+        'in-out': 'ease-in-out',
+      },
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ['hover', 'focus'], // `hover` 및 `focus` 상태에서 배경색 변형 활성화
-    },
-  },
+
   plugins: [],
 };
+
 export default config;

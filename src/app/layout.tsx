@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
-import Topbar from '@/_component/Topbar';
+import Topbar from './(main)/_component/Topbar';
+import AuthSession from '@/_component/AuthSession';
 
 export const metadata: Metadata = {
   title: 'GA:Pl',
@@ -19,7 +20,7 @@ export default function RootLayout({
     <html lang="ko">
       <body style={{ fontFamily: 'Pretendard' }}>
         <Topbar />
-        {children}
+        <AuthSession>{children}</AuthSession>
       </body>
     </html>
   );

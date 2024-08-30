@@ -5,10 +5,7 @@ import TypingTop from './_component/TypingTop';
 const LoginPage = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-white">
-      <div
-        className="p-6 rounded-lg shadow-lg bg-white"
-        style={{ marginTop: '-150px' }}
-      >
+      <div className="p-6 rounded-lg shadow-lg bg-white">
         <TypingTop />
         <Image
           src={'/images/gappler.png'}

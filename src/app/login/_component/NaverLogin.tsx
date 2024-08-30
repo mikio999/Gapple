@@ -10,10 +10,7 @@ export default function LoginButton() {
         await signIn('naver', { redirectTo: '/' });
       }}
     >
-      <button
-        type="submit"
-        className="transition duration-150 ease-in-out transform hover:scale-105 cursor-pointer"
-      >
+      <button type="submit" className="button-effect">
         <Image
           src={'/images/loginBtnWhite.png'}
           width={200}
