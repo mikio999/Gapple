@@ -1,4 +1,3 @@
-import Topbar from '@/_component/Topbar';
 import FeedList from './(main)/_component/FeedList';
 
 export default async function Home() {
