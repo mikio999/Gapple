@@ -56,6 +56,7 @@ export const {
       return token;
     },
     session: async ({ session, token }) => {
+      console.log('=====session=====');
       session = { ...session, ...token };
       return session;
     },
