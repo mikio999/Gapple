@@ -6,8 +6,7 @@ import { useSession } from 'next-auth/react';
 export default function LoginBtn() {
   const { data: session } = useSession();
 
-  if (session) {
-    console.log('session', session);
+  if (session && session.user) {
     // 로그인이 되어 있을 경우
     return <p>{session.user.email}</p>; // 사용자 이메일 표시
   } else {

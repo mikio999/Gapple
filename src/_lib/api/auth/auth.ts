@@ -17,7 +17,6 @@ async function _existUser(email: string) {
   };
 
   try {
-    console.log(headers);
     const response = await axios.get(`${process.env.BASE_API}/auth/exists`, {
       params: { email },
       headers,
@@ -47,8 +46,6 @@ async function _signIn(
   };
 
   try {
-    console.log('======send to backend=====');
-    console.log(body);
     const response = await axios.post(
       `${process.env.BASE_API}/auth/${type}`,
       body,

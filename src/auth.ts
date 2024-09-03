@@ -22,9 +22,6 @@ export const {
   ],
   callbacks: {
     signIn: async ({ account, user }) => {
-      console.log('=====signIn=====');
-      console.log('account', account);
-      console.log('user', user);
       if (account?.provider === 'naver') {
         try {
           const type = (await _existUser(user.email as string))
@@ -50,22 +47,15 @@ export const {
     },
     jwt: async ({ token, user, trigger, session }) => {
       if (user) {
-        console.log('=====jwt=====');
-        console.log('user', user);
-        console.log('token', token);
-        console.log('trigger', trigger);
-        console.log('session', session);
         Object.assign(token, user);
       }
       if (trigger === 'update' && session) {
-        console.log('token', token);
         Object.assign(token, session.user);
         token.picture = session.user.image;
       }
       return token;
     },
     session: async ({ session, token }) => {
-      console.log('=====session=====');
       session = { ...session, ...token };
       return session;
     },
