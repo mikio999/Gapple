@@ -1,15 +1,10 @@
 import Image from 'next/image';
 import { signIn } from '@/auth';
+import { signInWithNaver } from '@/serverActions/auth';
 
 export default function LoginButton() {
   return (
-    <form
-      className="flex justify-center items-center"
-      action={async () => {
-        'use server';
-        await signIn('naver', { redirectTo: '/' });
-      }}
-    >
+    <form className="flex justify-center items-center" action={signInWithNaver}>
       <button type="submit" className="button-effect">
         <Image
           src={'/images/loginBtnWhite.png'}
