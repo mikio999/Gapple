@@ -44,8 +44,6 @@ export const {
         return false;
       }
       if (account?.provider === 'kakao') {
-        console.log('====account====', account);
-        console.log('====user======', user);
         try {
           const type = (await _existUser(user.email as string))
             ? 'oauth/login'
