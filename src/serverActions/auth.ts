@@ -6,6 +6,10 @@ export const signInWithNaver = async () => {
   await signIn('naver', { redirectTo: '/' });
 };
 
+export const signInWithKakao = async () => {
+  await signIn('kakao', { redirectTo: '/' });
+};
+
 export const signOutWithForm = async (formData: FormData) => {
   await signOut();
 };

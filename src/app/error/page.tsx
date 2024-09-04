@@ -5,8 +5,6 @@ export default function ErrorPage({
 }: {
   searchParams: { message: string };
 }) {
-  console.log('message', message);
-
   return (
     <div className=" flex flex-col items-center justify-center min-h-screen bg-gray-50 text-gray-900">
       <div className="p-6 rounded-lg shadow-lg bg-white max-w-sm">
