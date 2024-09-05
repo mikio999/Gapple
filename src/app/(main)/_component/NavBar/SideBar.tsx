@@ -32,6 +32,7 @@ export default function SideBar() {
         desktop:left-0 desktop:top-0 desktop:bottom-0 desktop:w-52 desktop:flex-col desktop:h-dvh
         laptop:w-20 laptop:flex-col laptop:items-center laptop:justify-start laptop:h-dvh 
         tablet:fixed tablet:top-auto tablet:left-0 tablet:right-0 tablet:bottom-0 tablet: h-16 tablet:flex-row tablet:items-center tablet:justify-around
+        sidebar-transition
       "
       >
         <Link

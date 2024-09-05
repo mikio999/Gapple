@@ -7,9 +7,9 @@ const MenuItem = ({ name, icon, activeIcon, link }: MenuItemProps) => {
   return (
     <Link
       href={link}
-      className="p-4 flex items-center justify-start hover:bg-gray-200"
+      className="p-4 flex items-center justify-start hover:bg-gray-200 desktop:w-44 laptop:w-16 sidebar-transition"
     >
-      <div className="relative">
+      <div className="relative flex items-center justify-center">
         <Image
           src={icon || activeIcon}
           width={24}
