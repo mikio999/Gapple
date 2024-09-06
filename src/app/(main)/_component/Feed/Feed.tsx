@@ -1,4 +1,4 @@
-import IFeed from '@/types/feed';
+import { IFeed } from '@/types/feed';
 import React from 'react';
 import ImageCarousel from './ImageCarousel';
 
