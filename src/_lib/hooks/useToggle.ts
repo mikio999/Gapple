@@ -7,9 +7,7 @@ function useToggle(initialState: boolean = false): [boolean, () => void] {
     setIsToggled(!isToggled);
   };
 
-  useEffect(() => {
-    console.log('Toggle state has changed:', isToggled);
-  }, [isToggled]);
+  useEffect(() => {}, [isToggled]);
 
   return [isToggled, toggle];
 }
