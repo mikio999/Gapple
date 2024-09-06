@@ -2,7 +2,11 @@
 
 import Image from 'next/image';
 
-export default function SearchMenu({ handleSearchClick }) {
+interface SearchMenuProps {
+  handleSearchClick: () => void;
+}
+
+export default function SearchMenu({ handleSearchClick }: SearchMenuProps) {
   return (
     <div>
       <div

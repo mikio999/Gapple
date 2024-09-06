@@ -43,10 +43,8 @@ async function _signIn(
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
-  console.log('=========body=========');
-  console.log(body);
+
   try {
-    console.log('서버로 다시 로그인 보내기 로직 시작');
     const response = await axios.post(
       `${process.env.BASE_API}/auth/${type}`,
       body,

@@ -1,11 +1,8 @@
 'use client';
 import Link from 'next/link';
 import MenuItem from './MenuItem';
-import { useSession } from 'next-auth/react';
 
 const ProfileIcon = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  const { data: session } = useSession();
-  console.log(session);
   if (!isLoggedIn) {
     return (
       <div>
