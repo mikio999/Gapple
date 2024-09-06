@@ -62,7 +62,8 @@ async function _signIn(
         image: data.user.profileImg,
         accessToken: data.accessToken,
       };
-    } else {
+    }
+    {
       throw new Error(data);
     }
   } catch (error) {

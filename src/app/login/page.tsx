@@ -5,8 +5,12 @@ import KakaoLogin from './_component/KakaoLogin';
 
 const LoginPage = () => {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-white">
-      <div className="p-6 rounded-lg shadow-lg bg-white">
+    <div
+      className={
+        'flex flex-col justify-center items-center min-h-screen bg-white'
+      }
+    >
+      <div className={'p-6 rounded-lg shadow-lg bg-white'}>
         <TypingTop />
         <Image
           src={'/images/gappler.png'}
