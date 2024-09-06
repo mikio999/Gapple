@@ -5,6 +5,7 @@ import { SelectInput } from './SelectInput';
 import { BaseInput } from './BaseInput';
 import { ActivityTypeSelector } from './ActiveTypeSelector';
 import { TextAreaInput } from './TextAreaInput';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function FormPage() {
   const [age, setAge] = useState('');
@@ -99,7 +100,7 @@ export default function FormPage() {
         <ActivityTypeSelector value={activityType} onChange={setActivityType} />
         {goals.map((goal, index) => (
           <BaseInput
-            key={index}
+            key={uuidv4()}
             label={`활동 목표 ${index + 1}`}
             id={`goal-${index}`}
             value={goal}
@@ -108,7 +109,7 @@ export default function FormPage() {
         ))}
         {relatedElements.map((element, index) => (
           <BaseInput
-            key={index}
+            key={uuidv4()}
             label={`누리과정 관련 요소 ${index + 1}`}
             id={`element-${index}`}
             value={element}
@@ -123,7 +124,7 @@ export default function FormPage() {
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
         />
         {contents.map((content, index) => (
-          <div key={index} className="flex flex-col">
+          <div key={uuidv4()} className="flex flex-col">
             <BaseInput
               label="소제목"
               id={`subtitle-${index}`}
