@@ -25,7 +25,6 @@ function FeedList() {
     fetchData();
   }, []);
 
-  // function FeedList({ feeds }) {
   return (
     <div className="mt-20">
       {feeds.map((feedData) => (

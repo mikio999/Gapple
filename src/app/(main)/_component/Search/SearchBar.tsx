@@ -16,15 +16,16 @@ export default function SearchBar({
     >
       <div className={`flex flex-col ${showSearch ? 'block' : 'hidden'} p-4 `}>
         <input
-          type="text"
-          className="w-full p-2 border border-gray-300 "
-          placeholder="검색"
+          type={'text'}
+          className={'w-full p-2 border border-gray-300 '}
+          placeholder={'검색'}
         />
         <button
+          type={'button'}
           onClick={() => setShowSearch(false)}
-          className="flex ml-auto mt-2 p-2 bg-blue-500 text-white rounded"
+          className={'flex ml-auto mt-2 p-2 bg-blue-500 text-white rounded'}
         >
-          닫기
+          {'닫기'}
         </button>
       </div>
     </div>

@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import useToggle from '@/_lib/hooks/useToggle';
 import MENU_ITEMS from './menuItems';
 import MenuItem from './MenuItem';
 import ProfileIcon from './ProfileIcon';
 import SearchMenu from '../Search/SearchMenu';
 import SearchBar from '../Search/SearchBar';
-import useToggle from '@/_lib/hooks/useToggle';
 
 export default function SideBar() {
   const { status } = useSession();
