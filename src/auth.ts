@@ -24,6 +24,10 @@ export const {
   callbacks: {
     signIn: async ({ account, user }) => {
       if (account?.provider === 'naver') {
+        console.log('============user==============');
+        console.log(user);
+        console.log('===========account============');
+        console.log(account);
         try {
           const type = (await _existUser(user.email as string))
             ? 'oauth/login'

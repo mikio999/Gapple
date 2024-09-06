@@ -19,7 +19,7 @@ const MenuItem = ({ name, icon, activeIcon, link }: MenuItemProps) => {
           className="m-2 transition-transform duration-300 ease-in-out hover:scale-110"
         />
       </div>
-      <span className="ml-2 hidden tablet:hidden laptop:hidden desktop:block">
+      <span className="ml-2 hidden tablet:hidden laptop:hidden desktop:block sidebar-transition">
         {name}
       </span>
     </Link>

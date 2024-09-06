@@ -1,8 +1,13 @@
+'use client';
+
 import MENU_ITEMS from './menuItems';
 import MenuItem from './MenuItem';
 import ProfileIcon from './ProfileIcon';
 import Link from 'next/link';
 import Image from 'next/image';
+import SearchMenu from '../Search/SearchMenu';
+import useToggle from '@/_lib/hooks/useToggle';
+import SearchBar from '../Search/SearchBar';
 
 const isLoggedIn = true;
 
@@ -10,9 +15,12 @@ export default function SideBar() {
   const filteredMenuItems = isLoggedIn
     ? MENU_ITEMS.filter((item) => item.name !== '로그인')
     : MENU_ITEMS.filter((item) => ['홈', '검색'].includes(item.name));
+
+  const [showSearch, toggleSearch] = useToggle();
+
   return (
     <>
-      <div className="z-99 fixed top-0 desktop:hidden laptop:hidden ">
+      <div className=" fixed top-0 desktop:hidden laptop:hidden ">
         <div className="flex justify-between w-dvw">
           <Link href="/" className="m-4">
             <Image
@@ -69,11 +77,14 @@ export default function SideBar() {
               link={item.link}
             />
           ))}
+          <SearchMenu handleSearchClick={toggleSearch} />
         </div>
+
         <div className="hidden desktop:block laptop:block ">
           <ProfileIcon isLoggedIn={isLoggedIn} />
         </div>
       </div>
+      <SearchBar showSearch={showSearch} setShowSearch={toggleSearch} />
     </>
   );
 }
