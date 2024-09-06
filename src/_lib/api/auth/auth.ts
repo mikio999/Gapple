@@ -15,14 +15,13 @@ async function _existUser(email: string) {
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
-
   try {
     const response = await axios.get(`${process.env.BASE_API}/auth/exists`, {
       params: { email },
       headers,
     });
 
-    return response.data as boolean;
+    return response.status === 200;
   } catch (error) {
     console.error(error);
     throw new Error('사용자 확인 중 문제가 발생했습니다.');
@@ -44,8 +43,10 @@ async function _signIn(
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
-
+  console.log('=========body=========');
+  console.log(body);
   try {
+    console.log('서버로 다시 로그인 보내기 로직 시작');
     const response = await axios.post(
       `${process.env.BASE_API}/auth/${type}`,
       body,
@@ -53,6 +54,7 @@ async function _signIn(
         headers,
       },
     );
+
     const data = response.data as ResponseValue | string;
 
     if (typeof data !== 'string') {
