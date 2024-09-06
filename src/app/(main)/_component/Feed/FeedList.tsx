@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { IFeed } from '@/types/feed';
 import Feed from './Feed';
-import IFeed from '@/types/feed';
 import nurriCurriculum from '../../_lib/nurriCurriculum';
 
 function FeedList() {
