@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { DUMMY_RECORD } from '../../../../public/data/dummy_record';
 import ImageCarousel from '@/app/(main)/_component/Feed/ImageCarousel';
-import FileDownloadLinks from './_component/FileDownloadSquare';
 import FileDownloadSquare from './_component/FileDownloadSquare';
 
 const RecordPage = () => {
