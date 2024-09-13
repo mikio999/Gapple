@@ -4,11 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import useToggle from '@/_lib/hooks/useToggle';
-import MENU_ITEMS from './menuItems';
+
 import MenuItem from './MenuItem';
 import ProfileIcon from './ProfileIcon';
 import SearchMenu from '../Search/SearchMenu';
 import SearchBar from '../Search/SearchBar';
+import { MENU_ITEMS } from './menuItems';
 
 export default function SideBar() {
   const { status } = useSession();
@@ -16,8 +17,10 @@ export default function SideBar() {
   const isLoggedIn = status === 'authenticated';
 
   const filteredMenuItems = isLoggedIn
-    ? MENU_ITEMS.filter((item) => item.name !== '로그인')
-    : MENU_ITEMS.filter((item) => ['홈', '검색'].includes(item.name));
+    ? MENU_ITEMS.filter((item: { name: string }) => item.name !== '로그인')
+    : MENU_ITEMS.filter((item: { name: string }) =>
+        ['홈', '검색'].includes(item.name),
+      );
 
   const [showSearch, toggleSearch] = useToggle();
 
@@ -78,6 +81,7 @@ export default function SideBar() {
               icon={item.icon}
               activeIcon={item.activeIcon}
               link={item.link}
+              subMenuItems={item.subMenuItems}
             />
           ))}
           <SearchMenu handleSearchClick={toggleSearch} />
