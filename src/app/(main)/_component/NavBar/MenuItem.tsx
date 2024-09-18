@@ -11,7 +11,6 @@ const MenuItem = ({
   link,
   subMenuItems,
 }: MenuItemProps) => {
-  console.log(subMenuItems);
   if (name === '만들기') {
     const toggleComponent = (
       <ToggleComponent icon={icon} activeIcon={activeIcon} name={name} />
