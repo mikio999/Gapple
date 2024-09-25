@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/user-attachments/assets/84a6bdcb-ee7a-4979-989c-deac4c82b609" width="140"/>
+<img src="./docs/header.png"/>
   <h1>GA:Pl</h1>
   <strong>Generate Ai Planner</strong>
   <div>for every early childhood educators</div>
@@ -17,30 +17,42 @@
 - Vercel
 
 <br />
+
 ## Pcode
-<div>서류 작업은 오래 걸립니다. 교육 계획안도 마찬가지이죠.
 
-서류 작성은 교사에게 부차적입니다.
 
+<img src="./docs/pcode.png"/>
+<div>서류 작업은 오래 걸립니다. <br/>
+  교육 계획안도 마찬가지이죠.<br/>
+서류 작성은 교사에게 부차적입니다.<br/>
 오랜 시간 쓰지 마세요. 다 GA:Pl에게 맡기세요 :) </div>
 
-## Features in this application
+# Features in this application
 
-> **FEED**
+## **1. AI generate**
+<div>대화형으로 AI 계획안을 작성하는 페이지입니다.</div>
+</br>
+<img src="./docs/AIFunction.png"/>
 
-> **Detail**
+---
 
+## **2. Detail**
 <div>세부 교육계획안을 보여주는 페이지입니다.</div>
+</br>
+<img src="./docs/tablet.png"/>
 
-> **AI generate**
+---
 
-<div>대화 형식으로 교육계획안을 생성하는 페이지입니다.</div>
+## **3. write planner**
+<div>처음부터 직접 교육계획안을 작성하는 페이지입니다.</div>
+</br>
+<img src="./docs/writePlanner.png"/>
 
-> **FRIEND**
-
-<br />
+---
+</br>
 
 > **Deployment**
+> <div>개발 진행중..</div>
 
 <!-- TODO: add image -->
 
