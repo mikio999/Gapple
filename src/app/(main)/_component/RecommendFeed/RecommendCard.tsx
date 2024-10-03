@@ -25,8 +25,8 @@ function RecommendCard({
         src={profileImg}
         alt={name}
         className={'w-10 h-10 rounded-full'}
-        width={10}
-        height={10}
+        width={100}
+        height={100}
       />
       <div className={'flex-1'}>
         <h3 className={'font-semibold'}>{title}</h3>
