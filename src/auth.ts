@@ -61,7 +61,6 @@ export const {
     },
 
     jwt: async ({ token, user, account, trigger, session }) => {
-      const newToken = { ...token };
       if (user && account) {
         Object.assign(token, user);
       }

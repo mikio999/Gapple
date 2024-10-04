@@ -1,5 +1,4 @@
 import axios from 'axios';
-import useUserStore from '@/_lib/stores/useUserStore';
 
 type ResponseValue = {
   email: string;
