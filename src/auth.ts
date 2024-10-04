@@ -30,8 +30,7 @@ export const {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ account, user }) {
-      const updatedUser = { ...user };
+    signIn: async ({ account, user }) => {
       if (account && user) {
         if (account.provider === 'naver' || account.provider === 'kakao') {
           const type = (await _existUser(user.email as string))
@@ -46,27 +45,38 @@ export const {
           });
 
           if (userInfo) {
-            updatedUser.name = userInfo.name;
-            updatedUser.image = userInfo.profileImg;
-            return true; // signIn 콜백 성공
+            user.email = userInfo.email;
+            user.name = userInfo.name;
+            user.image = userInfo.profileImg;
+            user.accessToken = userInfo.accessToken;
+            user.refreshToken = userInfo.refreshToken;
+
+            return true;
           }
 
-          return false; // signIn 콜백 실패
+          return false;
         }
       }
       return true;
     },
 
-    jwt: async ({ token, user, trigger, session }) => {
+    jwt: async ({ token, user, account, trigger, session }) => {
       const newToken = { ...token };
-      if (user) {
-        Object.assign(newToken, user);
+      if (user && account) {
+        Object.assign(token, user);
       }
       if (trigger === 'update' && session) {
-        Object.assign(newToken, session.user);
-        newToken.picture = session.user.image;
+        Object.assign(token, session.user);
       }
       return token;
+    },
+
+    session: async ({ session, token }) => {
+      Object.assign(session, token);
+      if (typeof token.accessToken === 'string') {
+        session.accessToken = token.accessToken;
+      }
+      return session;
     },
   },
 });

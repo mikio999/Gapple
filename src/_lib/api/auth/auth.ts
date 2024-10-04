@@ -1,8 +1,9 @@
 import axios from 'axios';
+import useUserStore from '@/_lib/stores/useUserStore';
 
 type ResponseValue = {
   email: string;
-  name?: string;
+  name: string;
   profileImg?: string;
   accessToken: string;
   refreshToken: string;
@@ -19,10 +20,10 @@ async function _existUser(email: string): Promise<boolean> {
       params: { email },
       headers,
     });
-    return response.status === 200; // 사용자가 존재하면 true 반환
+    return response.status === 200;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      return false; // 사용자가 존재하지 않으면 false 반환
+      return false;
     }
     console.error(error);
     throw new Error('사용자 확인 중 문제가 발생했습니다.');
@@ -35,7 +36,7 @@ async function _signIn(
     email?: string;
     accessToken: string;
     refreshToken: string;
-    displayName?: string;
+    displayName: string;
     profileImg?: string;
   },
 ) {
