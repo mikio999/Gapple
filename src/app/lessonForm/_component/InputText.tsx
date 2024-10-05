@@ -16,7 +16,7 @@ export const InputText = ({ label, id, value, onChange }: InputTextProps) => (
       {id}
     </label>
     <input
-      type="text"
+      type={'text'}
       id={id}
       value={value}
       placeholder={label}

@@ -34,14 +34,17 @@ const FileUploadSection = ({ id, label, description }: FileUploadProps) => {
   const filePreviews = files.map((file) => (
     <div
       key={file.name}
-      className="mt-2 flex justify-between items-center bg-white p-2 rounded shadow"
+      className={
+        'mt-2 flex justify-between items-center bg-white p-2 rounded shadow'
+      }
     >
-      <span className="text-sm text-gray-700">{file.name}</span>
+      <span className={'text-sm text-gray-700'}>{file.name}</span>
       <button
+        type={'button'}
         onClick={() =>
           setFiles((currentFiles) => currentFiles.filter((f) => f !== file))
         }
-        className="text-red-500 hover:text-red-700"
+        className={'text-red-500 hover:text-red-700'}
       >
         <Image
           src={'/icons/deletetrash.png'}
@@ -57,10 +60,14 @@ const FileUploadSection = ({ id, label, description }: FileUploadProps) => {
     <>
       <h1 className={'title-effect'}>{'활동 파일 업로드'}</h1>
       <div
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...getRootProps()}
-        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary cursor-pointer"
+        className={
+          'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary cursor-pointer'
+        }
       >
         <input
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...getInputProps()}
           id={id}
           aria-label={label}
@@ -75,7 +82,7 @@ const FileUploadSection = ({ id, label, description }: FileUploadProps) => {
         </p>
       </div>
       {filePreviews.length > 0 && (
-        <div className="mt-4">
+        <div className={'mt-4'}>
           <Image
             src={'/icons/fileImport.png'}
             width={24}

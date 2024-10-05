@@ -1,5 +1,4 @@
 import { InputText } from './InputText';
-import { TextAreaInput } from './TextAreaInput';
 
 interface EvaluationsSectionProps {
   evaluations: string[];
@@ -28,7 +27,7 @@ const EvaluationsSection = ({
       <div>
         {evaluations.map((evaluation, index) => (
           <InputText
-            key={`evaluation-${index}`}
+            key={evaluation}
             label={`평가 ${index + 1}`}
             id={`${index + 1}`}
             value={evaluation}

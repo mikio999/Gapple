@@ -1,5 +1,4 @@
 import { InputText } from './InputText';
-import { TextAreaInput } from './TextAreaInput';
 
 interface PrecautionsSectionProps {
   precautions: string[];
@@ -28,7 +27,7 @@ const PrecautionsSection = ({
       <div>
         {precautions.map((precaution, index) => (
           <InputText
-            key={`precaution-${index}`}
+            key={precaution}
             label={`유의사항 ${index + 1}`}
             id={`${index + 1}`}
             value={precaution}

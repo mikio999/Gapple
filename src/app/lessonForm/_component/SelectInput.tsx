@@ -19,7 +19,7 @@ export const SelectInput = ({
   onChange,
 }: SelectInputProps) => (
   <div>
-    <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+    <label htmlFor={id} className={'block text-sm font-medium text-gray-700'}>
       {label}
     </label>
     <select
@@ -33,7 +33,9 @@ export const SelectInput = ({
           onChange(selectedOption.value, selectedOption.image);
         }
       }}
-      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+      className={
+        'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
+      }
     >
       {options.map((option) => (
         <option key={option.value} value={option.value}>

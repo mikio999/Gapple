@@ -30,7 +30,8 @@ export const {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    signIn: async ({ account, user }) => {
+    async signIn({ account, user }) {
+      const updatedUser = { ...user };
       if (account && user) {
         if (account.provider === 'naver' || account.provider === 'kakao') {
           const type = (await _existUser(user.email as string))
@@ -45,12 +46,8 @@ export const {
           });
 
           if (userInfo) {
-            user.email = userInfo.email;
-            user.name = userInfo.name;
-            user.image = userInfo.profileImg;
-            user.accessToken = userInfo.accessToken;
-            user.refreshToken = userInfo.refreshToken;
-
+            updatedUser.name = userInfo.name;
+            updatedUser.image = userInfo.profileImg;
             return true;
           }
 
@@ -60,22 +57,16 @@ export const {
       return true;
     },
 
-    jwt: async ({ token, user, account, trigger, session }) => {
-      if (user && account) {
-        Object.assign(token, user);
+    jwt: async ({ token, user, trigger, session }) => {
+      const newToken = { ...token };
+      if (user) {
+        Object.assign(newToken, user);
       }
       if (trigger === 'update' && session) {
-        Object.assign(token, session.user);
+        Object.assign(newToken, session.user);
+        newToken.picture = session.user.image;
       }
       return token;
-    },
-
-    session: async ({ session, token }) => {
-      Object.assign(session, token);
-      if (typeof token.accessToken === 'string') {
-        session.accessToken = token.accessToken;
-      }
-      return session;
     },
   },
 });

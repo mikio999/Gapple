@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import CategorySelect from './CategorySelect';
 import { category } from '@/_lib/constants/category';
+import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
+import CategorySelect from './CategorySelect';
 import AgeSelect from './AgeSelect';
 import GroupSelect from './GroupSelect';
-import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import CurriculumSection from './CurriculumSection';
 import SubjectInputSection from './SubjectInputSelection';
 import ContentSection from './ContentSection';
@@ -19,7 +19,6 @@ export default function FormPage() {
   const [detailSubject, setDetailSubject] = useState('');
   const [goals, setGoals] = useState(['', '']);
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
-  const [notes, setNotes] = useState('');
   const [precautions, setPrecautions] = useState(['']);
   const [evaluations, setEvaluations] = useState(['']);
   const initialState = [
@@ -33,7 +32,6 @@ export default function FormPage() {
     addCurriculumComponent,
     removeCurriculumComponent,
   } = useCurriculumHandlers(initialState);
-  console.log(curriculumComponents);
 
   const ageOptions = [
     { label: '만 3세', value: '3', image: '/images/age/age3.png' },
@@ -49,12 +47,10 @@ export default function FormPage() {
 
   const handleSubjectChange = (value: string) => {
     setSubject(value);
-    console.log('주제:', subject);
   };
 
   const handleDetailSubjectChange = (value: string) => {
     setDetailSubject(value);
-    console.log('세부주제:', detailSubject);
   };
 
   const handleAgeSelect = (value: string) => {
@@ -91,8 +87,6 @@ export default function FormPage() {
     event.preventDefault();
   };
 
-  console.log(evaluations);
-  console.log(precautions);
   return (
     <div className={'container mx-auto'}>
       <form
@@ -131,9 +125,9 @@ export default function FormPage() {
           canAddMore={curriculumComponents.length < 3}
         />
         <FileUploadSection
-          id="activity-resource"
-          label="활동 자료"
-          description="업로드할 파일을 드롭하거나 클릭해서 선택하세요."
+          id={'activity-resource'}
+          label={'활동 자료'}
+          description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
         />
         <ContentSection
           contents={contents}

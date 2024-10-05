@@ -31,7 +31,7 @@ const CurriculumToggle = ({
             return (
               <li key={uuidv4()}>
                 <button
-                  type="button"
+                  type={'button'}
                   onClick={() => onNurriClick(category)}
                   className={`flex justify-center items-center cursor-pointer w-32 p-2 shadow-md ${
                     isSelectedNurri
@@ -55,7 +55,7 @@ const CurriculumToggle = ({
                 return (
                   <li key={uuidv4()}>
                     <button
-                      type="button"
+                      type={'button'}
                       onClick={(e) => onSubNurriClick(subCategoryKey, e)}
                       className={`flex justify-center items-center cursor-pointer w-48 p-2 hover:text-slate-900 hover:bg-primary100 shadow-md ${
                         isSelectedSubNurri
@@ -72,7 +72,7 @@ const CurriculumToggle = ({
         )}
       </div>
       {selectedSubNurri && (
-        <ul className="mt-4 laptop:mt-0 laptop:ml-4">
+        <ul className={'mt-4 laptop:mt-0 laptop:ml-4'}>
           {selectedNurri &&
             nurriCurriculum
               .find((nurri) => Object.keys(nurri)[0] === selectedNurri)
@@ -84,7 +84,7 @@ const CurriculumToggle = ({
                 return (
                   <li key={uuidv4()}>
                     <button
-                      type="button"
+                      type={'button'}
                       onClick={() => onDetailClick(detail)}
                       className={`flex justify-start items-center break-keep p-2 shadow-md cursor-pointer  w-72 laptop:whitespace-normal text-sm hover:text-slate-900 hover:bg-primary100 text-left ${
                         isSelectedDetail
