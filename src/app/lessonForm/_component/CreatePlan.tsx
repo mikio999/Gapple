@@ -1,21 +1,27 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BaseInput } from './BaseInput';
 import CategorySelect from './CategorySelect';
-import { TextAreaInput } from './TextAreaInput';
-import CurriculumToggle from './CurriculumToggle';
 import { category } from '@/_lib/constants/category';
 import AgeSelect from './AgeSelect';
 import GroupSelect from './GroupSelect';
-import GoalsInput from './GoalsInput';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
-import Image from 'next/image';
+import CurriculumSection from './CurriculumSection';
+import SubjectInputSection from './SubjectInputSelection';
+import ContentSection from './ContentSection';
+import GoalsSection from './GoalsSection';
+import PrecautionsSection from './PrecautionSection';
+import EvaluationsSection from './EvaluationSection';
+import FileUploadSection from './FileUploadSection';
 
 export default function FormPage() {
+  const [subject, setSubject] = useState('');
+  const [detailSubject, setDetailSubject] = useState('');
   const [goals, setGoals] = useState(['', '']);
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const [notes, setNotes] = useState('');
+  const [precautions, setPrecautions] = useState(['']);
+  const [evaluations, setEvaluations] = useState(['']);
   const initialState = [
     { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
   ];
@@ -40,6 +46,16 @@ export default function FormPage() {
     { label: '중집단', value: 'medium', image: '/images/group/medium.png' },
     { label: '대집단', value: 'large', image: '/images/group/large.png' },
   ];
+
+  const handleSubjectChange = (value: string) => {
+    setSubject(value);
+    console.log('주제:', subject);
+  };
+
+  const handleDetailSubjectChange = (value: string) => {
+    setDetailSubject(value);
+    console.log('세부주제:', detailSubject);
+  };
 
   const handleAgeSelect = (value: string) => {
     console.log(`선택된 나이: 만 ${value}세`);
@@ -75,8 +91,10 @@ export default function FormPage() {
     event.preventDefault();
   };
 
+  console.log(evaluations);
+  console.log(precautions);
   return (
-    <div className={'container mx-auto '}>
+    <div className={'container mx-auto'}>
       <form
         onSubmit={handleSubmit}
         className={
@@ -92,137 +110,43 @@ export default function FormPage() {
           />
           <div className={'ml-2 p-2  w-1/12 '} />
         </div>
-        <div className={'flex flex-col laptop:flex-row'}>
-          <input
-            placeholder={'주제'}
-            name={'subject'}
-            className={
-              'border-l-4 border-l-slate-500 p-4 w-4/12 focus:outline-none'
-            }
-          />
-          <input
-            placeholder={'세부 주제'}
-            name={'detail_subject'}
-            className={
-              'border-l-4 border-l-slate-500 p-4 mt-4 laptop:mt-0  w-4/12 focus:outline-none'
-            }
-          />
-        </div>
+        <SubjectInputSection
+          subject={subject}
+          detailSubject={detailSubject}
+          onSubjectChange={handleSubjectChange}
+          onDetailSubjectChange={handleDetailSubjectChange}
+        />
 
         <AgeSelect options={ageOptions} onSelect={handleAgeSelect} />
         <GroupSelect options={groupSizeOptions} onSelect={handleGroupSelect} />
         <CategorySelect options={category} onSelect={handleCategorySelect} />
-        <GoalsInput goals={goals} setGoals={setGoals} />
-        <div>
-          <h1 className={'title-effect'}>{'누리과정 관련요소'}</h1>
-        </div>
-        {curriculumComponents.map(
-          (
-            component: { selectedNurri: string; selectedSubNurri: string },
-            index: React.Key,
-          ) => (
-            <div key={index}>
-              <div
-                className={
-                  'flex justify-between text-lg text-slate-400 border-b'
-                }
-              >
-                누리과정 요소 {typeof index === 'number' ? index + 1 : null}
-                {curriculumComponents.length !== 1 && (
-                  <button
-                    type="button"
-                    className={
-                      'flex justify-center items-center rounded-full hover:bg-primary100 w-8 h-8'
-                    }
-                    onClick={() => removeCurriculumComponent(index)}
-                  >
-                    <Image
-                      src={'/icons/deletetrash.png'}
-                      width={16}
-                      height={16}
-                      alt={'delete'}
-                    />
-                  </button>
-                )}
-              </div>
-              <CurriculumToggle
-                selectedNurri={component.selectedNurri}
-                onNurriClick={(nurri) => handleNurriClick(index, nurri)}
-                selectedSubNurri={component.selectedSubNurri}
-                onSubNurriClick={(subNurri, event) =>
-                  handleSubNurriClick(index, subNurri, event)
-                }
-                onDetailClick={(detail) => handleDetailClick(index, detail)}
-              />
-            </div>
-          ),
-        )}
-        {curriculumComponents.length < 3 && (
-          <button
-            type="button"
-            className={
-              'mt-2 bg-primary400 hover:bg-primary text-white font-thin py-2 px-4 rounded'
-            }
-            onClick={addCurriculumComponent}
-          >
-            누리과정 요소 추가
-          </button>
-        )}
-
-        <label
-          htmlFor={'activity-resource'}
-          className={'block text-sm font-medium text-gray-700'}
-        >
-          {'활동 자료'}
-        </label>
-        <input
-          id={'activity-resource'}
-          type={'file'}
-          aria-label={'활동 자료 파일 업로드'}
-          aria-describedby={'file-upload-description'}
-          className={
-            'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
-          }
+        <GoalsSection goals={goals} setGoals={setGoals} />
+        <CurriculumSection
+          curriculumComponents={curriculumComponents}
+          handleNurriClick={handleNurriClick}
+          handleSubNurriClick={handleSubNurriClick}
+          handleDetailClick={handleDetailClick}
+          removeCurriculumComponent={removeCurriculumComponent}
+          addCurriculumComponent={addCurriculumComponent}
+          canAddMore={curriculumComponents.length < 3}
         />
-        <div id={'file-upload-description'} className={'text-sm text-gray-500'}>
-          {'업로드할 파일을 선택하세요.'}
-        </div>
-        {contents.map((content, index) => (
-          <div key={`${index + 1}`} className={'flex flex-col'}>
-            <BaseInput
-              label={`소제목 ${index + 1}`}
-              id={`subtitle-${index}`}
-              value={content.subtitle}
-              onChange={(value) =>
-                handleContentsChange(index, 'subtitle', value)
-              }
-            />
-            <TextAreaInput
-              label={'세부내용'}
-              id={`content-${index}`}
-              value={content.content}
-              onChange={(value) =>
-                handleContentsChange(index, 'content', value)
-              }
-            />
-          </div>
-        ))}
-        <div className={'flex justify-center'}>
-          <button
-            type={'button'}
-            onClick={addContent}
-            className={
-              'flex justify-center items-center button-border py-2 px-4 bg-primary text-white text-lg rounded-full hover:bg-primary-dark button-effect hover:bg-white hover:text-primary w-12 h-12'
-            }
-          >
-            {'+'}
-          </button>
-        </div>
-        <TextAreaInput
-          label={'유의사항 및 평가'}
-          id={'notes'}
-          value={notes}
-          onChange={setNotes}
+        <FileUploadSection
+          id="activity-resource"
+          label="활동 자료"
+          description="업로드할 파일을 드롭하거나 클릭해서 선택하세요."
+        />
+        <ContentSection
+          contents={contents}
+          handleContentsChange={handleContentsChange}
+          addContent={addContent}
+        />
+        <PrecautionsSection
+          precautions={precautions}
+          setPrecautions={setPrecautions}
+        />
+        <EvaluationsSection
+          evaluations={evaluations}
+          setEvaluations={setEvaluations}
         />
         <button
           type={'submit'}

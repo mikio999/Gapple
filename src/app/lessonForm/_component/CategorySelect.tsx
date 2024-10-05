@@ -43,7 +43,6 @@ const CategorySelect = ({ options, onSelect }: CategorySelectorProps) => {
                 src={option.image}
                 alt={`만 ${option.value}세`}
                 className={'w-20 h-20 laptop:w-28 laptop:h-28 object-contain'}
-                objectFit={'contain'}
               />
               <div className={'text-slate-700 text-xs desktop:text-base'}>
                 {option.name}

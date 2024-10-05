@@ -1,51 +1,28 @@
-import React from 'react';
-import { BaseInput } from './BaseInput';
-
 interface GoalsInputProps {
-  goals: string[];
-  setGoals: React.Dispatch<React.SetStateAction<string[]>>;
+  label: string;
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-const GoalsInput = ({ goals, setGoals }: GoalsInputProps) => {
-  const addGoal = () => {
-    if (goals.length < 5) {
-      setGoals([...goals, '']);
-    }
-  };
-
-  const handleGoalChange = (index: number, value: string) => {
-    const newGoals = [...goals];
-    newGoals[index] = value;
-    setGoals(newGoals);
-  };
-
+export const GoalsInput = ({ label, id, value, onChange }: GoalsInputProps) => {
   return (
-    <>
-      <h1 className={'title-effect'}>{'활동 목표'}</h1>
-      <div>
-        {goals.map((goal, index) => (
-          <BaseInput
-            key={`goal ${index + 1}`}
-            label={`목표 ${index + 1}`}
-            id={`goal-${index}`}
-            value={goal}
-            onChange={(value) => handleGoalChange(index, value)}
-          />
-        ))}
-        {goals.length < 5 && (
-          <button
-            type={'button'}
-            onClick={addGoal}
-            className={
-              'mt-2 bg-primary500 hover:bg-primary text-white font-bold py-2 px-4 rounded'
-            }
-          >
-            {'+'}
-          </button>
-        )}
-      </div>
-    </>
+    <div>
+      <label
+        htmlFor={id}
+        className={'flex justify-between text-lg text-slate-400 border-b mt-2'}
+      >
+        {label}
+      </label>
+      <input
+        type={'text'}
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={
+          'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
+        }
+      />
+    </div>
   );
 };
-
-export default GoalsInput;
