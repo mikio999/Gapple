@@ -1,21 +1,33 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SelectInput } from './SelectInput';
 import { BaseInput } from './BaseInput';
-import { ActivityTypeSelector } from './ActiveTypeSelector';
+import CategorySelect from './CategorySelect';
 import { TextAreaInput } from './TextAreaInput';
 import CurriculumToggle from './CurriculumToggle';
+import { category } from '@/_lib/constants/category';
 import AgeSelect from './AgeSelect';
+import GroupSelect from './GroupSelect';
+import GoalsInput from './GoalsInput';
+import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
+import Image from 'next/image';
 
 export default function FormPage() {
-  const [groupSize, setGroupSize] = useState('');
-  const [activityName, setActivityName] = useState('');
-  const [subject, setSubject] = useState('');
-  const [activityType, setActivityType] = useState('');
   const [goals, setGoals] = useState(['', '']);
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const [notes, setNotes] = useState('');
+  const initialState = [
+    { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
+  ];
+  const {
+    curriculumComponents,
+    handleNurriClick,
+    handleSubNurriClick,
+    handleDetailClick,
+    addCurriculumComponent,
+    removeCurriculumComponent,
+  } = useCurriculumHandlers(initialState);
+  console.log(curriculumComponents);
 
   const ageOptions = [
     { label: '만 3세', value: '3', image: '/images/age/age3.png' },
@@ -24,19 +36,21 @@ export default function FormPage() {
   ];
 
   const groupSizeOptions = [
-    { label: '소집단', value: 'small' },
-    { label: '중집단', value: 'medium' },
-    { label: '대집단', value: 'large' },
+    { label: '소집단', value: 'small', image: '/images/group/small.png' },
+    { label: '중집단', value: 'medium', image: '/images/group/medium.png' },
+    { label: '대집단', value: 'large', image: '/images/group/large.png' },
   ];
 
   const handleAgeSelect = (value: string) => {
     console.log(`선택된 나이: 만 ${value}세`);
   };
 
-  const handleGoalsChange = (index: number, value: string) => {
-    const newGoals = [...goals];
-    newGoals[index] = value;
-    setGoals(newGoals);
+  const handleGroupSelect = (value: string) => {
+    console.log(`선택된 집단: ${value}`);
+  };
+
+  const handleCategorySelect = (value: string) => {
+    console.log(`선택된 카테고리: ${value}`);
   };
 
   const handleContentsChange = (
@@ -62,10 +76,7 @@ export default function FormPage() {
   };
 
   return (
-    <div className={'container mx-auto px-4'}>
-      <h1 className={'text-xl px-4 font-maple text-gray700 '}>
-        {'직접 계획안 글쓰기'}
-      </h1>
+    <div className={'container mx-auto '}>
       <form
         onSubmit={handleSubmit}
         className={
@@ -74,14 +85,14 @@ export default function FormPage() {
       >
         <div>
           <input
-            type="text"
-            name="title"
-            className={'text-xl laptop:text-3xl p-2 focus:outline-none'}
+            type={'text'}
+            name={'title'}
+            className={'text-xl laptop:text-3xl focus:outline-none'}
             placeholder={'활동명을 입력하세요 '}
           />
           <div className={'ml-2 p-2  w-1/12 '} />
         </div>
-        <div className={'p-2 flex flex-col laptop:flex-row'}>
+        <div className={'flex flex-col laptop:flex-row'}>
           <input
             placeholder={'주제'}
             name={'subject'}
@@ -99,17 +110,65 @@ export default function FormPage() {
         </div>
 
         <AgeSelect options={ageOptions} onSelect={handleAgeSelect} />
-        <ActivityTypeSelector value={activityType} onChange={setActivityType} />
-        {goals.map((goal, index) => (
-          <BaseInput
-            key={`${index + 1}`}
-            label={`활동 목표 ${index + 1}`}
-            id={`goal-${index}`}
-            value={goal}
-            onChange={(value) => handleGoalsChange(index, value)}
-          />
-        ))}
-        <CurriculumToggle />
+        <GroupSelect options={groupSizeOptions} onSelect={handleGroupSelect} />
+        <CategorySelect options={category} onSelect={handleCategorySelect} />
+        <GoalsInput goals={goals} setGoals={setGoals} />
+        <div>
+          <h1 className={'title-effect'}>{'누리과정 관련요소'}</h1>
+        </div>
+        {curriculumComponents.map(
+          (
+            component: { selectedNurri: string; selectedSubNurri: string },
+            index: React.Key,
+          ) => (
+            <div key={index}>
+              <div
+                className={
+                  'flex justify-between text-lg text-slate-400 border-b'
+                }
+              >
+                누리과정 요소 {typeof index === 'number' ? index + 1 : null}
+                {curriculumComponents.length !== 1 && (
+                  <button
+                    type="button"
+                    className={
+                      'flex justify-center items-center rounded-full hover:bg-primary100 w-8 h-8'
+                    }
+                    onClick={() => removeCurriculumComponent(index)}
+                  >
+                    <Image
+                      src={'/icons/deletetrash.png'}
+                      width={16}
+                      height={16}
+                      alt={'delete'}
+                    />
+                  </button>
+                )}
+              </div>
+              <CurriculumToggle
+                selectedNurri={component.selectedNurri}
+                onNurriClick={(nurri) => handleNurriClick(index, nurri)}
+                selectedSubNurri={component.selectedSubNurri}
+                onSubNurriClick={(subNurri, event) =>
+                  handleSubNurriClick(index, subNurri, event)
+                }
+                onDetailClick={(detail) => handleDetailClick(index, detail)}
+              />
+            </div>
+          ),
+        )}
+        {curriculumComponents.length < 3 && (
+          <button
+            type="button"
+            className={
+              'mt-2 bg-primary400 hover:bg-primary text-white font-thin py-2 px-4 rounded'
+            }
+            onClick={addCurriculumComponent}
+          >
+            누리과정 요소 추가
+          </button>
+        )}
+
         <label
           htmlFor={'activity-resource'}
           className={'block text-sm font-medium text-gray-700'}

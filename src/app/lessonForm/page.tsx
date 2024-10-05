@@ -2,7 +2,7 @@ import CreatePlan from './_component/CreatePlan';
 
 const formPage = () => {
   return (
-    <div className={'w-11/12'}>
+    <div className={'w-full laptop:w-11/12'}>
       <CreatePlan />
     </div>
   );
