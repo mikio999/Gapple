@@ -13,11 +13,13 @@ import GoalsSection from './GoalsSection';
 import PrecautionsSection from './PrecautionSection';
 import EvaluationsSection from './EvaluationSection';
 import FileUploadSection from './FileUploadSection';
+import ToolSection from './ToolSection';
 
 export default function FormPage() {
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
   const [goals, setGoals] = useState(['', '']);
+  const [tools, setTools] = useState(['', '']);
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const [precautions, setPrecautions] = useState(['']);
   const [evaluations, setEvaluations] = useState(['']);
@@ -44,7 +46,7 @@ export default function FormPage() {
     { label: '중집단', value: 'medium', image: '/images/group/medium.png' },
     { label: '대집단', value: 'large', image: '/images/group/large.png' },
   ];
-
+  console.log('tools', tools);
   const handleSubjectChange = (value: string) => {
     setSubject(value);
   };
@@ -124,6 +126,7 @@ export default function FormPage() {
           addCurriculumComponent={addCurriculumComponent}
           canAddMore={curriculumComponents.length < 3}
         />
+        <ToolSection tools={tools} setTools={setTools} />
         <FileUploadSection
           id={'activity-resource'}
           label={'활동 자료'}

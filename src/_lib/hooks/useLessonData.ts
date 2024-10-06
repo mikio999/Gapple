@@ -9,7 +9,6 @@ export function useLessonData(documentId: string | number) {
   const [lessonData, setLessonData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(session);
   useEffect(() => {
     async function loadData() {
       if (session) {
