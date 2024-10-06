@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import CreateBtn from '../Create/CreateBtn';
+
 import Dropdown from '../NavBar/Dropdown';
 import SearchBar from '../SearchBar/SearchBar';
+import CreateButton from '../Create/CreateButton';
 
 function MainTop() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +19,7 @@ function MainTop() {
   return (
     <div className={'flex justify-around'}>
       <SearchBar />
-      <div className={'flex flex-col'}>
-        <CreateBtn onClick={toggleDropdown} />
-        {isOpen && (
-          <Dropdown toggleComponent={<div />} subMenuItems={subMenuItems} />
-        )}
-      </div>
+      <CreateButton />
     </div>
   );
 }
