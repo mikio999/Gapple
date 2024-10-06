@@ -2,10 +2,17 @@ interface ToolInputProps {
   label: string;
   id: string;
   value: string;
+  number: number | string;
   onChange: (value: string) => void;
 }
 
-export const ToolInput = ({ label, id, value, onChange }: ToolInputProps) => (
+export const ToolInput = ({
+  label,
+  id,
+  value,
+  number,
+  onChange,
+}: ToolInputProps) => (
   <div className={'flex justify-center items-center'}>
     <label
       htmlFor={id}
@@ -13,7 +20,7 @@ export const ToolInput = ({ label, id, value, onChange }: ToolInputProps) => (
         'flex justify-center items-center text-xs w-4 h-4 laptop:w-6 laptop:h-6 font-medium mr-1 rounded-full bg-primary100 text-gray-600'
       }
     >
-      {id}
+      {number}
     </label>
     <input
       type={'text'}

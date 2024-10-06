@@ -41,9 +41,9 @@ const PhotoUpload = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     onDropRejected,
-    accept: 'image/*',
+    accept: 'image/*' as any,
     maxFiles: 5,
-    maxSize: 1048576, // 1MB limit per file
+    maxSize: 1048576,
   });
 
   return (

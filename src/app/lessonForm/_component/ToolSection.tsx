@@ -1,50 +1,60 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ToolInput } from './ToolInput';
 
+interface Tool {
+  id: string;
+  value: string;
+}
+
 interface ToolSectionProps {
-  tools: string[];
-  setTools: React.Dispatch<React.SetStateAction<string[]>>;
+  tools: Tool[];
+  setTools: React.Dispatch<React.SetStateAction<Tool[]>>;
 }
 
 const ToolSection = ({ tools, setTools }: ToolSectionProps) => {
   const addTool = () => {
     if (tools.length < 10) {
-      setTools([...tools, '']);
+      const newTool = { id: uuidv4(), value: '' };
+      setTools([...tools, newTool]);
     }
   };
 
-  const handleToolChange = (index: number, value: string) => {
-    const newtools = [...tools];
-    newtools[index] = value;
-    setTools(newtools);
-  };
-
-  const removeTool = (index: number) => {
-    const newTools = [...tools];
-    newTools.splice(index, 1);
+  const handleToolChange = (id: string, value: string) => {
+    const newTools = tools.map((tool) => {
+      if (tool.id === id) {
+        return { ...tool, value };
+      }
+      return tool;
+    });
     setTools(newTools);
   };
+
+  const removeTool = (id: string) => {
+    const newTools = tools.filter((tool) => tool.id !== id);
+    setTools(newTools);
+  };
+
   return (
     <>
       <h1 className={'title-effect'}>{'활동 도구'}</h1>
       <div className={'grid laptop:grid-cols-4 grid-cols-2 gap-5'}>
         {tools.map((tool, index) => (
-          <div key={index} className={'flex items-center space-x-2'}>
+          <div key={tool.id} className={'flex items-center space-x-2'}>
             <ToolInput
               label={`도구 ${index + 1}`}
-              id={`${index + 1}`}
-              value={tool}
-              onChange={(value) => handleToolChange(index, value)}
+              number={index + 1}
+              id={tool.id}
+              value={tool.value}
+              onChange={(value) => handleToolChange(tool.id, value)}
             />
-            {tools.length !== 1 ? (
+            {tools.length !== 1 && (
               <button
                 type={'button'}
-                onClick={() => removeTool(index)}
+                onClick={() => removeTool(tool.id)}
                 className={'text-slate-400 text-xs ml-2 hover:text-red-700'}
               >
                 {'✕'}
               </button>
-            ) : (
-              <></>
             )}
           </div>
         ))}

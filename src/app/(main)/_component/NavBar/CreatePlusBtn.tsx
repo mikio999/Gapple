@@ -28,18 +28,25 @@ const CreatePlusBtn = () => {
   }, []);
 
   return (
-    <div className="laptop:mt-4 laptop:mb-4 relative" ref={containerRef}>
+    <div className={'laptop:mt-4 laptop:mb-4 relative'} ref={containerRef}>
       <button
-        className="cursor-pointer bg-primary100 hover:bg-primary300 text-primary font-bold py-2 px-4 w-10 h-10 rounded-full text-sm leading-none"
+        type={'button'}
+        className={
+          'cursor-pointer bg-primary100 hover:bg-primary300 text-primary font-bold py-2 px-4 w-10 h-10 rounded-full text-sm leading-none'
+        }
         onClick={() => setIsOpen(!isOpen)}
       >
-        +
+        {'+'}
       </button>
       {isOpen && (
-        <div className="absolute right-1 laptop:right-0 laptop:left-20 laptop:top-1 w-48 bg-white shadow-lg mt-2 rounded-md z-10">
+        <div
+          className={
+            'absolute right-1 laptop:right-0 laptop:left-20 laptop:top-1 w-48 bg-white shadow-lg mt-2 rounded-md z-10'
+          }
+        >
           {subMenuItems.map((item) => (
             <Link key={item.name} href={item.link}>
-              <div className="block px-4 py-2 hover:bg-gray-100">
+              <div className={'block px-4 py-2 hover:bg-gray-100'}>
                 {item.name}
               </div>
             </Link>

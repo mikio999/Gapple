@@ -19,7 +19,8 @@ export default function FormPage() {
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
   const [goals, setGoals] = useState(['', '']);
-  const [tools, setTools] = useState(['', '']);
+  const [tools, setTools] = useState([{ id: '1', value: '' }]);
+
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const [precautions, setPrecautions] = useState(['']);
   const [evaluations, setEvaluations] = useState(['']);
@@ -46,7 +47,7 @@ export default function FormPage() {
     { label: '중집단', value: 'medium', image: '/images/group/medium.png' },
     { label: '대집단', value: 'large', image: '/images/group/large.png' },
   ];
-  console.log('tools', tools);
+
   const handleSubjectChange = (value: string) => {
     setSubject(value);
   };

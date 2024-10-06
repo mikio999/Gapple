@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -28,18 +30,23 @@ const CreateButton = () => {
   }, []);
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className={'relative'} ref={containerRef}>
       <button
-        className="hidden bg-primary text-white py-2 px-4 rounded-md laptop:block"
+        type={'button'}
+        className={
+          'hidden bg-primary text-white py-2 px-4 rounded-md laptop:block'
+        }
         onClick={() => setIsOpen(!isOpen)}
       >
-        만들기
+        {'만들기'}
       </button>
       {isOpen && (
-        <div className="absolute right-0 w-48 bg-white shadow-lg mt-2 rounded-md">
+        <div
+          className={'absolute right-0 w-48 bg-white shadow-lg mt-2 rounded-md'}
+        >
           {subMenuItems.map((item) => (
             <Link key={item.name} href={item.link}>
-              <div className="block px-4 py-2 hover:bg-gray-100">
+              <div className={'block px-4 py-2 hover:bg-gray-100'}>
                 {item.name}
               </div>
             </Link>
