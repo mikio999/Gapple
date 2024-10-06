@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const UserInfo = () => {
   const { data: session, status } = useSession();
-
+  console.log(session);
   const profileData = {
     experienceLevel: 'Intermediate',
     introduction: '교육의 가치를 믿습니다!',
