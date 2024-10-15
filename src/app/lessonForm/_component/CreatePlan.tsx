@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import CategorySelect from './CategorySelect';
@@ -18,19 +19,19 @@ import submitLessonForm from '../_lib/api';
 import TitleInput from './TitleInput';
 
 export default function FormPage() {
+  const { data: session } = useSession();
+
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
   const initialGoals = [{ id: '', text: '' }];
   const [goals, setGoals] = useState(initialGoals);
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
-
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const initialPrecautions = [{ id: '', text: '' }];
   const [precautions, setPrecautions] = useState(initialPrecautions);
   const initialEvaluations = [{ id: '', text: '' }];
   const [evaluations, setEvaluations] = useState(initialEvaluations);
-
   const [age, setAge] = useState(3);
   const [groupSize, setGroupSize] = useState('SMALL');
   const [activityType, setActivityType] = useState('');
@@ -96,49 +97,19 @@ export default function FormPage() {
     setContents([...contents, { subtitle: '', content: '' }]);
   };
 
-  const formData = {
-    subject,
-    detail_subject: detailSubject,
-    age,
-    group_size: groupSize,
-    activity_type: activityType,
-    activity_goal: goals.map((goal) => goal.text),
-    activity_tool: tools.map((tool) => tool.value),
-    precautions: precautions.map((precaution) => precaution.text),
-    evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
-    activity_content: contents.map((content) => ({
-      subtitle: content.subtitle,
-      content: content.content,
-    })),
-    nuri_curriculum: curriculumComponents.map(
-      (component: {
-        selectedNurri: string;
-        selectedSubNurri: string;
-        selectedCurriculum: string;
-      }) => ({
-        main_category: component.selectedNurri,
-        sub_category: component.selectedSubNurri,
-        content: component.selectedCurriculum,
-      }),
-    ),
-  };
-  console.log(formData);
-  const handleSubmit = async (event: {
-    preventDefault: () => void;
-    target: { title: { value: string } };
-  }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const formData = {
-      title: event.target.title.value,
+      title,
       subject,
       detail_subject: detailSubject,
       age,
       group_size: groupSize,
       activity_type: activityType,
-      activity_goal: goals,
+      activity_goal: goals.map((goal) => goal.text),
       activity_tool: tools.map((tool) => tool.value),
-      precautions,
-      evaluation_criteria: evaluations,
+      precautions: precautions.map((precaution) => precaution.text),
+      evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
       activity_content: contents.map((content) => ({
         subtitle: content.subtitle,
         content: content.content,
@@ -156,11 +127,13 @@ export default function FormPage() {
       ),
     };
 
-    try {
-      const result = await submitLessonForm(formData);
-      console.log('서버 응답:', result);
-    } catch (error) {
-      console.error('폼 제출 실패:', error);
+    if (session) {
+      try {
+        const result = await submitLessonForm(formData, session.accessToken);
+        console.log('서버 응답:', result);
+      } catch (error) {
+        console.error('폼 제출 실패:', error);
+      }
     }
   };
 

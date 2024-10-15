@@ -16,20 +16,19 @@ const EvaluationsSection = ({
   evaluations,
   setEvaluations,
 }: EvaluationsSectionProps) => {
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]); // input 요소들을 참조하는 ref 배열
-  const [isAdding, setIsAdding] = useState(false); // 중복 추가 방지를 위한 상태값
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [isAdding, setIsAdding] = useState(false);
 
   const addEvaluation = () => {
     if (evaluations.length < 3 && !isAdding) {
-      // 최대 3개까지 추가 가능
-      setIsAdding(true); // 추가 중 상태로 변경
+      setIsAdding(true);
       setTimeout(() => {
         setEvaluations((prevEvaluations) => [
           ...prevEvaluations,
           { id: uuidv4(), text: '' },
         ]);
-        setIsAdding(false); // 추가 작업 완료 후 상태값 리셋
-      }, 50); // 딜레이를 주어 렌더링이 완료된 후 포커스가 맞춰지도록
+        setIsAdding(false);
+      }, 50);
     }
   };
 
@@ -44,7 +43,7 @@ const EvaluationsSection = ({
   useEffect(() => {
     const lastInput = inputRefs.current[evaluations.length - 1];
     if (lastInput) {
-      lastInput.focus(); // 마지막으로 추가된 input에 포커스
+      lastInput.focus();
     }
   }, [evaluations.length]);
 

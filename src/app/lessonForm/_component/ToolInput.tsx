@@ -4,7 +4,8 @@ interface ToolInputProps {
   value: string;
   number: number | string;
   onChange: (value: string) => void;
-  onEnterPress: () => void; // Prop to handle the Enter key press
+  onEnterPress: () => void;
+  inputRef?: (instance: HTMLInputElement | null) => void;
 }
 
 export const ToolInput = ({
@@ -14,6 +15,7 @@ export const ToolInput = ({
   number,
   onChange,
   onEnterPress,
+  inputRef,
 }: ToolInputProps) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -36,6 +38,7 @@ export const ToolInput = ({
         type={'text'}
         id={id}
         value={value}
+        ref={inputRef}
         placeholder={label}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
