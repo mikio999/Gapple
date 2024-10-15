@@ -46,6 +46,7 @@ const ToolSection = ({ tools, setTools }: ToolSectionProps) => {
               id={tool.id}
               value={tool.value}
               onChange={(value) => handleToolChange(tool.id, value)}
+              onEnterPress={addTool}
             />
             {tools.length !== 1 && (
               <button

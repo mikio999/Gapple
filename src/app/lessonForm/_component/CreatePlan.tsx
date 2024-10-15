@@ -14,16 +14,26 @@ import PrecautionsSection from './PrecautionSection';
 import EvaluationsSection from './EvaluationSection';
 import FileUploadSection from './FileUploadSection';
 import ToolSection from './ToolSection';
+import submitLessonForm from '../_lib/api';
+import TitleInput from './TitleInput';
 
 export default function FormPage() {
+  const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
-  const [goals, setGoals] = useState(['', '']);
+  const initialGoals = [{ id: '', text: '' }];
+  const [goals, setGoals] = useState(initialGoals);
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
 
   const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
-  const [precautions, setPrecautions] = useState(['']);
-  const [evaluations, setEvaluations] = useState(['']);
+  const initialPrecautions = [{ id: '', text: '' }];
+  const [precautions, setPrecautions] = useState(initialPrecautions);
+  const initialEvaluations = [{ id: '', text: '' }];
+  const [evaluations, setEvaluations] = useState(initialEvaluations);
+
+  const [age, setAge] = useState(3);
+  const [groupSize, setGroupSize] = useState('SMALL');
+  const [activityType, setActivityType] = useState('');
   const initialState = [
     { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
   ];
@@ -37,15 +47,15 @@ export default function FormPage() {
   } = useCurriculumHandlers(initialState);
 
   const ageOptions = [
-    { label: '만 3세', value: '3', image: '/images/age/age3.png' },
-    { label: '만 4세', value: '4', image: '/images/age/age4.png' },
-    { label: '만 5세', value: '5', image: '/images/age/age5.png' },
+    { label: '만 3세', value: 3, image: '/images/age/age3.png' },
+    { label: '만 4세', value: 4, image: '/images/age/age4.png' },
+    { label: '만 5세', value: 5, image: '/images/age/age5.png' },
   ];
 
   const groupSizeOptions = [
-    { label: '소집단', value: 'small', image: '/images/group/small.png' },
-    { label: '중집단', value: 'medium', image: '/images/group/medium.png' },
-    { label: '대집단', value: 'large', image: '/images/group/large.png' },
+    { label: '소집단', value: 'SMALL', image: '/images/group/small.png' },
+    { label: '중집단', value: 'MEDIUM', image: '/images/group/medium.png' },
+    { label: '대집단', value: 'LARGE', image: '/images/group/large.png' },
   ];
 
   const handleSubjectChange = (value: string) => {
@@ -56,16 +66,16 @@ export default function FormPage() {
     setDetailSubject(value);
   };
 
-  const handleAgeSelect = (value: string) => {
-    console.log(`선택된 나이: 만 ${value}세`);
+  const handleAgeSelect = (value: number) => {
+    setAge(value);
   };
 
   const handleGroupSelect = (value: string) => {
-    console.log(`선택된 집단: ${value}`);
+    setGroupSize(value);
   };
 
   const handleCategorySelect = (value: string) => {
-    console.log(`선택된 카테고리: ${value}`);
+    setActivityType(value);
   };
 
   const handleContentsChange = (
@@ -86,26 +96,84 @@ export default function FormPage() {
     setContents([...contents, { subtitle: '', content: '' }]);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const formData = {
+    subject,
+    detail_subject: detailSubject,
+    age,
+    group_size: groupSize,
+    activity_type: activityType,
+    activity_goal: goals.map((goal) => goal.text),
+    activity_tool: tools.map((tool) => tool.value),
+    precautions: precautions.map((precaution) => precaution.text),
+    evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
+    activity_content: contents.map((content) => ({
+      subtitle: content.subtitle,
+      content: content.content,
+    })),
+    nuri_curriculum: curriculumComponents.map(
+      (component: {
+        selectedNurri: string;
+        selectedSubNurri: string;
+        selectedCurriculum: string;
+      }) => ({
+        main_category: component.selectedNurri,
+        sub_category: component.selectedSubNurri,
+        content: component.selectedCurriculum,
+      }),
+    ),
+  };
+  console.log(formData);
+  const handleSubmit = async (event: {
+    preventDefault: () => void;
+    target: { title: { value: string } };
+  }) => {
     event.preventDefault();
+    const formData = {
+      title: event.target.title.value,
+      subject,
+      detail_subject: detailSubject,
+      age,
+      group_size: groupSize,
+      activity_type: activityType,
+      activity_goal: goals,
+      activity_tool: tools.map((tool) => tool.value),
+      precautions,
+      evaluation_criteria: evaluations,
+      activity_content: contents.map((content) => ({
+        subtitle: content.subtitle,
+        content: content.content,
+      })),
+      nuri_curriculum: curriculumComponents.map(
+        (component: {
+          selectedNurri: string;
+          selectedSubNurri: string;
+          selectedCurriculum: string;
+        }) => ({
+          main_category: component.selectedNurri,
+          sub_category: component.selectedSubNurri,
+          content: component.selectedCurriculum,
+        }),
+      ),
+    };
+
+    try {
+      const result = await submitLessonForm(formData);
+      console.log('서버 응답:', result);
+    } catch (error) {
+      console.error('폼 제출 실패:', error);
+    }
   };
 
   return (
     <div className={'container mx-auto'}>
-      <form
-        onSubmit={handleSubmit}
+      <div
         className={
           'space-y-6 bg-white p-6 rounded-lg shadow-md mt-2 flex flex-col'
         }
       >
         <div>
-          <input
-            type={'text'}
-            name={'title'}
-            className={'text-xl laptop:text-3xl focus:outline-none'}
-            placeholder={'활동명을 입력하세요 '}
-          />
-          <div className={'ml-2 p-2  w-1/12 '} />
+          <TitleInput title={title} setTitle={setTitle} />
+          <div className={'ml-2 p-2 w-1/12'} />
         </div>
         <SubjectInputSection
           subject={subject}
@@ -114,9 +182,21 @@ export default function FormPage() {
           onDetailSubjectChange={handleDetailSubjectChange}
         />
 
-        <AgeSelect options={ageOptions} onSelect={handleAgeSelect} />
-        <GroupSelect options={groupSizeOptions} onSelect={handleGroupSelect} />
-        <CategorySelect options={category} onSelect={handleCategorySelect} />
+        <AgeSelect
+          options={ageOptions}
+          selectedAge={age}
+          onSelect={handleAgeSelect}
+        />
+        <GroupSelect
+          options={groupSizeOptions}
+          selectedGroupSize={groupSize}
+          onSelect={handleGroupSelect}
+        />
+        <CategorySelect
+          options={category}
+          selectedActivityType={activityType}
+          onSelect={handleCategorySelect}
+        />
         <GoalsSection goals={goals} setGoals={setGoals} />
         <CurriculumSection
           curriculumComponents={curriculumComponents}
@@ -147,14 +227,15 @@ export default function FormPage() {
           setEvaluations={setEvaluations}
         />
         <button
-          type={'submit'}
+          type={'button'}
+          onClick={handleSubmit}
           className={
             'button-border py-2 px-4 bg-primary text-white rounded hover:bg-white hover:text-primary'
           }
         >
           {'저장하기'}
         </button>
-      </form>
+      </div>
     </div>
   );
 }
