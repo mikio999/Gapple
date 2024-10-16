@@ -1,9 +1,9 @@
-import FirstStep from './_component/FirstStep';
+import EntryComponent from './_component/EntryComponent';
 
 const AiPage = () => {
   return (
-    <div>
-      <FirstStep />
+    <div className={'w-full mt-12 h-dvh'}>
+      <EntryComponent />
     </div>
   );
 };
