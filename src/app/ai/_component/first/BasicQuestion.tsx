@@ -1,12 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import TypingEffect from '../motion/TypingEffect';
-import InputField from '../InputField';
-import SubmitButton from '../SubmitButton';
+import Image from 'next/image';
 import { category } from '@/_lib/constants/category';
 import { age } from '@/_lib/constants/age';
 import { groupSize } from '@/_lib/constants/groupSize';
 import { theme } from '@/_lib/constants/theme';
-import Image from 'next/image';
+import TypingEffect from '../motion/TypingEffect';
+import InputField from '../InputField';
+import SubmitButton from '../SubmitButton';
 
 interface Option {
   name: string;
@@ -37,9 +37,12 @@ const BasicQuestion = () => {
   const questionKeys = ['age', 'groupSize', 'theme', 'category'];
   const options: Options = { age, groupSize, theme, category };
 
-  const handleInputChange = useCallback((e) => {
-    setInputValue(e.target.value);
-  }, []);
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+    },
+    [],
+  );
 
   const handleNextStep = () => {
     setAnswers((prev) => ({
@@ -126,7 +129,7 @@ const BasicQuestion = () => {
                   </span>
                 </>
               ) : (
-                <>{option.name}</>
+                <div>{option.name}</div>
               )}
             </button>
           ))}

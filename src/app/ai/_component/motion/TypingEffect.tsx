@@ -38,4 +38,6 @@ const TypingEffect = React.memo(({ text }: TypingEffectProps) => {
   );
 });
 
+TypingEffect.displayName = 'TypingEffect';
+
 export default TypingEffect;
