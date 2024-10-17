@@ -6,7 +6,7 @@ import Start from './first/Start';
 import BasicQuestion from './first/BasicQuestion';
 import SecondQuestion from './second/SecondQuestion';
 
-const EntryComponent = () => {
+const AiManager = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const questions = {
     age: '몇 세를 대상으로 한 수업인가요?',
@@ -48,4 +48,4 @@ const EntryComponent = () => {
   );
 };
 
-export default EntryComponent;
+export default AiManager;

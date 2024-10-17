@@ -1,9 +1,9 @@
-import EntryComponent from './_component/EntryComponent';
+import AiManager from './_component/AiManager';
 
 const AiPage = () => {
   return (
     <div className={'w-full h-dvh'}>
-      <EntryComponent />
+      <AiManager />
     </div>
   );
 };

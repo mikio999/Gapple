@@ -5,12 +5,12 @@ import { age } from '@/_lib/constants/age';
 import { groupSize } from '@/_lib/constants/groupSize';
 import { theme } from '@/_lib/constants/theme';
 import { recommendation } from '@/_lib/constants/recommendation';
+import { Options, Option, BasicQuestionProps } from '@/types/ai';
 import TypingEffect from '../motion/TypingEffect';
 import InputField from '../InputField';
 import SubmitButton from '../SubmitButton';
 import AnswerDisplay from './AnswerDisplay';
 import AIActionDisplay from './AIActionDisplay';
-import { Options, Option, BasicQuestionProps } from '@/types/ai';
 
 const BasicQuestion = ({
   currentStep,
@@ -64,9 +64,13 @@ const BasicQuestion = ({
   const areAllQuestionsAnswered =
     questionKeys.length === Object.keys(answers).length + 1;
 
-  console.log('AAQA', areAllQuestionsAnswered);
-  console.log(questionKeys.length);
-  console.log(Object.keys(answers).length - 1);
+  const handleGenerateAI = () => {
+    console.log('AI 생성하기');
+    if (currentStep < questionKeys.length) {
+      setCurrentStep(6);
+    }
+  };
+
   return (
     <div className={'flex flex-col items-center'}>
       <TypingEffect text={questions[questionKeys[currentStep - 1]]} />
@@ -124,7 +128,7 @@ const BasicQuestion = ({
         onEditAnswer={handleEditAnswer}
       />
       {areAllQuestionsAnswered && (
-        <AIActionDisplay onGenerateAI={() => console.log('AI 생성하기')} />
+        <AIActionDisplay onGenerateAI={handleGenerateAI} />
       )}
     </div>
   );
