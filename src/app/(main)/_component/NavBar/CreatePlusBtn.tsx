@@ -33,6 +33,10 @@ const CreatePlusBtn = () => {
     };
   }, []);
 
+  if (pathname === '/ai') {
+    return null;
+  }
+
   return (
     <div className={'laptop:mt-4 laptop:mb-4 relative'} ref={containerRef}>
       <button

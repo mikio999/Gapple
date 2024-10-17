@@ -4,38 +4,24 @@ import { category } from '@/_lib/constants/category';
 import { age } from '@/_lib/constants/age';
 import { groupSize } from '@/_lib/constants/groupSize';
 import { theme } from '@/_lib/constants/theme';
+import { recommendation } from '@/_lib/constants/recommendation';
 import TypingEffect from '../motion/TypingEffect';
 import InputField from '../InputField';
 import SubmitButton from '../SubmitButton';
+import AnswerDisplay from './AnswerDisplay';
+import AIActionDisplay from './AIActionDisplay';
+import { Options, Option, BasicQuestionProps } from '@/types/ai';
 
-interface Option {
-  name: string;
-  value: string;
-  image?: string;
-}
-
-interface Options {
-  age: Option[];
-  groupSize: Option[];
-  theme: Option[];
-  category: Option[];
-  [key: string]: Option[];
-}
-
-const BasicQuestion = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+const BasicQuestion = ({
+  currentStep,
+  setCurrentStep,
+  questions,
+  questionKeys,
+}: BasicQuestionProps) => {
   const [inputValue, setInputValue] = useState('');
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
 
-  const questions = [
-    '몇 세를 대상으로 한 수업인가요?',
-    '집단의 크기는 어느 정도로 예상하시나요?',
-    '어떤 주제를 생각하고 계신가요?',
-    '어떤 활동유형을 생각하고 계신가요?',
-  ];
-
-  const questionKeys = ['age', 'groupSize', 'theme', 'category'];
-  const options: Options = { age, groupSize, theme, category };
+  const options = { age, groupSize, theme, category, recommendation };
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,70 +31,67 @@ const BasicQuestion = () => {
   );
 
   const handleNextStep = () => {
+    const key = questionKeys[currentStep - 1];
     setAnswers((prev) => ({
       ...prev,
-      [questionKeys[currentStep]]: inputValue,
+      [key]: inputValue,
     }));
     setInputValue('');
-    if (currentStep < questions.length - 1) {
+    if (currentStep < questionKeys.length) {
       setCurrentStep(currentStep + 1);
-    } else {
-      sendToBackend();
     }
   };
 
   const handleOptionSelect = (option: Option) => {
+    const key = questionKeys[currentStep - 1];
     setAnswers((prev) => ({
       ...prev,
-      [questionKeys[currentStep]]: option.value,
+      [key]: option.value,
     }));
-
-    if (currentStep < questions.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      sendToBackend();
-    }
-  };
-
-  const sendToBackend = async () => {
-    try {
-      console.log('Sending data to backend:', answers);
-    } catch (error) {
-      console.error('Error sending data to backend:', error);
-    }
+    setCurrentStep(currentStep + 1);
   };
 
   const handleEditAnswer = (index: number) => {
     const key = questionKeys[index];
-    const value = answers[key];
-    setCurrentStep(index);
-    setInputValue(value);
+    setCurrentStep(index + 1);
+    setInputValue(answers[key]);
   };
 
-  const currentQuestionKey = questionKeys[currentStep];
-  const currentOptions = options[currentQuestionKey];
-  const hasImages = currentOptions.some((option) => option.image);
+  const currentKey = questionKeys[currentStep - 1] as keyof Options;
+  const currentOptions = options[currentKey];
+  const hasImages = currentOptions.some((option: Option) => option.image);
 
+  const areAllQuestionsAnswered =
+    questionKeys.length === Object.keys(answers).length + 1;
+
+  console.log('AAQA', areAllQuestionsAnswered);
+  console.log(questionKeys.length);
+  console.log(Object.keys(answers).length - 1);
   return (
     <div className={'flex flex-col items-center'}>
-      <TypingEffect text={questions[currentStep]} />
+      <TypingEffect text={questions[questionKeys[currentStep - 1]]} />
       <div className={'mt-4'}>
         {!hasImages && (
-          <>
+          <div className={'flex m-4'}>
             <InputField
               value={inputValue}
               onChange={handleInputChange}
-              placeholder="답변을 입력해주세요"
+              placeholder={'직접 쓰기'}
             />
-            <SubmitButton onClick={handleNextStep} label="등록" />
-          </>
+            <SubmitButton onClick={handleNextStep} label={'등록'} />
+          </div>
         )}
+
         <div
-          className={`${hasImages ? 'grid grid-cols-4 gap-x-0.5 laptop:grid laptop:grid-cols-4' : 'grid grid-cols-3 laptop:grid-cols-4'} gap-4 options-container`}
+          className={`${
+            currentOptions.length > 2
+              ? 'grid grid-cols-4 gap-x-0.5'
+              : 'flex justify-center'
+          } laptop:grid laptop:grid-cols-4 gap-4 options-container`}
         >
-          {currentOptions.map((option) => (
+          {currentOptions.map((option: Option) => (
             <button
-              type="button"
+              type={'button'}
               key={option.value}
               onClick={() => handleOptionSelect(option)}
               className={
@@ -122,7 +105,7 @@ const BasicQuestion = () => {
                     height={100}
                     src={option.image}
                     alt={option.name}
-                    className="mb-2"
+                    className={'mb-2'}
                   />
                   <span className={'text-xs laptop:text-base'}>
                     {option.name}
@@ -135,17 +118,14 @@ const BasicQuestion = () => {
           ))}
         </div>
       </div>
-      <div className="answers-list mt-4 mb-16">
-        {Object.entries(answers).map(([key, value], index) => (
-          <div
-            key={key}
-            onClick={() => handleEditAnswer(index)}
-            style={{ cursor: 'pointer' }}
-          >
-            <strong>{questions[index]}:</strong> {value}
-          </div>
-        ))}
-      </div>
+      <AnswerDisplay
+        answers={answers}
+        questions={questions}
+        onEditAnswer={handleEditAnswer}
+      />
+      {areAllQuestionsAnswered && (
+        <AIActionDisplay onGenerateAI={() => console.log('AI 생성하기')} />
+      )}
     </div>
   );
 };

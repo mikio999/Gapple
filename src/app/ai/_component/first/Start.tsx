@@ -36,7 +36,7 @@ const Start = ({ onProceed }: StartProps) => {
   const introText = `${greeting} ${seasonSuffix} ${session.user.name} 쌤! AI 교육계획안을 작성해드리는 GAPPLE 입니다!`;
 
   return (
-    <div className={'flex flex-col w-100 text-xl ml-4 mr-4'}>
+    <div className={'flex flex-col w-100 text-xl m-2'}>
       <div className={'mb-4'}>{'안녕하세요!'}</div>
       <TypingEffect text={introText} />
       <MotionButton onClick={onProceed} />

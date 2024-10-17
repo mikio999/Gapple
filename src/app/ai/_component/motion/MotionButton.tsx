@@ -23,7 +23,7 @@ const MotionButton = ({ onClick }: MotionButtonProps) => {
         type={'button'}
         onClick={onClick}
         className={
-          'p-2 bg-primary text-white font-bold rounded-full cursor-pointer'
+          'items-center p-2 bg-primary text-white font-bold rounded-full cursor-pointer'
         }
         style={{
           width: '80px',

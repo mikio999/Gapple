@@ -6,7 +6,7 @@ interface TypingEffectProps {
   text: string;
 }
 
-const TypingEffect = React.memo(({ text }: TypingEffectProps) => {
+const TypingEffect = React.memo(({ text = '' }: TypingEffectProps) => {
   const charactersWithUUID = React.useMemo(() => {
     return Array.from(text).map((char) => ({
       char,
