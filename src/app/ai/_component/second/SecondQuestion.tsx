@@ -1,8 +1,11 @@
-import { useCallback, useState } from 'react';
-import { BasicQuestionProps, Option } from '@/types/ai';
+import { BasicQuestionProps } from '@/types/ai';
 import { activity } from '@/_lib/constants/activity';
 import TypingEffect from '../motion/TypingEffect';
 import OptionSelector from '../motion/OptionSelector';
+
+interface Options {
+  [key: string]: { name: string; value: string }[];
+}
 
 const SecondQuestion = ({
   currentStep,
@@ -10,7 +13,7 @@ const SecondQuestion = ({
   questions,
   questionKeys,
 }: BasicQuestionProps) => {
-  const options = { activity };
+  const options: Options = { activity };
 
   const handleOptionSelect = () => {
     setCurrentStep(currentStep + 1);

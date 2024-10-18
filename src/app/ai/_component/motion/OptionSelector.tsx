@@ -32,6 +32,7 @@ const OptionSelector = ({
 
       return () => clearTimeout(timer);
     }
+    return undefined;
   }, [questionKey]);
 
   const gridClass =
@@ -66,9 +67,9 @@ const OptionSelector = ({
         {options.map((option, index) => (
           <motion.button
             key={option.value}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            initial={'hidden'}
+            animate={'visible'}
+            exit={'hidden'}
             custom={index}
             variants={itemVariants}
             onClick={() => onOptionSelect(option)}
@@ -95,7 +96,9 @@ const OptionSelector = ({
       </AnimatePresence>
       {showRecommendButton && (
         <motion.button
-          className="mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300"
+          className={
+            'mt-4 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300'
+          }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
