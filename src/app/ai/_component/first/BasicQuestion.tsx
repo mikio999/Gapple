@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import Image from 'next/image';
+import React, { useState, useCallback, useEffect } from 'react';
 import { category } from '@/_lib/constants/category';
 import { age } from '@/_lib/constants/age';
 import { groupSize } from '@/_lib/constants/groupSize';
@@ -11,6 +10,7 @@ import InputField from '../InputField';
 import SubmitButton from '../SubmitButton';
 import AnswerDisplay from './AnswerDisplay';
 import AIActionDisplay from './AIActionDisplay';
+import OptionSelector from '../motion/OptionSelector';
 
 const BasicQuestion = ({
   currentStep,
@@ -20,6 +20,7 @@ const BasicQuestion = ({
 }: BasicQuestionProps) => {
   const [inputValue, setInputValue] = useState('');
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [showInput, setShowInput] = useState(false);
 
   const options = { age, groupSize, theme, category, recommendation };
 
@@ -51,6 +52,14 @@ const BasicQuestion = ({
     setCurrentStep(currentStep + 1);
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowInput(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleEditAnswer = (index: number) => {
     const key = questionKeys[index];
     setCurrentStep(index + 1);
@@ -60,6 +69,7 @@ const BasicQuestion = ({
   const currentKey = questionKeys[currentStep - 1] as keyof Options;
   const currentOptions = options[currentKey];
   const hasImages = currentOptions.some((option: Option) => option.image);
+  console.log('hasImages', hasImages);
 
   const areAllQuestionsAnswered =
     questionKeys.length === Object.keys(answers).length + 1;
@@ -75,7 +85,7 @@ const BasicQuestion = ({
     <div className={'flex flex-col items-center'}>
       <TypingEffect text={questions[questionKeys[currentStep - 1]]} />
       <div className={'mt-4'}>
-        {!hasImages && (
+        {showInput && !hasImages && (
           <div className={'flex m-4'}>
             <InputField
               value={inputValue}
@@ -85,42 +95,11 @@ const BasicQuestion = ({
             <SubmitButton onClick={handleNextStep} label={'등록'} />
           </div>
         )}
-
-        <div
-          className={`${
-            currentOptions.length > 2
-              ? 'grid grid-cols-4 gap-x-0.5'
-              : 'flex justify-center'
-          } laptop:grid laptop:grid-cols-4 gap-4 options-container`}
-        >
-          {currentOptions.map((option: Option) => (
-            <button
-              type={'button'}
-              key={option.value}
-              onClick={() => handleOptionSelect(option)}
-              className={
-                'option-button m-1 p-1 laptop:m-2 laptop:p-2 border rounded flex flex-col items-center button-effect bg-white'
-              }
-            >
-              {option.image ? (
-                <>
-                  <Image
-                    width={100}
-                    height={100}
-                    src={option.image}
-                    alt={option.name}
-                    className={'mb-2'}
-                  />
-                  <span className={'text-xs laptop:text-base'}>
-                    {option.name}
-                  </span>
-                </>
-              ) : (
-                <div>{option.name}</div>
-              )}
-            </button>
-          ))}
-        </div>
+        <OptionSelector
+          options={currentOptions}
+          onOptionSelect={handleOptionSelect}
+          hasImages={hasImages}
+        />
       </div>
       <AnswerDisplay
         answers={answers}

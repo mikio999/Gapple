@@ -17,7 +17,15 @@ const AiManager = () => {
       '해당 주제와 집단크기, 연령, 활동 유형을 기반으로 Gapple에서 활동을 추천해드릴까요?',
   };
 
+  const analyzedQuestions = {
+    activity:
+      '만 5세, 소집단, 곶감, 요리 활동을 기반으로 이런 활동을 추천드려요!',
+    completion:
+      '<곶감으로 요거트 파르페 만들기> 활동을 고르셨네요! \n\n활동에 맞는 내용과 발문과 추가해서 \n\n나머지 내용과 함께 완성본을 보여드릴게요.',
+  };
+
   const questionKeys = Object.keys(questions);
+  const secondKeys = Object.keys(analyzedQuestions);
   const progress = (currentStep / questionKeys.length) * 100;
 
   const handleProceed = () => {
@@ -42,7 +50,12 @@ const AiManager = () => {
           questionKeys={questionKeys}
         />
       ) : (
-        <SecondQuestion />
+        <SecondQuestion
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          questions={analyzedQuestions}
+          questionKeys={secondKeys}
+        />
       )}
     </div>
   );

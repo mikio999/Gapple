@@ -6,7 +6,7 @@ interface InputFieldProps {
 
 function InputField({ value, onChange, placeholder }: InputFieldProps) {
   return (
-    <div className={'flex flex-col w-full'}>
+    <div className={'flex flex-col '}>
       <input
         value={value}
         onChange={onChange}

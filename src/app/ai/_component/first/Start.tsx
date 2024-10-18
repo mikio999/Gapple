@@ -40,7 +40,7 @@ const Start = ({ onProceed }: StartProps) => {
     return <div>{'로그인을 해주세요.'}</div>;
   }
 
-  const introText = `${greeting} ${seasonSuffix} ${session.user.name} 쌤! AI 교육계획안을 작성해드리는 GAPPLE 입니다!`;
+  const introText = `${greeting} ${seasonSuffix} ${session.user.name} 쌤!\nAI 교육계획안을 작성해드리는 GAPPLE 입니다!`;
 
   return (
     <div className={'flex flex-col w-100 text-xl m-2'}>
