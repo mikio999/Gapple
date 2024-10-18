@@ -28,7 +28,7 @@ const OptionSelector = ({
     if (questionKey === 'activity') {
       const timer = setTimeout(() => {
         setShowRecommendButton(true);
-      }, 3000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }
@@ -62,7 +62,7 @@ const OptionSelector = ({
 
   return (
     <div className={gridClass}>
-      <AnimatePresence>
+      <AnimatePresence mode="popLayout">
         {options.map((option, index) => (
           <motion.button
             key={option.value}
