@@ -63,7 +63,7 @@ const OptionSelector = ({
 
   return (
     <div className={gridClass}>
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode={'popLayout'}>
         {options.map((option, index) => (
           <motion.button
             key={option.value}
@@ -104,7 +104,7 @@ const OptionSelector = ({
           transition={{ delay: 0.2 }}
           onClick={onRecommendOtherActivity}
         >
-          다른 활동 추천받기
+          {'다른 활동 추천받기'}
         </motion.button>
       )}
     </div>
