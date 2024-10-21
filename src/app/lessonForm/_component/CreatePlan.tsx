@@ -16,7 +16,6 @@ import EvaluationsSection from './EvaluationSection';
 import FileUploadSection from './FileUploadSection';
 import ToolSection from './ToolSection';
 import submitLessonForm from '../_lib/api';
-import TitleInput from './TitleInput';
 
 export default function FormPage() {
   const { data: session } = useSession();

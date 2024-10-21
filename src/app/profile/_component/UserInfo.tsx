@@ -8,8 +8,10 @@ const UserInfo = () => {
   const { data: session, status } = useSession();
 
   const profileData = {
-    experienceLevel: 'Intermediate',
+    experienceLevel: 'Lv.1 새싹 선생님',
     introduction: '교육의 가치를 믿습니다!',
+    following: 2,
+    follower: 3,
   };
 
   if (status === 'loading') {
@@ -27,7 +29,11 @@ const UserInfo = () => {
   }
 
   return (
-    <div className={'flex flex-col items-center space-y-4'}>
+    <div
+      className={
+        'flex laptop:flex-row flex-col items-center space-y-4 bg-white px-8 rounded-xl py-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out'
+      }
+    >
       <div
         style={{
           position: 'relative',
@@ -49,10 +55,38 @@ const UserInfo = () => {
           className={'absolute inset-0 object-cover'}
         />
       </div>
-      <h1 className={'text-xl font-semibold'}>{session.user.name}</h1>
-      <p>{session.user.email}</p>
-      <p className={'text-sm text-gray-600'}>{profileData.experienceLevel}</p>
-      <p className={'text-center text-gray-800'}>{profileData.introduction}</p>
+      <div className={'flex flex-col laptop:ml-8'}>
+        <div className={'flex laptop:flex-row flex-col items-center mb-4'}>
+          <h1 className={'text-xl font-semibold text-slate-800'}>
+            {session.user.name}
+          </h1>
+          <div className={'flex laptop:ml-4'}>
+            <Image
+              src={'/icons/email.png'}
+              width={20}
+              height={20}
+              alt={'email'}
+            />
+            <p className={'text-sm text-slate-500 ml-1'}>
+              {session.user.email}
+            </p>
+          </div>
+        </div>
+        <div className={'text-sm text-slate-400'}>
+          {profileData.experienceLevel}
+        </div>
+        <div className={'text-sm text-slate-600 mt-2'}>
+          {profileData.introduction}
+        </div>
+        <button
+          type={'button'}
+          className={
+            'mt-2 w-20 py-2 bg-primary700 hover:bg-primary text-white font-medium rounded-md text-xs text-nowrap button-effect'
+          }
+        >
+          {'프로필 수정'}
+        </button>
+      </div>
     </div>
   );
 };
