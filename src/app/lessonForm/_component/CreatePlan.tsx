@@ -145,8 +145,13 @@ export default function FormPage() {
         }
       >
         <div>
-          <TitleInput title={title} setTitle={setTitle} />
-          <div className={'ml-2 p-2 w-1/12'} />
+          <input
+            type={'text'}
+            name={'title'}
+            className={'text-xl laptop:text-3xl focus:outline-none w-full'}
+            placeholder={'활동명을 입력하세요 '}
+          />
+          <div className={'ml-2 p-2  w-1/12 '} />
         </div>
         <SubjectInputSection
           subject={subject}

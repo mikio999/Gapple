@@ -19,7 +19,7 @@ const SubjectInputSection = ({
         value={subject}
         onChange={(e) => onSubjectChange(e.target.value)}
         className={
-          'border-l-4 border-l-slate-500 p-4 laptop:w-6/12 laptop:text-xl h-4 focus:outline-none bg-slate-50 mr-4'
+          'border-l-4 border-l-slate-500 p-4 w-4/12 h-4 focus:outline-none'
         }
       />
       <input
@@ -28,7 +28,7 @@ const SubjectInputSection = ({
         value={detailSubject}
         onChange={(e) => onDetailSubjectChange(e.target.value)}
         className={
-          'border-l-4 border-l-slate-500 p-4 mt-4 laptop:mt-0 h-4 laptop:w-6/12  laptop:text-xl focus:outline-none bg-slate-50'
+          'border-l-4 border-l-slate-500 p-4 mt-4 laptop:mt-0  w-4/12 h-4 focus:outline-none'
         }
       />
     </div>
