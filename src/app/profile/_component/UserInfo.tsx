@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { GridLoader } from 'react-spinners';
@@ -33,8 +33,10 @@ const UserInfo = () => {
 
   const closeModal = () => setModalIsOpen(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
     setProfileData((prev) => ({ ...prev, [name]: value }));
   };
 

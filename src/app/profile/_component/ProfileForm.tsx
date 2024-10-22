@@ -10,6 +10,7 @@ interface ProfileFormProps {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   handleImageChange: (imageSrc: string) => void;
 }
+
 const ProfileForm = ({
   profileData,
   handleInputChange,
@@ -33,10 +34,15 @@ const ProfileForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-      <h2 className="font-semibold text-xl text-slate-700">프로필 수정하기</h2>
-      <div className="mt-2 grid grid-cols-10">
-        <label htmlFor="file-input" className="pt-8 col-span-3 cursor-pointer">
+    <form onSubmit={handleSubmit} className={'flex flex-col space-y-4'}>
+      <h2 className={'font-semibold text-xl text-slate-700'}>
+        {'프로필 수정하기'}
+      </h2>
+      <div className={'mt-2 grid grid-cols-10'}>
+        <label
+          htmlFor={'file-input'}
+          className={'pt-8 col-span-3 cursor-pointer'}
+        >
           <Image
             src={imagePreview}
             alt="Profile Picture"
@@ -46,8 +52,8 @@ const ProfileForm = ({
               'block rounded-full w-20 h-20 object-cover hover:opacity-60'
             }
           />
-          <div className="mt-2 text-sm text-slate-800 hover:text-slate-500">
-            이미지 변경
+          <div className={'mt-2 text-sm text-slate-800 hover:text-slate-500'}>
+            {'이미지 변경'}
           </div>
         </label>
         <input
@@ -56,35 +62,41 @@ const ProfileForm = ({
           onChange={handleFileChange}
           style={{ display: 'none' }}
         />
-        <div className="col-span-7 ml-8 flex flex-col">
-          <div className="text-xs mb-1">이름</div>
+        <div className={'col-span-7 ml-8 flex flex-col'}>
+          <div className={'text-xs mb-1'}>{'이름'}</div>
           <input
-            type="text"
-            name="name"
+            type={'text'}
+            name={'name'}
             value={profileData.name}
             onChange={handleInputChange}
-            placeholder="Name"
-            className="border-slate-500 border-2 p-1 rounded-md text-sm text-slate-500"
+            placeholder={'Name'}
+            className={
+              'border-slate-500 border-2 p-1 rounded-md text-sm text-slate-500'
+            }
           />
-          <div className="flex flex-col">
-            <div className="text-xs mb-1 mt-2">소개글</div>
+          <div className={'flex flex-col'}>
+            <div className={'text-xs mb-1 mt-2'}>{'소개글'}</div>
             <textarea
-              name="introduction"
+              name={'introduction'}
               value={profileData.introduction}
               onChange={handleInputChange}
-              placeholder="Introduction"
-              className="border-slate-500 border-2 p-1 rounded-md h-24 text-sm resize-none"
+              placeholder={'Introduction'}
+              className={
+                'border-slate-500 border-2 p-1 rounded-md h-24 text-sm resize-none'
+              }
               rows={4}
             />
           </div>
         </div>
       </div>
-      <div className="flex justify-center items-center">
+      <div className={'flex justify-center items-center'}>
         <button
-          className="flex justify-center items-center shadow-md w-32 h-8 rounded-md bg-primary text-white text-sm hover:bg-primary600"
-          type="submit"
+          className={
+            'flex justify-center items-center shadow-md w-32 h-8 rounded-md bg-primary text-white text-sm hover:bg-primary600'
+          }
+          type={'submit'}
         >
-          저장하기
+          {'저장하기'}
         </button>
       </div>
     </form>

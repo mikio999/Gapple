@@ -147,6 +147,8 @@ export default function FormPage() {
           <input
             type={'text'}
             name={'title'}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className={'text-xl laptop:text-3xl focus:outline-none w-full'}
             placeholder={'활동명을 입력하세요 '}
           />
