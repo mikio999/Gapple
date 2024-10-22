@@ -78,8 +78,8 @@ const UserInfo = () => {
         <Image
           src={session.user.image || '/images/gappler.png'}
           alt={'Profile'}
-          width={'100'}
-          height={'100'}
+          width={'300'}
+          height={'300'}
           style={{
             borderRadius: '50%',
             width: '120px',

@@ -26,13 +26,12 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
       onClick={handleOverlayClick}
     >
       <div
-        className={
-          'bg-white p-5 rounded-lg relative w-dvw h-dvh laptop:w-6/12 laptop:h-4/6 mx-4'
-        }
+        className="bg-white p-5 rounded-lg relative mx-4 laptop:w-6/12 overflow-y-auto max-h-full"
+        style={{ maxHeight: '90vh' }}
       >
         <button
           className={
-            'absolute top-3 right-3 text-xl bg-transparent border-none cursor-pointer'
+            'absolute top-3 right-3 text-xl bg-transparent border-none cursor-pointer rounded-full hover:bg-slate-200 w-8 h-8'
           }
           onClick={onClose}
         >
