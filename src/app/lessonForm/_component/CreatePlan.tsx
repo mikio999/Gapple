@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { v4 as uuidv4 } from 'uuid';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import CategorySelect from './select/CategorySelect';
@@ -19,14 +20,14 @@ import submitLessonForm from '../_lib/api';
 
 export default function FormPage() {
   const { data: session } = useSession();
-
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
+  const initialContents = [{ id: uuidv4(), subtitle: '', contents: [''] }];
+  const [contents, setContents] = useState(initialContents);
   const initialGoals = [{ id: '', text: '' }];
   const [goals, setGoals] = useState(initialGoals);
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
-  const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const initialPrecautions = [{ id: '', text: '' }];
   const [precautions, setPrecautions] = useState(initialPrecautions);
   const initialEvaluations = [{ id: '', text: '' }];
@@ -78,24 +79,6 @@ export default function FormPage() {
     setActivityType(value);
   };
 
-  const handleContentsChange = (
-    index: number,
-    field: string,
-    value: string,
-  ) => {
-    const newContents = contents.map((content, i) => {
-      if (i === index) {
-        return { ...content, [field]: value };
-      }
-      return content;
-    });
-    setContents(newContents);
-  };
-
-  const addContent = () => {
-    setContents([...contents, { subtitle: '', content: '' }]);
-  };
-
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const formData = {
@@ -111,7 +94,7 @@ export default function FormPage() {
       evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
       activity_content: contents.map((content) => ({
         subtitle: content.subtitle,
-        content: content.content,
+        content: content.contents.join('\n'),
       })),
       nuri_curriculum: curriculumComponents.map(
         (component: {
@@ -140,7 +123,7 @@ export default function FormPage() {
     <div>
       <div
         className={
-          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-2 flex flex-col w-full max-w-4xl mx-auto'
+          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-12 mb-16 laptop:mt-0 laptop:mb-0 flex flex-col w-full max-w-4xl mx-auto'
         }
       >
         <div>
@@ -201,15 +184,26 @@ export default function FormPage() {
           evaluations={evaluations}
           setEvaluations={setEvaluations}
         />
-        <button
-          type={'button'}
-          onClick={handleSubmit}
-          className={
-            'button-border py-2 px-4 bg-primary text-white rounded hover:bg-white hover:text-primary'
-          }
-        >
-          {'저장하기'}
-        </button>
+        <div className={'flex justify-end'}>
+          <button
+            type={'button'}
+            onClick={handleSubmit}
+            className={
+              'button-border py-2 px-4 bg-slate-200 rounded hover:bg-white text-primary'
+            }
+          >
+            {'임시저장'}
+          </button>
+          <button
+            type={'button'}
+            onClick={handleSubmit}
+            className={
+              'button-border py-2 px-4 bg-primary text-white rounded hover:bg-white hover:text-primary ml-2'
+            }
+          >
+            {'저장하기'}
+          </button>
+        </div>
       </div>
     </div>
   );

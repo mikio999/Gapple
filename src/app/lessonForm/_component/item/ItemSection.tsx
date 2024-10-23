@@ -70,20 +70,22 @@ const ItemSection = ({
                 inputRefs.current[index] = el;
               }}
             />
-            <button
-              type={'button'}
-              onClick={() => deleteItem(item.id)}
-              className={
-                'flex justify-center items-center rounded-full hover:bg-primary100 ml-2'
-              }
-            >
-              <Image
-                src={'/icons/deletetrash.png'}
-                width={16}
-                height={16}
-                alt={'delete'}
-              />
-            </button>
+            {items.length > 1 && (
+              <button
+                type={'button'}
+                onClick={() => deleteItem(item.id)}
+                className={
+                  'flex justify-center items-center rounded-full hover:bg-primary100 ml-2'
+                }
+              >
+                <Image
+                  src={'/icons/deletetrash.png'}
+                  width={16}
+                  height={16}
+                  alt={'delete'}
+                />
+              </button>
+            )}
           </div>
         ))}
         {items.length < maxItems && (
