@@ -1,4 +1,4 @@
-interface InputTextProps {
+interface ItemInputProps {
   id: string;
   value: string;
   onChange: (value: string) => void;
@@ -6,13 +6,13 @@ interface InputTextProps {
   inputRef?: (instance: HTMLInputElement | null) => void;
 }
 
-export const InputText = ({
+export const ItemInput = ({
   id,
   value,
   onChange,
   onEnterPress,
   inputRef,
-}: InputTextProps) => {
+}: ItemInputProps) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       onEnterPress();
@@ -21,11 +21,11 @@ export const InputText = ({
   };
 
   return (
-    <div className={'flex justify-center items-center'}>
+    <div className={'flex items-center'}>
       <label
         htmlFor={id}
         className={
-          'flex justify-center items-center text-sm font-medium mr-1 w-8 h-8 rounded-full bg-primary100 text-gray-600'
+          'flex justify-center items-center text-sm font-medium mr-2 w-8 h-8 rounded-full bg-primary100 text-slate-600'
         }
       >
         {id}
@@ -38,7 +38,7 @@ export const InputText = ({
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         className={
-          'mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
+          'block mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary w-[60dvw] laptop:w-[70dvw]'
         }
       />
     </div>

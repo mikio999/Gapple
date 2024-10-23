@@ -4,15 +4,15 @@ import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
-import CategorySelect from './CategorySelect';
-import AgeSelect from './AgeSelect';
-import GroupSelect from './GroupSelect';
-import CurriculumSection from './CurriculumSection';
+import CategorySelect from './select/CategorySelect';
+import AgeSelect from './select/AgeSelect';
+import GroupSelect from './select/GroupSelect';
+import CurriculumSection from './nurriCurriculum/CurriculumSection';
 import SubjectInputSection from './SubjectInputSelection';
-import ContentSection from './ContentSection';
-import GoalsSection from './GoalsSection';
-import PrecautionsSection from './PrecautionSection';
-import EvaluationsSection from './EvaluationSection';
+import ContentSection from './nurriCurriculum/ContentSection';
+import GoalsSection from './item/GoalsSection';
+import PrecautionsSection from './item/PrecautionSection';
+import EvaluationsSection from './item/EvaluationSection';
 import FileUploadSection from './FileUploadSection';
 import ToolSection from './ToolSection';
 import submitLessonForm from '../_lib/api';
@@ -137,10 +137,10 @@ export default function FormPage() {
   };
 
   return (
-    <div className={'container mx-auto'}>
+    <div>
       <div
         className={
-          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-2 flex flex-col'
+          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-2 flex flex-col w-full max-w-4xl mx-auto'
         }
       >
         <div>
@@ -192,11 +192,7 @@ export default function FormPage() {
           label={'활동 자료'}
           description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
         />
-        <ContentSection
-          contents={contents}
-          handleContentsChange={handleContentsChange}
-          addContent={addContent}
-        />
+        <ContentSection contents={contents} setContents={setContents} />
         <PrecautionsSection
           precautions={precautions}
           setPrecautions={setPrecautions}

@@ -8,16 +8,13 @@ interface BaseInputProps {
 }
 
 export const BaseInput = ({ label, id, value, onChange }: BaseInputProps) => {
+  const labelNumber = label.match(/\d+/)?.[0];
+
   return (
     <div>
       <div className={'flex'}>
-        <div className={'flex items-center justify-center'}>
-          <Image
-            src={'/icons/triangle.png'}
-            width={20}
-            height={20}
-            alt={'triangle'}
-          />
+        <div className={'flex items-center justify-center text-xs text-nowrap'}>
+          {labelNumber} .
         </div>
         <input
           type={'text'}
@@ -26,7 +23,7 @@ export const BaseInput = ({ label, id, value, onChange }: BaseInputProps) => {
           onChange={(e) => onChange(e.target.value)}
           placeholder={label}
           className={
-            'flex items-center justify-center mt-1 w-full px-3 py-2  focus:outline-none'
+            'flex items-center justify-center mt-1 ml-2 w-full px-3 py-2 text-lg font-medium border border-slate-300 rounded-md focus:outline-primary'
           }
         />
       </div>

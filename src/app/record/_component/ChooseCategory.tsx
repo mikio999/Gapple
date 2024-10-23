@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { category } from '@/_lib/constants/category';
-import CategorySelect from '@/app/lessonForm/_component/CategorySelect';
+import CategorySelect from '@/app/lessonForm/_component/select/CategorySelect';
 
 export default function ChooseCategory() {
   const [selectCategory, setSelectCategory] = useState('');
