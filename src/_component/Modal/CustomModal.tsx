@@ -32,7 +32,7 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
           className="absolute top-3 right-3 text-xl bg-transparent border-none cursor-pointer rounded-full hover:bg-slate-200 w-8 h-8"
           onClick={onClose}
         >
-          &times; warnings
+          &times;
         </button>
         {children}
       </div>

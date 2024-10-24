@@ -16,7 +16,7 @@ const FollowList = ({ follow, following }: IFollowData) => {
   const isLoggedIn = status === 'authenticated' && session?.user;
 
   if (!isLoggedIn) {
-    return <div>{'User not logged in'}</div>;
+    return null;
   }
   const openModal = (content: IPerson[], category: string) => {
     setModalContent(content);
