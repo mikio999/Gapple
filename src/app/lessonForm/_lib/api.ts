@@ -26,7 +26,7 @@ const submitLessonForm = async (
     const response = await axios.post(`/api/lessonform`, formData, {
       headers,
     });
-
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error('폼 제출 실패:', error);

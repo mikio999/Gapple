@@ -9,14 +9,17 @@ import CategorySelect from './select/CategorySelect';
 import AgeSelect from './select/AgeSelect';
 import GroupSelect from './select/GroupSelect';
 import CurriculumSection from './nurriCurriculum/CurriculumSection';
-import SubjectInputSection from './SubjectInputSelection';
+import SubjectInputSection from './section/SubjectInputSelection';
 import ContentSection from './nurriCurriculum/ContentSection';
-import GoalsSection from './item/GoalsSection';
-import PrecautionsSection from './item/PrecautionSection';
-import EvaluationsSection from './item/EvaluationSection';
-import FileUploadSection from './FileUploadSection';
-import ToolSection from './ToolSection';
+import GoalsSection from './section/GoalsSection';
+import PrecautionsSection from './section/PrecautionSection';
+import EvaluationsSection from './section/EvaluationSection';
+import FileUploadSection from './section/FileUploadSection';
+import ToolSection from './section/ToolSection';
 import submitLessonForm from '../_lib/api';
+import SaveButtons from './section/SaveButtonsSection';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormPage() {
   const { data: session } = useSession();
@@ -35,6 +38,7 @@ export default function FormPage() {
   const [age, setAge] = useState(3);
   const [groupSize, setGroupSize] = useState('SMALL');
   const [activityType, setActivityType] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const initialState = [
     { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
   ];
@@ -81,6 +85,7 @@ export default function FormPage() {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setIsSaving(true);
     const formData = {
       title,
       subject,
@@ -112,10 +117,26 @@ export default function FormPage() {
     if (session) {
       try {
         const result = await submitLessonForm(formData, session.accessToken);
+        toast.success('계획안 생성 성공!');
         console.log('서버 응답:', result);
       } catch (error) {
+        toast.error('계획안 생성 실패!');
         console.error('폼 제출 실패:', error);
+      } finally {
+        setIsSaving(false);
       }
+    }
+  };
+
+  const handleTempSave = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsSaving(true);
+    try {
+      toast.success('임시 저장 성공!');
+    } catch (error) {
+      toast.error('임시 저장 실패!');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -184,26 +205,12 @@ export default function FormPage() {
           evaluations={evaluations}
           setEvaluations={setEvaluations}
         />
-        <div className={'flex justify-end'}>
-          <button
-            type={'button'}
-            onClick={handleSubmit}
-            className={
-              'button-border py-2 px-4 bg-slate-200 rounded hover:bg-white text-primary'
-            }
-          >
-            {'임시저장'}
-          </button>
-          <button
-            type={'button'}
-            onClick={handleSubmit}
-            className={
-              'button-border py-2 px-4 bg-primary text-white rounded hover:bg-white hover:text-primary ml-2'
-            }
-          >
-            {'저장하기'}
-          </button>
-        </div>
+        <SaveButtons
+          onSave={handleSubmit}
+          onTempSave={handleTempSave}
+          isSaving={isSaving}
+        />
+        <ToastContainer />
       </div>
     </div>
   );

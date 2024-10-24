@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useRef, useState } from 'react';
-import { ToolInput } from './ToolInput';
+import { ToolInput } from '../input/ToolInput';
 
 interface Tool {
   id: string;

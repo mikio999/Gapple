@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
-import { ItemInput } from './ItemInput';
+import { ItemInput } from '../input/ItemInput';
 
 interface Item {
   id: string;

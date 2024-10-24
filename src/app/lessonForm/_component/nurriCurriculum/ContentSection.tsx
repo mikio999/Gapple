@@ -126,6 +126,20 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
           key={content.id}
           className={'flex flex-col mb-4 border border-slate-100 shadow-sm p-4'}
         >
+          <button
+            type={'button'}
+            onClick={() => deleteContent(content.id)}
+            className={
+              'flex justify-center items-center rounded-full hover:bg-primary100 ml-auto p-1 w-8 h-8'
+            }
+          >
+            <img
+              src={'/icons/deletecontent.png'}
+              width={16}
+              height={16}
+              alt={'delete'}
+            />
+          </button>
           <div className="flex items-center mb-2">
             <label
               htmlFor={`subtitle-${index}`}
@@ -146,20 +160,6 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
               }
               placeholder="소제목을 입력하세요"
             />
-            <button
-              type={'button'}
-              onClick={() => deleteContent(content.id)}
-              className={
-                'flex justify-center items-center rounded-full hover:bg-primary100 ml-2 p-1'
-              }
-            >
-              <img
-                src={'/icons/deletecontent.png'}
-                width={16}
-                height={16}
-                alt={'delete'}
-              />
-            </button>
           </div>
           {content.contents?.map((itemContent, contentIndex) => {
             const key = `${content.id}-${contentIndex}`;
@@ -170,16 +170,15 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                     inputRefs.current[key] = el;
                   }}
                   value={itemContent}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const updatedValue = e.target.value.replace(/\n/g, ' ');
                     handleItemContentChange(
                       content.id,
                       contentIndex,
-                      e.target.value,
-                    )
-                  }
-                  className={
-                    'block w-full h-16 mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
-                  }
+                      updatedValue,
+                    );
+                  }}
+                  className="block w-full h-16 mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
                   rows={3}
                   placeholder={`교사발문 ${contentIndex + 1}`}
                 />
