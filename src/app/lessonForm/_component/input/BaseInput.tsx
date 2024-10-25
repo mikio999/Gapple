@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 interface BaseInputProps {
   label: string;
   id: string;
@@ -14,7 +12,7 @@ export const BaseInput = ({ label, id, value, onChange }: BaseInputProps) => {
     <div>
       <div className={'flex'}>
         <div className={'flex items-center justify-center text-xs text-nowrap'}>
-          {labelNumber} .
+          {labelNumber} {'.'}
         </div>
         <input
           type={'text'}

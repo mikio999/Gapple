@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import PlanItem from './_component/PlanItem';
 
 const data = [
@@ -19,9 +20,9 @@ const data = [
 export default function PlanPage() {
   return (
     <div>
-      {data.map((item, index) => (
+      {data.map((item) => (
         <PlanItem
-          key={index}
+          key={uuidv4()}
           title={item.title}
           description={item.description}
           date={item.date}

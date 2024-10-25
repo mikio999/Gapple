@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import RecordItem from './_component/RecordItem';
 
 export default function RecordPage() {
@@ -12,9 +13,9 @@ export default function RecordPage() {
 
   return (
     <div>
-      {recordData.map((item, index) => (
+      {recordData.map((item) => (
         <RecordItem
-          key={index}
+          key={uuidv4()}
           title={item.title}
           date={item.date}
           details={item.details}

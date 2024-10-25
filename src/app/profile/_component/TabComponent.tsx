@@ -35,7 +35,7 @@ export default function TabComponent() {
           href={'/profile/plan'}
           className={`p-4 pb-6 ${pathname === '/profile/plan' ? 'text-blue-500' : ''}`}
         >
-          계획안
+          {'계획안'}
         </Link>
 
         {pathname === '/profile/plan' && (
@@ -60,7 +60,7 @@ export default function TabComponent() {
           href={'/profile/record'}
           className={`p-4 pb-6 ${pathname === '/profile/record' ? 'text-blue-500' : ''}`}
         >
-          기록
+          {'기록'}
         </Link>
 
         {pathname === '/profile/record' && (
@@ -84,7 +84,7 @@ export default function TabComponent() {
           href={'/profile/scrap'}
           className={`p-4 pb-6 ${pathname === '/profile/scrap' ? 'text-blue-500' : ''}`}
         >
-          스크랩
+          {'스크랩'}
         </Link>
         {pathname === '/profile/scrap' && (
           <motion.div

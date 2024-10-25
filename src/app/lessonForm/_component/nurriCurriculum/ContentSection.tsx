@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -116,7 +117,7 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
         }
       }
     }
-  }, [contents.length]);
+  }, [contents, contents.length]);
 
   return (
     <div>
@@ -133,14 +134,14 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
               'flex justify-center items-center rounded-full hover:bg-primary100 ml-auto p-1 w-8 h-8'
             }
           >
-            <img
+            <Image
               src={'/icons/deletecontent.png'}
               width={16}
               height={16}
               alt={'delete'}
             />
           </button>
-          <div className="flex items-center mb-2">
+          <div className={'flex items-center mb-2'}>
             <label
               htmlFor={`subtitle-${index}`}
               className={
@@ -158,13 +159,13 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
               className={
                 'block w-full mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
               }
-              placeholder="소제목을 입력하세요"
+              placeholder={'소제목을 입력하세요'}
             />
           </div>
           {content.contents?.map((itemContent, contentIndex) => {
             const key = `${content.id}-${contentIndex}`;
             return (
-              <div key={key} className="flex items-center mb-2">
+              <div key={key} className={'flex items-center mb-2'}>
                 <textarea
                   ref={(el) => {
                     inputRefs.current[key] = el;
@@ -178,7 +179,9 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                       updatedValue,
                     );
                   }}
-                  className="block w-full h-16 mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+                  className={
+                    'block w-full h-16 mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
+                  }
                   rows={3}
                   placeholder={`교사발문 ${contentIndex + 1}`}
                 />
@@ -190,7 +193,7 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                       'flex justify-center items-center rounded-full hover:bg-primary100 ml-2'
                     }
                   >
-                    <img
+                    <Image
                       src={'/icons/deletetrash.png'}
                       width={16}
                       height={16}

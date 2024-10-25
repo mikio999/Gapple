@@ -20,16 +20,22 @@ const CustomModal = ({ isOpen, onClose, children }: CustomModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 bg-slate-700 bg-opacity-50 flex justify-center items-center z-10"
+      className={
+        'fixed inset-0 bg-slate-700 bg-opacity-50 flex justify-center items-center z-10'
+      }
       onClick={handleOverlayClick}
     >
       <div
-        className="bg-white p-5 rounded-lg relative mx-4 laptop:w-6/12 overflow-y-auto max-h-full"
+        className={
+          'bg-white p-5 rounded-lg relative mx-4 laptop:w-6/12 overflow-y-auto max-h-full'
+        }
         style={{ maxHeight: '90vh' }}
       >
         <button
-          type="button"
-          className="absolute top-3 right-3 text-xl bg-transparent border-none cursor-pointer rounded-full hover:bg-slate-200 w-8 h-8"
+          type={'button'}
+          className={
+            'absolute top-3 right-3 text-xl bg-transparent border-none cursor-pointer rounded-full hover:bg-slate-200 w-8 h-8'
+          }
           onClick={onClose}
         >
           &times;

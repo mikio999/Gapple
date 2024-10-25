@@ -16,7 +16,7 @@ const EvaluationsSection = ({
 }: EvaluationsSectionProps) => {
   return (
     <ItemSection
-      title="평가"
+      title={'평가'}
       items={evaluations}
       setItems={setEvaluations}
       maxItems={3}

@@ -13,7 +13,7 @@ interface GoalsSectionProps {
 const GoalsSection = ({ goals, setGoals }: GoalsSectionProps) => {
   return (
     <ItemSection
-      title="활동 목표"
+      title={'활동 목표'}
       items={goals}
       setItems={setGoals}
       maxItems={5}

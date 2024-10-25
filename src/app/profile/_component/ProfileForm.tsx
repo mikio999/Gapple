@@ -1,6 +1,6 @@
-import { IProfileData } from '@/types/profile';
 import Image from 'next/image';
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import { IProfileData } from '@/types/profile';
 
 interface ProfileFormProps {
   profileData: IProfileData;
@@ -45,7 +45,7 @@ const ProfileForm = ({
         >
           <Image
             src={imagePreview}
-            alt="Profile Picture"
+            alt={'Profile Picture'}
             width={180}
             height={180}
             className={
@@ -57,8 +57,8 @@ const ProfileForm = ({
           </div>
         </label>
         <input
-          id="file-input"
-          type="file"
+          id={'file-input'}
+          type={'file'}
           onChange={handleFileChange}
           style={{ display: 'none' }}
         />

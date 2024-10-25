@@ -2,9 +2,9 @@
 
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import Image from 'next/image';
 import CustomModal from '@/_component/Modal/CustomModal';
 import { IFollowData, IPerson } from '@/types/follow';
-import Image from 'next/image';
 
 const FollowList = ({ follow, following }: IFollowData) => {
   const { data: session, status } = useSession();
@@ -82,7 +82,7 @@ const FollowList = ({ follow, following }: IFollowData) => {
                   'bg-primary100 text-primary rounded-full hover:bg-primary hover:text-white transition-colors duration-300 py-2 text-xs'
                 }
               >
-                팔로우
+                {'팔로우'}
               </button>
             </div>
           ))}

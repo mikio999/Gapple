@@ -16,7 +16,7 @@ const PrecautionsSection = ({
 }: PrecautionsSectionProps) => {
   return (
     <ItemSection
-      title="유의사항"
+      title={'유의사항'}
       items={precautions}
       setItems={setPrecautions}
       maxItems={3}

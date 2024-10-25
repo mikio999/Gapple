@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import ScrapItem from './_component/ScrapItem';
 
 export default function ScrapPage() {
@@ -11,9 +12,9 @@ export default function ScrapPage() {
 
   return (
     <div>
-      {scrapData.map((item, index) => (
+      {scrapData.map((item) => (
         <ScrapItem
-          key={index}
+          key={uuidv4()}
           title={item.title}
           description={item.description}
           likedBy={item.likedBy}

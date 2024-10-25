@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastContainer, toast } from 'react-toastify';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import CategorySelect from './select/CategorySelect';
@@ -18,7 +19,6 @@ import FileUploadSection from './section/FileUploadSection';
 import ToolSection from './section/ToolSection';
 import submitLessonForm from '../_lib/api';
 import SaveButtons from './section/SaveButtonsSection';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormPage() {
@@ -135,6 +135,9 @@ export default function FormPage() {
       toast.success('임시 저장 성공!');
     } catch (error) {
       toast.error('임시 저장 실패!');
+      if (error) {
+        console.error(error);
+      }
     } finally {
       setIsSaving(false);
     }

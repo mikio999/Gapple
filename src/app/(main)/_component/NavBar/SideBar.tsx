@@ -3,18 +3,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import { MenuItemProps } from '@/types/menu';
 import MenuItem from './MenuItem';
 import ProfileIcon from './ProfileIcon';
 import CreatePlusBtn from './CreatePlusBtn';
-import { usePathname } from 'next/navigation'; // usePathname 사용
 
 export default function SideBar() {
   const { status } = useSession();
-  const pathname = usePathname(); // 현재 경로를 확인하는 훅
+  const pathname = usePathname();
   const isLoggedIn = status === 'authenticated';
 
-  // 검색 페이지에 있을 때 사이드바가 비활성화되도록 설정
   const isSearchPage = pathname === '/search';
 
   const MENU_ITEMS: MenuItemProps[] = [

@@ -17,7 +17,7 @@ const SaveButtons = ({ onSave, onTempSave, isSaving }: SaveButtonsProps) => {
         }
         disabled={isSaving}
       >
-        임시저장
+        {'임시저장'}
       </button>
       <button
         type={'button'}
