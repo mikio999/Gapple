@@ -19,7 +19,11 @@ export default function TabComponent() {
   };
 
   return (
-    <div className={'flex justify-around mb-4 border-b text-slate-800'}>
+    <div
+      className={
+        'flex justify-around mb-4 border-b text-slate-800 w-[90dvw] laptop:w-[60dvw]'
+      }
+    >
       <motion.div
         className={'relative'}
         initial={'rest'}
@@ -29,7 +33,7 @@ export default function TabComponent() {
       >
         <Link
           href={'/profile/plan'}
-          className={`p-4 pb-6 ${pathname === '/profile/plan' ? 'text-blue-500' : ''}`} // Using {} for className
+          className={`p-4 pb-6 ${pathname === '/profile/plan' ? 'text-blue-500' : ''}`}
         >
           계획안
         </Link>
@@ -38,7 +42,7 @@ export default function TabComponent() {
           <motion.div
             className={
               'absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500 mt-1'
-            } // Using {} for className
+            }
             layoutId={'underline'}
             transition={tabTransition}
           />
@@ -54,7 +58,7 @@ export default function TabComponent() {
       >
         <Link
           href={'/profile/record'}
-          className={`p-4 pb-6 ${pathname === '/profile/record' ? 'text-blue-500' : ''}`} // Using {} for className
+          className={`p-4 pb-6 ${pathname === '/profile/record' ? 'text-blue-500' : ''}`}
         >
           기록
         </Link>
@@ -63,7 +67,30 @@ export default function TabComponent() {
           <motion.div
             className={
               'absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500 mt-1'
-            } // Using {} for className
+            }
+            layoutId={'underline'}
+            transition={tabTransition}
+          />
+        )}
+      </motion.div>
+      <motion.div
+        className={'relative'}
+        initial={'rest'}
+        whileHover={'hover'}
+        animate={'rest'}
+        variants={hoverEffect}
+      >
+        <Link
+          href={'/profile/scrap'}
+          className={`p-4 pb-6 ${pathname === '/profile/scrap' ? 'text-blue-500' : ''}`}
+        >
+          스크랩
+        </Link>
+        {pathname === '/profile/scrap' && (
+          <motion.div
+            className={
+              'absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500 mt-1'
+            }
             layoutId={'underline'}
             transition={tabTransition}
           />

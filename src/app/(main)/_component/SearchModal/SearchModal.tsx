@@ -20,7 +20,7 @@ export default function SearchModal() {
     >
       <div
         className={
-          'flex flex-col bg-slate-300 p-8 rounded-md shadow-md max-w-5xl w-4/5 desktop:w-3/5 min-h-96 border-none'
+          'flex flex-col bg-slate-300 p-8 rounded-md shadow-md max-w-3xl w-full tablet:w-4/5 laptop:w-3/5 desktop:w-2/5 min-h-96 border-none mx-auto'
         }
         onClick={handleInputClick}
       >
@@ -31,7 +31,11 @@ export default function SearchModal() {
             height={30}
             alt={'search icon'}
           />
-          <input className={'w-dvw pl-2 ml-2 bg-transparent'} />
+          <input
+            className={
+              'w-full pl-2 ml-2 bg-transparent focus:outline-none text-slate-900'
+            }
+          />
         </div>
         <SearchCategory />
         <div className={'flex justify-center items-center h-96 text-slate-600'}>

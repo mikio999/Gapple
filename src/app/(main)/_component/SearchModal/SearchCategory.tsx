@@ -13,7 +13,7 @@ export default function SearchCategory() {
   return (
     <div
       className={
-        'flex justify-around w-full mt-2 bg-slate-200 text-slate-600 rounded-md text-sm p-1'
+        'flex justify-around w-full mt-2 bg-slate-200 text-slate-600 rounded-md laptop:text-sm text-xs p-1'
       }
     >
       {categories.map((category) => (

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { MenuItemProps } from '@/types/menu';
 import Dropdown from './Dropdown';
 import ToggleComponent from './ToggleComponent';
+import { useRouter } from 'next/navigation';
 
 const MenuItem = ({
   name,

@@ -28,6 +28,10 @@ export default function PlanPage() {
           comment={item.comment}
           like={item.like}
           scrap={item.scrap}
+          object={item.object}
+          subject={item.subject}
+          age={item.age}
+          activityType={item.activity_type}
         />
       ))}
     </div>

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import CustomItem from '../../_component/CustomItem';
 
 interface PlanItemProps {
   title: string;
@@ -7,6 +8,10 @@ interface PlanItemProps {
   comment: number;
   like: number;
   scrap: number;
+  object: string;
+  subject: string;
+  age: number;
+  activityType: string;
 }
 
 const PlanItem = ({
@@ -16,39 +21,71 @@ const PlanItem = ({
   comment,
   like,
   scrap,
+  object,
+  subject,
+  age,
+  activityType,
 }: PlanItemProps) => {
   return (
-    <div className="bg-white shadow rounded-lg p-4 mb-4">
+    <CustomItem>
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-bold">{title}</h2>
-        <span className="text-sm text-gray-500">{date}</span>
+        <span className="text-xs text-slate-400">{date}</span>
       </div>
-      <p className="text-sm text-gray-700 mb-4">{description}</p>
-      <div className="flex items-center justify-start space-x-4">
-        <button className="flex items-center space-x-1 text-gray-600 hover:text-red-500">
-          <Image
-            src={'/icons/heart.png'}
-            width={20}
-            height={20}
-            alt={'heart'}
-          />
-          <span>{like}</span>
-        </button>
-        <button className="flex items-center space-x-1 text-gray-600 hover:text-yellow-500">
-          <Image src={'/icons/star.png'} width={20} height={20} alt={'star'} />
-          <span>{scrap}</span>
-        </button>
+      <div className="flex my-2">
+        <span className="bg-slate-700 text-white font-thin px-4 rounded-full mr-2 text-sm">
+          {age}세
+        </span>
+        <span className="bg-slate-700 text-white font-thin px-4 rounded-full mr-2 text-sm">
+          {activityType}
+        </span>
+        <span className="bg-slate-700 text-white font-thin px-4 rounded-full mr-2 text-sm">
+          {subject}
+        </span>
+      </div>
+      <div className="grid grid-cols-[80%_20%] items-center">
+        <p className="text-sm text-gray-700 whitespace-pre-line">
+          {description}
+        </p>
+        <Image
+          src="/images/쿠리만쥬.webp"
+          width={300}
+          height={300}
+          alt={title}
+        />
+      </div>
+      <div className="flex items-center px-2 py-1 bg-slate-700 rounded-md mt-2">
+        <Image
+          src="/icons/ideaWhite.png"
+          width={20}
+          height={20}
+          alt="idea"
+          className="flex justify-center w-4 h-4 mr-1"
+        />
+        <div className="text-sm text-white font-thin">{object}</div>
+      </div>
+      <div className="flex text-xs items-center justify-between mt-2">
+        <div className="flex space-x-2">
+          <button className="flex items-center space-x-1 text-gray-600 hover:text-red-500">
+            <Image src="/icons/heart.png" width={15} height={15} alt="heart" />
+            <span>{like}</span>
+          </button>
+          <button className="flex items-center space-x-1 text-gray-600 hover:text-yellow-500">
+            <Image src="/icons/star.png" width={15} height={15} alt="star" />
+            <span>{scrap}</span>
+          </button>
+        </div>
         <button className="flex items-center space-x-1 text-gray-600 hover:text-blue-500">
           <Image
-            src={'/icons/comment.png'}
-            width={20}
-            height={20}
-            alt={'comment'}
+            src="/icons/comment.png"
+            width={15}
+            height={15}
+            alt="comment"
           />
           <span>{comment}</span>
         </button>
       </div>
-    </div>
+    </CustomItem>
   );
 };
 
