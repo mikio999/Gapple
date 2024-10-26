@@ -1,24 +1,67 @@
+'use client';
+
+import React from 'react';
+import Image from 'next/image';
 import CustomItem from '../../_component/CustomItem';
+import RecordSwiper from './RecordSwiper';
 
 interface RecordItemProps {
-  title: string;
-  date: string;
-  details: string;
-  duration: string;
+  item: {
+    id: number;
+    images: string[];
+    activity_type: string;
+    subject: string;
+    description: string;
+    comment: number;
+    like: number;
+    scrap: number;
+  };
 }
 
-const RecordItem = ({ title, date, details, duration }: RecordItemProps) => {
+const RecordItem = ({ item }: RecordItemProps) => {
+  console.log(item);
+  if (!item || !item.images) {
+    return null;
+  }
+
   return (
     <CustomItem>
-      <div className={'flex justify-between items-center mb-2'}>
-        <h2 className={'text-lg font-bold'}>{title}</h2>
-        <span className={'text-xs text-slate-400'}>{date}</span>
+      <RecordSwiper images={item.images} />
+      <div className={'p-4'}>
+        <div className={'text-sm'}>{item.description}</div>
+        <div className={'flex text-xs items-center justify-between mt-2'}>
+          <div className={'flex space-x-2'}>
+            <Image
+              src={'/icons/heart.png'}
+              width={15}
+              height={15}
+              alt={'Like'}
+            />
+            <span>{item.like}</span>
+            <Image
+              src={'/icons/comment.png'}
+              width={15}
+              height={15}
+              alt={'Comment'}
+            />
+            <span>{item.comment}</span>
+          </div>
+          <button
+            type={'button'}
+            className={
+              'flex items-center space-x-1 text-slate-600 hover:text-yellow-500'
+            }
+          >
+            <Image
+              src={'/icons/star.png'}
+              width={15}
+              height={15}
+              alt={'Star'}
+            />
+            <span>{item.scrap}</span>
+          </button>
+        </div>
       </div>
-      <p className={'text-sm text-gray-700 mb-2'}>{details}</p>
-      <span className={'text-xs text-slate-500'}>
-        {'Duration: '}
-        {duration}
-      </span>
     </CustomItem>
   );
 };

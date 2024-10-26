@@ -46,7 +46,6 @@ const UserInfo = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Profile updated:', profileData);
     setModalIsOpen(false);
   };
 
@@ -67,7 +66,7 @@ const UserInfo = () => {
   return (
     <div
       className={
-        'flex laptop:flex-row laptop:justify-around laptop:h-48 flex-col items-center space-y-4 bg-white px-8 rounded-lg py-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out'
+        'flex laptop:flex-row laptop:justify-around laptop:h-48 flex-col items-center space-y-4 bg-white px-8 rounded-lg pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out'
       }
     >
       <div
