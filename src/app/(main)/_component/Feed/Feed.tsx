@@ -8,14 +8,6 @@ interface FeedProps {
 }
 
 export default function Feed({ feed }: FeedProps) {
-  let parsedContent;
-  try {
-    parsedContent = JSON.parse(feed.content);
-  } catch (e) {
-    console.error('Error parsing JSON content', e);
-    parsedContent = [];
-  }
-
   return (
     <div className="mx-auto my-4 max-w-xs tablet:max-w-sm laptop:max-w-md desktop:max-w-lg font-pretendard">
       <div className="flex items-center mb-4">
@@ -37,37 +29,41 @@ export default function Feed({ feed }: FeedProps) {
           </div>
         </div>
       </div>
-      <Link href={`/lessonDetail/${feed.id}`} passHref>
-        <div
-          key={feed.id}
-          className="bg-white border rounded-lg overflow-hidden"
-        >
-          <div className="p-4">
+
+      <div
+        key={feed.id}
+        className="bg-slate-200 shadow-md rounded-lg overflow-hidden cursor-pointer"
+      >
+        <div className="p-4">
+          <Link href={`/lessonDetail/${feed.id}`} passHref>
             <h1 className="text-xl font-bold">{feed.title}</h1>
-            {parsedContent.map(
-              (item: { subtitle: string; content: string }) => (
-                <div key={item.subtitle}>
-                  <h4 className="font-semibold">{item.subtitle}</h4>
-                  <p>{item.content}</p>
-                </div>
-              ),
-            )}
-          </div>
-          {feed.images.length > 0 && (
-            <div className="p-4 border-t">
-              <ImageCarousel images={feed.images} />
-            </div>
-          )}
+          </Link>
         </div>
-      </Link>
-      <ActionButtons
-        like={17}
-        comment={5}
-        scrap={5}
-        isLiked={feed.liked}
-        isBookmarked={feed.bookmarked}
-        postId={feed.id}
-      />
+        {feed.images && feed.images.length > 0 && (
+          <div className="px-4 py-0 border-t z-10">
+            <ImageCarousel images={feed.images} />
+          </div>
+        )}
+        <Link href={`/lessonDetail/${feed.id}`} passHref>
+          <ul className="px-4 py-2">
+            {feed.content_subtitles.map((subtitle, index) => (
+              <li key={index} className={'text-slate-700 text-base'}>
+                {subtitle}
+              </li>
+            ))}
+          </ul>
+        </Link>
+        <div className={'px-4 pb-4'}>
+          <ActionButtons
+            like={feed.liked_count}
+            comment={0}
+            scrap={feed.bookmark_count}
+            isLiked={feed.liked}
+            isBookmarked={feed.bookmarked}
+            postId={feed.id}
+          />
+        </div>
+      </div>
     </div>
   );
 }

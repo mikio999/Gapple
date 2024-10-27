@@ -30,30 +30,32 @@ function ImageCarousel({ images }: ImageCarouselProps) {
         width={500}
         height={500}
       />
-      <div
-        className={
-          'absolute inset-y-0 flex items-center justify-between w-full px-4'
-        }
-      >
-        <button
-          type={'button'}
-          onClick={prevImage}
+      {images.length > 1 && (
+        <div
           className={
-            'bg-white bg-opacity-50 p-2 rounded-full text-lg cursor-pointer hover:bg-opacity-75'
+            'absolute inset-y-0 flex items-center justify-between w-full px-4'
           }
         >
-          &lt;
-        </button>
-        <button
-          type={'button'}
-          onClick={nextImage}
-          className={
-            'bg-white bg-opacity-50 p-2 rounded-full text-lg cursor-pointer hover:bg-opacity-75'
-          }
-        >
-          &gt;
-        </button>
-      </div>
+          <button
+            type={'button'}
+            onClick={prevImage}
+            className={
+              'bg-white bg-opacity-50 p-2 rounded-full text-lg cursor-pointer hover:bg-opacity-75'
+            }
+          >
+            &lt;
+          </button>
+          <button
+            type={'button'}
+            onClick={nextImage}
+            className={
+              'bg-white bg-opacity-50 p-2 rounded-full text-lg cursor-pointer hover:bg-opacity-75'
+            }
+          >
+            &gt;
+          </button>
+        </div>
+      )}
       <div
         className={
           'absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2'

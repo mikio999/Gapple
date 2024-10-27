@@ -5,9 +5,13 @@ export interface IFeed {
   authorThumbnailImage: string;
   createdAt: string;
   title: string;
+  subject: string;
+  activity_type: string;
   images: string[];
-  content: string;
-
+  content_subtitles: string[];
+  content: string | null;
   liked: boolean;
+  liked_count: number;
   bookmarked: boolean;
+  bookmark_count: number;
 }
