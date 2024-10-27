@@ -14,7 +14,6 @@ export default async function FeedList() {
     console.error('No session available, user might not be logged in');
     return <div>유저 정보가 존재하지 않습니다</div>;
   }
-  console.log(session.accessToken);
 
   try {
     const feeds = await getFeeds(session.accessToken);

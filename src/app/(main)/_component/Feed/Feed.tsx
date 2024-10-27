@@ -2,12 +2,14 @@ import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
 import Link from 'next/link';
 import ImageCarousel from './ImageCarousel';
+import formatRelativeTime from '../../_lib/formatRelativeTime';
 
 interface FeedProps {
   feed: IFeed;
 }
 
 export default function Feed({ feed }: FeedProps) {
+  console.log(feed);
   return (
     <div className="mx-auto my-4 max-w-xs tablet:max-w-sm laptop:max-w-md desktop:max-w-lg font-pretendard">
       <div className="flex items-center mb-4">
@@ -23,9 +25,15 @@ export default function Feed({ feed }: FeedProps) {
         />
         <div className="ml-2">
           <strong>{feed.authorNickname}</strong>
-          <span className="text-primary">의 교육계획안이 올라왔어요!</span>
+          <span className={'text-slate-600'}>
+            의
+            <strong className={'text-primary ml-1'}>
+              {feed.type === 'PLAN' ? '교육계획안' : '기록'}
+            </strong>
+            이 올라왔어요!
+          </span>
           <div className="text-slate-500 text-xs">
-            작성 시간: {new Date(feed.createdAt).toLocaleString()}
+            {formatRelativeTime(feed.createdAt)}
           </div>
         </div>
       </div>
@@ -38,6 +46,22 @@ export default function Feed({ feed }: FeedProps) {
           <Link href={`/lessonDetail/${feed.id}`} passHref>
             <h1 className="text-xl font-bold">{feed.title}</h1>
           </Link>
+          <div className={'mt-2 space-x-2'}>
+            <span
+              className={
+                'text-white bg-slate-700 px-3 py-1 rounded-full font-light'
+              }
+            >
+              {feed.activity_type}
+            </span>
+            <span
+              className={
+                'text-white bg-slate-700 px-3 py-1 rounded-full font-light'
+              }
+            >
+              {feed.subject}
+            </span>
+          </div>
         </div>
         {feed.images && feed.images.length > 0 && (
           <div className="px-4 py-0 border-t z-10">
