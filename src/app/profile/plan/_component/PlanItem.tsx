@@ -1,5 +1,6 @@
+import ActionButtons from '@/_component/Item/ActionButtons';
+import CustomItem from '@/_component/Item/CustomItem';
 import Image from 'next/image';
-import CustomItem from '../../_component/CustomItem';
 
 interface PlanItemProps {
   title: string;
@@ -18,10 +19,10 @@ const PlanItem = ({
   title,
   description,
   date,
+  object,
   comment,
   like,
   scrap,
-  object,
   subject,
   age,
   activityType,
@@ -79,52 +80,14 @@ const PlanItem = ({
         />
         <div className={'text-sm text-slate-500 font-thin'}>{object}</div>
       </div>
-      <div className={'flex text-xs items-center justify-between mt-2'}>
-        <div className={'flex space-x-2'}>
-          <button
-            type={'button'}
-            className={
-              'flex items-center space-x-1 text-slate-600 hover:text-red-500'
-            }
-          >
-            <Image
-              src={'/icons/heart.png'}
-              width={15}
-              height={15}
-              alt={'heart'}
-            />
-            <span>{like}</span>
-          </button>
-          <button
-            type={'button'}
-            className={
-              'flex items-center space-x-1 text-slate-600 hover:text-yellow-500'
-            }
-          >
-            <Image
-              src={'/icons/star.png'}
-              width={15}
-              height={15}
-              alt={'star'}
-            />
-            <span>{scrap}</span>
-          </button>
-        </div>
-        <button
-          type={'button'}
-          className={
-            'flex items-center space-x-1 text-slate-600 hover:text-blue-500'
-          }
-        >
-          <Image
-            src={'/icons/comment.png'}
-            width={15}
-            height={15}
-            alt={'comment'}
-          />
-          <span>{comment}</span>
-        </button>
-      </div>
+      <ActionButtons
+        like={like}
+        comment={comment}
+        scrap={scrap}
+        isLiked={false}
+        isBookmarked={false}
+        postId={0}
+      />
     </CustomItem>
   );
 };

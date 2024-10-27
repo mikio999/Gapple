@@ -1,4 +1,4 @@
-import CustomItem from '../../_component/CustomItem';
+import CustomItem from '@/_component/Item/CustomItem';
 
 interface ScrapItemProps {
   title: string;

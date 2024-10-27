@@ -74,7 +74,6 @@ const BasicQuestion = ({
     questionKeys.length === Object.keys(answers).length + 1;
 
   const handleGenerateAI = () => {
-    console.log('AI 생성하기');
     if (currentStep < questionKeys.length) {
       setCurrentStep(6);
     }
