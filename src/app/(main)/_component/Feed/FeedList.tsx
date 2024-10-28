@@ -12,7 +12,7 @@ export default async function FeedList() {
 
   if (!session) {
     console.error('No session available, user might not be logged in');
-    return <div>유저 정보가 존재하지 않습니다</div>;
+    return <div>{'유저 정보가 존재하지 않습니다'}</div>;
   }
 
   try {
@@ -20,7 +20,7 @@ export default async function FeedList() {
 
     if (!feeds.data.list || !Array.isArray(feeds.data.list)) {
       console.error('Feed data is not available or not in expected format');
-      return <div>No feed data available</div>;
+      return <div>{'No feed data available'}</div>;
     }
 
     return (
@@ -32,6 +32,6 @@ export default async function FeedList() {
     );
   } catch (error) {
     console.error('Failed to fetch feeds:', error);
-    return <div>Error loading feeds</div>;
+    return <div>{'Error loading feeds'}</div>;
   }
 }

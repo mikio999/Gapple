@@ -10,18 +10,20 @@ export default function formatRelativeTime(timestamp: string) {
 
   if (differenceInSeconds < 60) {
     return `${differenceInSeconds} 초 전`;
-  } else if (differenceInMinutes < 60) {
-    return `${differenceInMinutes} 분 전`;
-  } else if (differenceInHours < 24) {
-    return `${differenceInHours} 시간 전`;
-  } else if (differenceInDays < 2) {
-    return `1일 전`;
-  } else {
-    return createdAt.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    });
   }
+  if (differenceInMinutes < 60) {
+    return `${differenceInMinutes} 분 전`;
+  }
+  if (differenceInHours < 24) {
+    return `${differenceInHours} 시간 전`;
+  }
+  if (differenceInDays < 2) {
+    return `1일 전`;
+  }
+  return createdAt.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  });
 }

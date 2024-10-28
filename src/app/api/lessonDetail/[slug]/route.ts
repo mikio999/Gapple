@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
   const accessToken = req.headers.get('authorization')?.split(' ')[1];
-  console.log(req);
   const url = new URL(req.url, `http://${req.headers.host}`);
   const slug = url.pathname.split('/').pop();
 

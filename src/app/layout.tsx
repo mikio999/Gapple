@@ -28,7 +28,7 @@ export default function RootLayout({
           <SideBar />
           <main
             className={
-              'flex justify-center tablet:ml-0 laptop:ml-20 desktop:ml-36 flex-grow p-4 bg-slate-50 h-dvh'
+              'flex justify-center tablet:ml-0 laptop:ml-20 desktop:ml-36 flex-grow p-4 bg-slate-50'
             }
           >
             {children}
