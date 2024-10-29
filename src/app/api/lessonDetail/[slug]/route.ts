@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
   const accessToken = req.headers.get('authorization')?.split(' ')[1];
-  const url = new URL(req.url, `http://${req.headers.host}`);
+  const host = req.headers.get('host');
+  const url = new URL(req.url, `http://${host}`);
   const slug = url.pathname.split('/').pop();
-
   if (!accessToken) {
     return NextResponse.json(
       { message: 'Authorization token is required' },

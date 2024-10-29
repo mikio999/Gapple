@@ -8,9 +8,9 @@ const NuriCurriculum = ({ curriculum }: NuriCurriculumProps) => {
   return (
     <div className={'my-4'}>
       <h2 className={'text-lg font-semibold'}>{'누리 교육과정'}</h2>
-      <div className={'flex space-x-2'}>
+      <div className={'flex laptop:flex-row flex-col laptop:space-x-2 '}>
         {Object.entries(curriculum).map(([key, value]) => (
-          <div key={key} className={'bg-gray-100 p-4 rounded'}>
+          <div key={key} className={'bg-gray-100 p-4 rounded mt-2'}>
             <h3 className={'font-semibold'}>{key}</h3>
             {Object.entries(value).map(([subKey, subValue]) => (
               <div key={subKey}>

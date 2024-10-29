@@ -69,8 +69,8 @@ export default function SideBar() {
           <Link href={'/'} className={'m-4'}>
             <Image
               src={'/images/gappleapple.png'}
-              width={30}
-              height={30}
+              width={0}
+              height={0}
               alt={'logo'}
               priority
             />
@@ -110,7 +110,7 @@ export default function SideBar() {
         </Link>
         <div
           className={
-            'flex w-96 justify-around items-center border-t border-gray-100 shadow-md tablet:border-none tablet:shadow-none tablet:flex-row desktop:flex-col desktop:mt-16 laptop:mt-16 laptop:flex-col'
+            'flex w-48 justify-around items-center border-t border-gray-100 shadow-md tablet:border-none tablet:shadow-none tablet:flex-row desktop:flex-col desktop:mt-16 laptop:mt-16 laptop:flex-col'
           }
         >
           {filteredMenuItems.map((item) => (

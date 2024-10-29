@@ -11,7 +11,9 @@ interface ActivityContentProps {
 
 const ActivityContent = ({ contents }: ActivityContentProps) => {
   const [expanded, setExpanded] = useState<boolean[]>(
-    Array(contents.length).fill(false),
+    Array(contents.length)
+      .fill(false)
+      .map((_, index) => index === 0),
   );
   const [allExpanded, setAllExpanded] = useState(false);
 
