@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import IComment from '@/types/comment';
 import LikeButton from './LikeButton';
 import ReplyItem from './ReplyItem';
+import formatRelativeTime from '@/app/(main)/_lib/formatRelativeTime';
 
 interface Props {
   comment: IComment;
@@ -32,9 +34,25 @@ const CommentItem = ({
   };
 
   return (
-    <div className={'bg-gray-100 rounded-lg p-4 my-4'}>
-      <p className={'text-sm font-semibold'}>{comment.author}</p>
-      <p className={'text-sm'}>{comment.text}</p>
+    <div className={'bg-slate-100 rounded-lg p-4 my-4'}>
+      <div className={'flex items-center space-x-4'}>
+        {comment.authorThumbnailImage && (
+          <Image
+            width={100}
+            height={100}
+            src={comment.authorThumbnailImage}
+            alt={comment.authorNickname}
+            className={'w-10 h-10 rounded-full'}
+          />
+        )}
+        <div>
+          <p className={'text-sm font-semibold'}>{comment.authorNickname}</p>
+          <p className={'text-xs text-slate-500'}>
+            {formatRelativeTime(comment.createdAt)}
+          </p>
+        </div>
+      </div>
+      <p className={'text-sm'}>{comment.content}</p>
       <div className={'flex items-center space-x-4'}>
         <LikeButton count={comment.likes} onLike={() => onLike(comment.id)} />
         <button
@@ -49,7 +67,7 @@ const CommentItem = ({
       {comment.showReplies && (
         <>
           {comment.replies && comment.replies.length > 0 && (
-            <div className={'ml-6 mt-2 bg-gray-200 rounded-lg p-2'}>
+            <div className={'ml-6 mt-2 bg-slate-200 rounded-lg p-2'}>
               {comment.replies.map((reply) => (
                 <ReplyItem key={reply.id} reply={reply} />
               ))}
@@ -60,7 +78,7 @@ const CommentItem = ({
             <input
               type={'text'}
               className={
-                'shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                'shadow border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline'
               }
               placeholder={'답글'}
               value={replyText}

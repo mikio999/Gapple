@@ -1,24 +1,17 @@
-import { apiRequest } from '@/_lib/utils/api';
 import { NextRequest, NextResponse } from 'next/server';
+import { apiRequest } from '@/_lib/utils/api';
 
 export async function GET(request: NextRequest) {
-  const accessToken = request.headers.get('authorization')?.split(' ')[1];
-
-  if (!accessToken) {
-    return NextResponse.json(
-      { message: 'Authorization token is required' },
-      { status: 401 },
-    );
-  }
-
   try {
-    const data = await apiRequest('/document/feed?cursor=', accessToken);
+    const data = await apiRequest('get', '/document/feed?cursor=', request);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error(error);
+    const message =
+      error instanceof Error ? error.message : 'Internal Server Error';
+    console.error('외부 API 호출 실패:', message);
     return NextResponse.json(
-      { message: 'Internal Server Error' },
-      { status: 500 },
+      { message },
+      { status: message === 'Authorization token is required' ? 401 : 500 },
     );
   }
 }

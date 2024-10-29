@@ -4,6 +4,7 @@ import LessonDetails from './_component/lessonDetails/LessonDetails';
 import { getPlanners } from '../_lib/getPlanners';
 import Profile from './_component/profileSection/Profile';
 import ButtonSection from './_component/buttonSection/ButtonSection';
+import { getComments } from '../_lib/getComments';
 
 interface Session {
   accessToken: string;
@@ -22,6 +23,7 @@ export default async function LessonPage({
   }
 
   const planner = await getPlanners(params.id, session.accessToken);
+  const comments = await getComments(params.id, session.accessToken);
 
   return (
     <div className={'container mx-auto desktop:px-28 h-dvh]'}>
@@ -39,7 +41,11 @@ export default async function LessonPage({
       <div className={'ml-auto laptop:hidden w-36 my-4'}>
         <ButtonSection />
       </div>
-      <CommentSection />
+      <CommentSection
+        postId={planner.data.document_id}
+        accessToken={session.accessToken}
+        initialComments={comments.data}
+      />
     </div>
   );
 }

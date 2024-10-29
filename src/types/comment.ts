@@ -1,9 +1,10 @@
 export default interface IComment {
   id: number;
-  author: string;
-  text: string;
+  authorNickname: string;
+  content: string;
   likes: number;
+  replies: IComment[];
   showReplies: boolean;
-  replies?: IComment[];
-  isLiked?: boolean;
+  createdAt: string;
+  authorThumbnailImage?: string;
 }
