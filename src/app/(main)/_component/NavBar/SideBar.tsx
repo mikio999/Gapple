@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import { MenuItemProps } from '@/types/menu';
 import MenuItem from './MenuItem';
 import ProfileIcon from './ProfileIcon';
@@ -10,8 +11,10 @@ import CreatePlusBtn from './CreatePlusBtn';
 
 export default function SideBar() {
   const { status } = useSession();
-
+  const pathname = usePathname();
   const isLoggedIn = status === 'authenticated';
+
+  const isSearchPage = pathname === '/search';
 
   const MENU_ITEMS: MenuItemProps[] = [
     {
@@ -66,8 +69,8 @@ export default function SideBar() {
           <Link href={'/'} className={'m-4'}>
             <Image
               src={'/images/gappleapple.png'}
-              width={30}
-              height={30}
+              width={0}
+              height={0}
               alt={'logo'}
               priority
             />
@@ -78,9 +81,8 @@ export default function SideBar() {
         </div>
       </div>
       <div
-        className={
-          'flex bg-opacity-300 bg-white border-b border-gray-200 shadow-md fixed bottom-0 desktop:left-0 desktop:top-0 desktop:bottom-0 desktop:flex-col desktop:h-dvh desktop:w-36 laptop:w-20 laptop:flex-col laptop:items-center laptop:justify-start laptop:h-dvh tablet:fixed tablet:top-auto tablet:left-0 tablet:right-0 tablet:bottom-0 tablet: h-16 tablet:flex-row tablet:items-center tablet:justify-around sidebar-transition z-20'
-        }
+        className={`flex bg-opacity-300 bg-white border-b border-gray-200 shadow-md fixed bottom-0 desktop:left-0 desktop:top-0 desktop:bottom-0 desktop:flex-col desktop:h-dvh desktop:w-36 laptop:w-20 laptop:flex-col laptop:items-center laptop:justify-start laptop:h-dvh tablet:fixed tablet:top-auto tablet:left-0 tablet:right-0 tablet:bottom-0 tablet:h-16 tablet:flex-row tablet:items-center tablet:justify-around sidebar-transition z-20
+          ${isSearchPage ? 'bg-slate-800 bg-opacity-5 pointer-events-none z-40' : ''}`}
       >
         <Link
           href={'/'}
@@ -108,7 +110,7 @@ export default function SideBar() {
         </Link>
         <div
           className={
-            'flex w-96 justify-around items-center border-t border-gray-100 shadow-md tablet:border-none tablet:shadow-none tablet:flex-row desktop:flex-col desktop:mt-16 laptop:mt-16 laptop:flex-col'
+            'flex w-48 justify-around items-center border-t border-gray-100 shadow-md tablet:border-none tablet:shadow-none tablet:flex-row desktop:flex-col desktop:mt-16 laptop:mt-16 laptop:flex-col'
           }
         >
           {filteredMenuItems.map((item) => (
@@ -123,10 +125,10 @@ export default function SideBar() {
           ))}
         </div>
         <div className={'hidden laptop:block'}>
-          <CreatePlusBtn />
+          {!isSearchPage && <CreatePlusBtn />}
         </div>
         <div className={'hidden laptop:block'}>
-          <ProfileIcon />
+          {!isSearchPage && <ProfileIcon />}
         </div>
       </div>
     </>

@@ -1,14 +1,11 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
 import ImageCarousel from './ImageCarousel';
-
-interface ExtendedIFeed extends IFeed {
-  additionalProperty?: string;
-}
+import formatRelativeTime from '../../_lib/formatRelativeTime';
 
 interface FeedProps {
-  feed: ExtendedIFeed;
+  feed: IFeed;
 }
 
 export default function Feed({ feed }: FeedProps) {
@@ -20,95 +17,80 @@ export default function Feed({ feed }: FeedProps) {
     >
       <div className={'flex items-center mb-4'}>
         <div
-          className={
-            'w-10 laptop:w-12 laptop:h-12 h-10 rounded-full tablet:w-8 tablet:h-8'
-          }
+          className={'w-10 h-10 laptop:w-12 laptop:h-12 rounded-full'}
           style={{
-            backgroundImage: `url('images/ham.jpeg')`,
+            backgroundImage: `url(${feed.authorThumbnailImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             border: '2px solid white',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
           }}
         />
-
         <div className={'ml-2'}>
-          <div>
-            <strong>{'우사기'}</strong>
-            {'님의'}
-            <span className={'text-primary'}>{'교육계획안'}</span>
+          <strong>{feed.authorNickname}</strong>
+          <span className={'text-slate-600'}>
+            {'의'}
+            <strong className={'text-primary ml-1'}>
+              {feed.type === 'PLAN' ? '교육계획안' : '기록'}
+            </strong>
             {'이 올라왔어요!'}
-          </div>
+          </span>
           <div className={'text-slate-500 text-xs'}>
-            <span>{'새싹 교사'}</span>
-            <span className={'text-slate-400 ml-4'}>{'15분 전'}</span>
+            {formatRelativeTime(feed.createdAt)}
           </div>
         </div>
       </div>
+
       <div
-        key={feed.document_id}
-        className={'bg-white border rounded-lg overflow-hidden'}
+        key={feed.id}
+        className={
+          'bg-slate-200 shadow-md rounded-lg overflow-hidden cursor-pointer'
+        }
       >
         <div className={'p-4'}>
-          <h1 className={'text-xl font-bold'}>{feed.activity_plan.title}</h1>
-
-          <div className={'flex items-center'}>
-            <div className={'flex space-x-2'}>
-              {feed.activity_plan.subject.map((sub) => (
-                <h3
-                  key={sub}
-                  className={
-                    'mt-2 mb-2 text-sm text-slate-100 bg-slate-400 rounded-full px-4 py-1 font-thin'
-                  }
-                >
-                  {sub}
-                </h3>
-              ))}
-            </div>
-            <Link
-              href={'/lessonDetail/3'}
+          <Link href={`/lessonDetail/${feed.id}`} passHref>
+            <h1 className={'text-xl font-bold'}>{feed.title}</h1>
+          </Link>
+          <div className={'mt-2 space-x-2'}>
+            <span
               className={
-                'ml-auto text-primary400 hover:text-primary600 button-effect'
+                'text-white bg-slate-700 px-3 py-1 rounded-full font-light'
               }
             >
-              {'더보기'}
-            </Link>
+              {feed.activity_type}
+            </span>
+            <span
+              className={
+                'text-white bg-slate-700 px-3 py-1 rounded-full font-light'
+              }
+            >
+              {feed.subject}
+            </span>
           </div>
-
-          {feed.activity_plan.activity_content.map(
-            (content: { subtitle: string; content: string }) => (
-              <div key={content.subtitle}>
-                <h4 className={'font-semibold'}>{content.subtitle}</h4>
-                <p>{content.content}</p>
-              </div>
-            ),
-          )}
         </div>
-        <div className={'p-4 border-t'}>
-          <ImageCarousel images={feed.activity_record.image} />
-        </div>
-        <div className={'p-4 flex justify-between itemss-center'}>
-          <div className={'flex flex-col'}>
-            <div className={'flex flex-row'}>
-              <button
-                type={'button'}
-                className={`heart ${feed.is_liked ? 'text-red-500' : 'text-gray-400'}`}
-              >
-                <Image
-                  src={'/icons/heartIconPink.png'}
-                  width={12}
-                  height={12}
-                  alt={'heart'}
-                />
-                {feed.is_liked ? 'Liked' : 'Like'}
-              </button>
-            </div>
-            <span>{'54명의 선생님이 좋아해주셨습니다!'}</span>
+        {feed.images && feed.images.length > 0 && (
+          <div className={'px-4 py-0 border-t z-10'}>
+            <ImageCarousel images={feed.images} />
           </div>
-          <span className={'text-slate-600'}>
-            {'🔖 '}
-            {feed.bookmark_count} {'명의 선생님들이 찜했어요!'}
-          </span>
+        )}
+        <Link href={`/lessonDetail/${feed.id}`} passHref>
+          <ul className={'px-4 py-2'}>
+            {feed.content_subtitles.map((subtitle) => (
+              <li key={subtitle} className={'text-slate-700 text-base'}>
+                {subtitle}
+              </li>
+            ))}
+          </ul>
+        </Link>
+        <div className={'px-4 pb-4'}>
+          <ActionButtons
+            like={feed.liked_count}
+            comment={0}
+            scrap={feed.bookmark_count}
+            isLiked={feed.liked}
+            isBookmarked={feed.bookmarked}
+            postId={feed.id}
+          />
         </div>
       </div>
     </div>

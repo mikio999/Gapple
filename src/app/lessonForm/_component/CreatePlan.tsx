@@ -2,31 +2,35 @@
 
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { v4 as uuidv4 } from 'uuid';
+import { ToastContainer, toast } from 'react-toastify';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
-import CategorySelect from './CategorySelect';
-import AgeSelect from './AgeSelect';
-import GroupSelect from './GroupSelect';
-import CurriculumSection from './CurriculumSection';
-import SubjectInputSection from './SubjectInputSelection';
-import ContentSection from './ContentSection';
-import GoalsSection from './GoalsSection';
-import PrecautionsSection from './PrecautionSection';
-import EvaluationsSection from './EvaluationSection';
-import FileUploadSection from './FileUploadSection';
-import ToolSection from './ToolSection';
+import CategorySelect from './select/CategorySelect';
+import AgeSelect from './select/AgeSelect';
+import GroupSelect from './select/GroupSelect';
+import CurriculumSection from './nurriCurriculum/CurriculumSection';
+import SubjectInputSection from './section/SubjectInputSelection';
+import ContentSection from './nurriCurriculum/ContentSection';
+import GoalsSection from './section/GoalsSection';
+import PrecautionsSection from './section/PrecautionSection';
+import EvaluationsSection from './section/EvaluationSection';
+import FileUploadSection from './section/FileUploadSection';
+import ToolSection from './section/ToolSection';
 import submitLessonForm from '../_lib/api';
+import SaveButtons from './section/SaveButtonsSection';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function FormPage() {
   const { data: session } = useSession();
-
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
+  const initialContents = [{ id: uuidv4(), subtitle: '', contents: [''] }];
+  const [contents, setContents] = useState(initialContents);
   const initialGoals = [{ id: '', text: '' }];
   const [goals, setGoals] = useState(initialGoals);
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
-  const [contents, setContents] = useState([{ subtitle: '', content: '' }]);
   const initialPrecautions = [{ id: '', text: '' }];
   const [precautions, setPrecautions] = useState(initialPrecautions);
   const initialEvaluations = [{ id: '', text: '' }];
@@ -34,6 +38,7 @@ export default function FormPage() {
   const [age, setAge] = useState(3);
   const [groupSize, setGroupSize] = useState('SMALL');
   const [activityType, setActivityType] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const initialState = [
     { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
   ];
@@ -78,26 +83,9 @@ export default function FormPage() {
     setActivityType(value);
   };
 
-  const handleContentsChange = (
-    index: number,
-    field: string,
-    value: string,
-  ) => {
-    const newContents = contents.map((content, i) => {
-      if (i === index) {
-        return { ...content, [field]: value };
-      }
-      return content;
-    });
-    setContents(newContents);
-  };
-
-  const addContent = () => {
-    setContents([...contents, { subtitle: '', content: '' }]);
-  };
-
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setIsSaving(true);
     const formData = {
       title,
       subject,
@@ -111,7 +99,7 @@ export default function FormPage() {
       evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
       activity_content: contents.map((content) => ({
         subtitle: content.subtitle,
-        content: content.content,
+        content: content.contents.join('\n'),
       })),
       nuri_curriculum: curriculumComponents.map(
         (component: {
@@ -129,18 +117,37 @@ export default function FormPage() {
     if (session) {
       try {
         const result = await submitLessonForm(formData, session.accessToken);
+        toast.success('계획안 생성 성공!');
         console.log('서버 응답:', result);
       } catch (error) {
+        toast.error('계획안 생성 실패!');
         console.error('폼 제출 실패:', error);
+      } finally {
+        setIsSaving(false);
       }
     }
   };
 
+  const handleTempSave = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsSaving(true);
+    try {
+      toast.success('임시 저장 성공!');
+    } catch (error) {
+      toast.error('임시 저장 실패!');
+      if (error) {
+        console.error(error);
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
-    <div className={'container mx-auto'}>
+    <div>
       <div
         className={
-          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-2 flex flex-col'
+          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-12 mb-16 laptop:mt-0 laptop:mb-0 flex flex-col w-full max-w-4xl mx-auto'
         }
       >
         <div>
@@ -192,11 +199,7 @@ export default function FormPage() {
           label={'활동 자료'}
           description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
         />
-        <ContentSection
-          contents={contents}
-          handleContentsChange={handleContentsChange}
-          addContent={addContent}
-        />
+        <ContentSection contents={contents} setContents={setContents} />
         <PrecautionsSection
           precautions={precautions}
           setPrecautions={setPrecautions}
@@ -205,15 +208,12 @@ export default function FormPage() {
           evaluations={evaluations}
           setEvaluations={setEvaluations}
         />
-        <button
-          type={'button'}
-          onClick={handleSubmit}
-          className={
-            'button-border py-2 px-4 bg-primary text-white rounded hover:bg-white hover:text-primary'
-          }
-        >
-          {'저장하기'}
-        </button>
+        <SaveButtons
+          onSave={handleSubmit}
+          onTempSave={handleTempSave}
+          isSaving={isSaving}
+        />
+        <ToastContainer />
       </div>
     </div>
   );

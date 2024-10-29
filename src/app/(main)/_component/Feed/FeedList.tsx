@@ -1,37 +1,37 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import { IFeed } from '@/types/feed';
+import { auth } from '@/auth';
 import Feed from './Feed';
-import nurriCurriculum from '../../_lib/nurriCurriculum';
+import { getFeeds } from '../../_lib/getFeeds';
 
-function FeedList() {
-  const [feeds, setFeeds] = useState<IFeed[]>([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch('/data/dummyFeeds.JSON');
-        const data = await res.json();
-
-        if (!res.ok) {
-          setFeeds(nurriCurriculum.mockData);
-        }
-        setFeeds(data.mockData);
-      } catch (error) {
-        console.error('Failed to load data', error);
-      }
-    }
-    fetchData();
-  }, []);
-
-  return (
-    <div>
-      {feeds.map((feedData) => (
-        <Feed key={feedData.document_id} feed={feedData} />
-      ))}
-    </div>
-  );
+interface Session {
+  accessToken: string;
 }
 
-export default FeedList;
+export default async function FeedList() {
+  const session: Session | null = await auth();
+
+  if (!session) {
+    console.error('No session available, user might not be logged in');
+    return <div>{'유저 정보가 존재하지 않습니다'}</div>;
+  }
+
+  try {
+    const feeds = await getFeeds(session.accessToken);
+
+    if (!feeds.data.list || !Array.isArray(feeds.data.list)) {
+      console.error('Feed data is not available or not in expected format');
+      return <div>{'No feed data available'}</div>;
+    }
+
+    return (
+      <div>
+        {feeds.data.list.map((feedData: IFeed) => (
+          <Feed key={feedData.id} feed={feedData} />
+        ))}
+      </div>
+    );
+  } catch (error) {
+    console.error('Failed to fetch feeds:', error);
+    return <div>{'Error loading feeds'}</div>;
+  }
+}

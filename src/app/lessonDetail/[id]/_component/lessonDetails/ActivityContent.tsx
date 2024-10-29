@@ -11,7 +11,9 @@ interface ActivityContentProps {
 
 const ActivityContent = ({ contents }: ActivityContentProps) => {
   const [expanded, setExpanded] = useState<boolean[]>(
-    Array(contents.length).fill(false),
+    Array(contents.length)
+      .fill(false)
+      .map((_, index) => index === 0),
   );
   const [allExpanded, setAllExpanded] = useState(false);
 
@@ -48,7 +50,7 @@ const ActivityContent = ({ contents }: ActivityContentProps) => {
           >
             <h3 className={'font-semibold text-md'}>{content.subtitle}</h3>
             <button type={'button'} className={'text-lg'}>
-              {expanded[index] ? '▲' : '▼'}
+              {expanded[index] ? '▼' : '▲'}
             </button>
           </div>
           <div

@@ -82,7 +82,7 @@ const CommentSection = () => {
   };
 
   return (
-    <div className={'bg-white shadow-md rounded-lg p-4'}>
+    <div className={'bg-white shadow-md rounded-lg p-4 mt-4'}>
       <h3 className={'text-lg font-semibold mb-4'}>{'댓글'}</h3>
       <CommentList
         comments={comments}

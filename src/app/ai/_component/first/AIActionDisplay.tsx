@@ -2,7 +2,7 @@ interface AIActionDisplayProps {
   onGenerateAI: () => void;
 }
 
-const AIActionDisplay: React.FC<AIActionDisplayProps> = ({ onGenerateAI }) => {
+const AIActionDisplay = ({ onGenerateAI }: AIActionDisplayProps) => {
   return (
     <div>
       <div

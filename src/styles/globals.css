@@ -8,6 +8,26 @@ body {
   box-sizing: border-box;
 }
 
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @font-face {
   font-family: 'Pretendard';
   src: url('/fonts/PretendardVariable.woff2') format('woff2');
@@ -40,5 +60,38 @@ body {
   }
   .title-effect {
     @apply border-l-4 border-l-slate-700 pl-4 text-xl text-slate-500;
+  }
+  .bg-heart {
+    @apply w-[15px] h-[15px] bg-cover;
+    background-image: url('/icons/heart.png');
+  }
+
+  .bg-heartRose {
+    @apply w-[15px] h-[15px] bg-cover;
+    background-image: url('/icons/heartRose.png');
+  }
+
+  .bg-star {
+    @apply w-[15px] h-[15px] bg-cover;
+    background-image: url('/icons/star.png');
+  }
+
+  .bg-starYellow {
+    @apply w-[15px] h-[15px] bg-cover;
+    background-image: url('/icons/starYellow.png');
+  }
+
+  .bg-comment {
+    @apply w-[15px] h-[15px] bg-cover;
+    background-image: url('/icons/comment.png');
+  }
+
+  /* Hover effect */
+  .like-icon:hover {
+    @apply bg-heartRose;
+  }
+
+  .bookmark-icon:hover {
+    @apply bg-starYellow;
   }
 }

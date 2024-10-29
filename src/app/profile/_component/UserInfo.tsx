@@ -46,7 +46,6 @@ const UserInfo = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Profile updated:', profileData);
     setModalIsOpen(false);
   };
 
@@ -61,13 +60,13 @@ const UserInfo = () => {
   const isLoggedIn = status === 'authenticated';
 
   if (!isLoggedIn || !session?.user) {
-    return <div>{'User not logged in'}</div>;
+    return null;
   }
 
   return (
     <div
       className={
-        'flex laptop:flex-row flex-col items-center space-y-4 bg-white px-8 rounded-lg py-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out'
+        'flex laptop:flex-row laptop:justify-around laptop:h-48 flex-col items-center space-y-4 bg-white px-8 rounded-lg pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out'
       }
     >
       <div
@@ -92,23 +91,26 @@ const UserInfo = () => {
         />
       </div>
       <div className={'flex flex-col laptop:ml-8'}>
-        <div className={'flex laptop:flex-row flex-col items-center mb-4'}>
-          <h1 className={'text-xl font-semibold text-slate-800'}>
-            {session.user.name}
-          </h1>
-          <div className={'flex laptop:ml-4'}>
-            <Image
-              src={'/icons/email.png'}
-              width={20}
-              height={20}
-              alt={'email'}
-            />
-            <p className={'text-sm text-slate-500 ml-1'}>
-              {session.user.email}
-            </p>
+        <div className={'flex laptop:flex-row flex-col items-center mb-1'}>
+          <div className={'flex flex-col'}>
+            <div className={'flex mb-1'}>
+              <Image
+                src={'/icons/email.png'}
+                width={15}
+                height={15}
+                alt={'email'}
+                className={'opacity-70'}
+              />
+              <p className={'text-xs text-slate-400 ml-1'}>
+                {session.user.email}
+              </p>
+            </div>
+            <h1 className={'text-xl font-semibold text-slate-800'}>
+              {session.user.name}
+            </h1>
           </div>
         </div>
-        <div className={'text-sm text-slate-400'}>
+        <div className={'text-sm text-slate-500'}>
           {profileData.experienceLevel}
         </div>
         <div className={'text-sm text-slate-600 mt-2'}>
@@ -117,7 +119,7 @@ const UserInfo = () => {
         <button
           type={'button'}
           className={
-            'mt-2 w-20 py-2 bg-primary700 hover:bg-primary text-white font-medium rounded-md text-xs text-nowrap button-effect'
+            'mt-2 w-20 py-1 bg-slate-700 hover:bg-slate-500 text-white font-medium rounded-md text-xs text-nowrap'
           }
           onClick={openModal}
         >
