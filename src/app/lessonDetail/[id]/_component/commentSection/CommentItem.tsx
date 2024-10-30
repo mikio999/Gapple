@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Image from 'next/image';
 import IComment from '@/types/comment';
@@ -12,6 +10,7 @@ interface Props {
   onLike: (id: number) => void;
   onToggleReplies: (id: number) => void;
   onAddReply: (id: number, replyText: string) => void;
+  onDeleteComment?: (id: number) => void;
 }
 
 const CommentItem = ({
@@ -19,6 +18,7 @@ const CommentItem = ({
   onLike,
   onToggleReplies,
   onAddReply,
+  onDeleteComment,
 }: Props) => {
   const [replyText, setReplyText] = useState('');
 
@@ -32,7 +32,8 @@ const CommentItem = ({
       setReplyText('');
     }
   };
-
+  console.log('======commentId======');
+  console.log(comment.id);
   return (
     <div className={'bg-slate-100 rounded-lg p-4 my-4'}>
       <div className={'flex items-center space-x-4'}>
@@ -42,7 +43,9 @@ const CommentItem = ({
             height={100}
             src={comment.authorThumbnailImage}
             alt={comment.authorNickname}
-            className={'w-10 h-10 rounded-full'}
+            className={
+              'w-10 h-10 rounded-full object-cover border-2 border-white shadow-md'
+            }
           />
         )}
         <div>
@@ -51,6 +54,18 @@ const CommentItem = ({
             {formatRelativeTime(comment.createdAt)}
           </p>
         </div>
+
+        {comment.isMyComment && onDeleteComment && (
+          <button
+            type={'button'}
+            onClick={() => onDeleteComment(comment.id)}
+            className={
+              'ml-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+            }
+          >
+            {'지우기'}
+          </button>
+        )}
       </div>
       <p className={'text-sm'}>{comment.content}</p>
       <div className={'flex items-center space-x-4'}>

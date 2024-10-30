@@ -38,7 +38,7 @@ export const ItemInput = ({
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         className={
-          'block mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary w-[60dvw] laptop:w-[70dvw]'
+          'block mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary w-[68dvw] laptop:w-[75dvw] desktop:w-[800px]'
         }
       />
     </div>

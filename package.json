@@ -12,6 +12,8 @@
     "postinstall": "husky install"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.36.1",
+    "@tanstack/react-query-devtools": "4",
     "axios": "^1.7.7",
     "framer-motion": "^11.11.8",
     "next": ">=14.2.10",
@@ -28,6 +30,7 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

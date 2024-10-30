@@ -1,10 +1,12 @@
+import { BASE_NEXT_URL } from '@/_lib/utils/config';
+
 export async function getPlanners(id: string, token: string) {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   try {
-    const res = await fetch(`http://localhost:3000/api/lessonDetail/${id}`, {
+    const res = await fetch(`${BASE_NEXT_URL}/api/lessonDetail/${id}`, {
       headers,
     });
 

@@ -47,6 +47,33 @@ export async function GET(req: NextRequest) {
   }
 }
 
+export async function DELETE(req: NextRequest) {
+  const host = req.headers.get('host');
+  const url = new URL(req.url, `http://${host}`);
+  const id = url.pathname.split('/').pop();
+
+  try {
+    const response = await apiRequest(
+      'delete',
+      `/document/comment?id=${id}`,
+      req,
+    );
+    return NextResponse.json(
+      { message: 'Comment deleted successfully' },
+      { status: 200 },
+    );
+  } catch (error) {
+    const errorMessage = extractErrorMessage(error);
+    console.error('외부 API 호출 실패:', errorMessage);
+    return NextResponse.json(
+      { message: errorMessage },
+      {
+        status: errorMessage === 'Authorization token is required' ? 401 : 500,
+      },
+    );
+  }
+}
+
 function extractErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;

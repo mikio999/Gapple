@@ -1,10 +1,10 @@
-export async function getComments(id: string, token: string) {
+export async function getComments(id: number | string, token: string) {
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
   try {
-    const res = await fetch(`http://localhost:3000/api/comment/${id}`, {
+    const res = await fetch(`/api/comment/${id}`, {
       headers,
     });
 

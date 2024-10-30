@@ -127,20 +127,22 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
           key={content.id}
           className={'flex flex-col mb-4 border border-slate-100 shadow-sm p-4'}
         >
-          <button
-            type={'button'}
-            onClick={() => deleteContent(content.id)}
-            className={
-              'flex justify-center items-center rounded-full hover:bg-primary100 ml-auto p-1 w-8 h-8'
-            }
-          >
-            <Image
-              src={'/icons/deletecontent.png'}
-              width={16}
-              height={16}
-              alt={'delete'}
-            />
-          </button>
+          {contents.length > 1 && (
+            <button
+              type={'button'}
+              onClick={() => deleteContent(content.id)}
+              className={
+                'flex justify-center items-center rounded-full hover:bg-primary100 ml-auto p-1 w-8 h-8'
+              }
+            >
+              <Image
+                src={'/icons/deletecontent.png'}
+                width={16}
+                height={16}
+                alt={'delete'}
+              />
+            </button>
+          )}
           <div className={'flex items-center mb-2'}>
             <label
               htmlFor={`subtitle-${index}`}

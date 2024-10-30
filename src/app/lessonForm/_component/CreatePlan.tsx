@@ -147,7 +147,7 @@ export default function FormPage() {
     <div>
       <div
         className={
-          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-12 mb-16 laptop:mt-0 laptop:mb-0 flex flex-col w-full max-w-4xl mx-auto'
+          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-4 mb-16 laptop:mt-0 laptop:mb-0 flex flex-col w-full max-w-4xl mx-auto'
         }
       >
         <div>
@@ -159,7 +159,6 @@ export default function FormPage() {
             className={'text-xl laptop:text-3xl focus:outline-none w-full'}
             placeholder={'활동명을 입력하세요 '}
           />
-          <div className={'ml-2 p-2  w-1/12 '} />
         </div>
         <SubjectInputSection
           subject={subject}

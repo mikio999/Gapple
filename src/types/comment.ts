@@ -7,4 +7,5 @@ export default interface IComment {
   showReplies: boolean;
   createdAt: string;
   authorThumbnailImage?: string;
+  isMyComment?: boolean;
 }

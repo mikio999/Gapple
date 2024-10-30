@@ -23,7 +23,6 @@ export default async function LessonPage({
   }
 
   const planner = await getPlanners(params.id, session.accessToken);
-  const comments = await getComments(params.id, session.accessToken);
 
   return (
     <div className={'container mx-auto desktop:px-28 h-dvh]'}>
@@ -44,7 +43,7 @@ export default async function LessonPage({
       <CommentSection
         postId={planner.data.document_id}
         accessToken={session.accessToken}
-        initialComments={comments.data}
+        params={params.id}
       />
     </div>
   );
