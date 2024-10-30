@@ -5,8 +5,12 @@ interface Props {
   comments: IComment[];
   onLike: (id: number) => void;
   toggleReplies: (id: number) => void;
-  onAddReply: (id: number, replyText: string) => void;
+  onAddReply: (commentData: {
+    content: string;
+    parentCommentId?: number;
+  }) => void;
   onDeleteComment: (commentId: number) => void;
+  onEditComment: (commentData: { commentId: number; content: string }) => void;
   showReplies: Record<number, boolean>;
 }
 
@@ -17,6 +21,7 @@ const CommentList = ({
   showReplies,
   onAddReply,
   onDeleteComment,
+  onEditComment,
 }: Props) => {
   const topLevelComments = comments?.filter((c) => !c.parentCommentId);
 
@@ -33,6 +38,7 @@ const CommentList = ({
             showReplies={showReplies[comment.id]}
             onAddReply={onAddReply}
             onDeleteComment={onDeleteComment}
+            onEditComment={onEditComment}
           />
         ))
       ) : (

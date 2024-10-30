@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
 import AuthSession from '@/_component/AuthSession';
-import SideBar from './(main)/_component/NavBar/SideBar';
 import RQProvider from '@/providers/RQProvider';
+import SideBar from './(main)/_component/NavBar/SideBar';
 
 export const metadata: Metadata = {
   title: 'GA:Pl',

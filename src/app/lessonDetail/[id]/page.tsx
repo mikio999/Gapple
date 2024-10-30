@@ -4,7 +4,6 @@ import LessonDetails from './_component/lessonDetails/LessonDetails';
 import { getPlanners } from '../_lib/getPlanners';
 import Profile from './_component/profileSection/Profile';
 import ButtonSection from './_component/buttonSection/ButtonSection';
-import { getComments } from '../_lib/getComments';
 
 interface Session {
   accessToken: string;
@@ -43,7 +42,6 @@ export default async function LessonPage({
       <CommentSection
         postId={planner.data.document_id}
         accessToken={session.accessToken}
-        params={params.id}
       />
     </div>
   );

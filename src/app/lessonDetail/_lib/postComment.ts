@@ -18,7 +18,7 @@ const postComment = async (
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   };
-  console.log('commentData', commentData);
+
   try {
     const response = await axios.post<CommentResponse>(
       `/api/comment/${id}`,

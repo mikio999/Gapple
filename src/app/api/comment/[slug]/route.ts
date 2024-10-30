@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
       request,
       formData,
     );
+
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     const errorMessage = extractErrorMessage(error);
@@ -48,11 +49,7 @@ export async function DELETE(req: NextRequest) {
   const { id } = extractUrlId(req);
 
   try {
-    const response = await apiRequest(
-      'delete',
-      `/document/comment?id=${id}`,
-      req,
-    );
+    await apiRequest('delete', `/document/comment?id=${id}`, req);
     return NextResponse.json(
       { message: 'Comment deleted successfully' },
       { status: 200 },
