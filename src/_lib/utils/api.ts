@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server';
 import { BASE_URL } from '@/_lib/utils/config';
 
 export async function apiRequest(
-  method: 'get' | 'post' | 'delete' | 'patch',
+  method: 'get' | 'post' | 'delete' | 'patch' | 'put',
   endpoint: string,
   request: NextRequest,
   data = null,

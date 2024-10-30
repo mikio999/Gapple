@@ -6,10 +6,9 @@ interface CommentResponse {
   createdAt: string;
 }
 
-const postComment = async (
+const putComment = async (
   commentData: {
     content: string;
-    parentCommentId?: number;
   },
   id: number,
   accessToken: string,
@@ -18,9 +17,9 @@ const postComment = async (
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   };
-  console.log('commentData', commentData);
+
   try {
-    const response = await axios.post<CommentResponse>(
+    const response = await axios.put<CommentResponse>(
       `/api/comment/${id}`,
       commentData,
       {
@@ -29,9 +28,9 @@ const postComment = async (
     );
     return response.data;
   } catch (error) {
-    console.error('코멘트 제출 실패:', error);
+    console.error('댓글 수정 실패:', error);
     throw error;
   }
 };
 
-export default postComment;
+export default putComment;

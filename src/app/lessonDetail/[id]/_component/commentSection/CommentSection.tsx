@@ -7,26 +7,17 @@ import { useComments } from '@/app/lessonDetail/_lib/useComments';
 interface CommentProps {
   postId: number;
   accessToken: string;
-  params: number | string;
 }
 
-const CommentSection = ({ postId, accessToken, params }: CommentProps) => {
-  const { comments, addComment, deleteComment } = useComments(
-    postId,
-    accessToken,
-  );
-
-  const handleToggleReplies = (id: number | string) => {
-    console.log('토글됨');
-  };
-
-  const handleAddReply = (commentId: number, replyText: string) => {
-    console.log('답글 달기');
-  };
+const CommentSection = ({ postId, accessToken }: CommentProps) => {
+  const { comments, addComment, deleteComment, toggleReplies, showReplies } =
+    useComments(postId, accessToken);
 
   const handleLike = (id: number) => {
-    console.log('좋아요');
+    console.log(id, '좋아요');
   };
+
+  console.log('showReplies', showReplies);
 
   return (
     <div className={'bg-white shadow-md rounded-lg p-4 mt-4'}>
@@ -34,8 +25,9 @@ const CommentSection = ({ postId, accessToken, params }: CommentProps) => {
       <CommentList
         comments={comments?.data}
         onLike={handleLike}
-        onToggleReplies={handleToggleReplies}
-        onAddReply={handleAddReply}
+        toggleReplies={toggleReplies}
+        showReplies={showReplies}
+        onAddReply={addComment}
         onDeleteComment={deleteComment}
       />
       <NewCommentInput onAddComment={addComment} />

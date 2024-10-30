@@ -7,16 +7,26 @@ import formatRelativeTime from '@/app/(main)/_lib/formatRelativeTime';
 
 interface Props {
   comment: IComment;
+  replies: IComment[];
   onLike: (id: number) => void;
-  onToggleReplies: (id: number) => void;
-  onAddReply: (id: number, replyText: string) => void;
+  toggleReplies: (id: number) => void;
+  showReplies: boolean;
+  onAddReply: ({
+    content,
+    parentCommentId,
+  }: {
+    content: string;
+    parentCommentId?: number;
+  }) => void;
   onDeleteComment?: (id: number) => void;
 }
 
 const CommentItem = ({
   comment,
+  replies,
   onLike,
-  onToggleReplies,
+  toggleReplies,
+  showReplies,
   onAddReply,
   onDeleteComment,
 }: Props) => {
@@ -28,31 +38,32 @@ const CommentItem = ({
 
   const submitReply = () => {
     if (replyText.trim()) {
-      onAddReply(comment.id, replyText);
+      onAddReply({ content: replyText, parentCommentId: comment.id });
       setReplyText('');
     }
   };
-  console.log('======commentId======');
-  console.log(comment.id);
+
   return (
     <div className={'bg-slate-100 rounded-lg p-4 my-4'}>
-      <div className={'flex items-center space-x-4'}>
-        {comment.authorThumbnailImage && (
-          <Image
-            width={100}
-            height={100}
-            src={comment.authorThumbnailImage}
-            alt={comment.authorNickname}
-            className={
-              'w-10 h-10 rounded-full object-cover border-2 border-white shadow-md'
-            }
-          />
-        )}
-        <div>
-          <p className={'text-sm font-semibold'}>{comment.authorNickname}</p>
-          <p className={'text-xs text-slate-500'}>
-            {formatRelativeTime(comment.createdAt)}
-          </p>
+      <div className={'flex items-center space-x-4 justify-between'}>
+        <div className={'flex'}>
+          {comment.authorThumbnailImage && (
+            <Image
+              width={100}
+              height={100}
+              src={comment.authorThumbnailImage}
+              alt={comment.authorNickname}
+              className={
+                'w-10 h-10 rounded-full object-cover border-2 border-white shadow-md'
+              }
+            />
+          )}
+          <div className={'mx-4'}>
+            <p className={'text-sm font-semibold'}>{comment.authorNickname}</p>
+            <p className={'text-xs text-slate-400'}>
+              {formatRelativeTime(comment.createdAt)}
+            </p>
+          </div>
         </div>
 
         {comment.isMyComment && onDeleteComment && (
@@ -60,35 +71,38 @@ const CommentItem = ({
             type={'button'}
             onClick={() => onDeleteComment(comment.id)}
             className={
-              'ml-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+              'ml-auto text-slate-400 hover:text-red-700 py-2 px-4 rounded'
             }
           >
-            {'지우기'}
+            {'×'}
           </button>
         )}
       </div>
-      <p className={'text-sm'}>{comment.content}</p>
+      <p className={'text-sm my-2'}>{comment.content}</p>
       <div className={'flex items-center space-x-4'}>
         <LikeButton count={comment.likes} onLike={() => onLike(comment.id)} />
         <button
           type={'button'}
-          onClick={() => onToggleReplies(comment.id)}
+          onClick={() => toggleReplies(comment.id)}
           className={'text-blue-600 hover:text-blue-800'}
         >
           {comment.showReplies ? '답글 숨기기' : '답글 보기'}
         </button>
       </div>
 
-      {comment.showReplies && (
+      {showReplies && (
         <>
-          {comment.replies && comment.replies.length > 0 && (
+          {replies.length > 0 && (
             <div className={'ml-6 mt-2 bg-slate-200 rounded-lg p-2'}>
-              {comment.replies.map((reply) => (
-                <ReplyItem key={reply.id} reply={reply} />
+              {replies.map((reply) => (
+                <ReplyItem
+                  key={reply.id}
+                  reply={reply}
+                  onDeleteComment={onDeleteComment}
+                />
               ))}
             </div>
           )}
-
           <div className={'flex mt-4'}>
             <input
               type={'text'}

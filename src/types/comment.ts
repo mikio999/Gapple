@@ -6,6 +6,7 @@ export default interface IComment {
   replies: IComment[];
   showReplies: boolean;
   createdAt: string;
+  parentCommentId: number | null;
   authorThumbnailImage?: string;
   isMyComment?: boolean;
 }

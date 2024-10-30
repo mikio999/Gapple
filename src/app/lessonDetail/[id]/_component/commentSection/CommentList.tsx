@@ -4,27 +4,33 @@ import CommentItem from './CommentItem';
 interface Props {
   comments: IComment[];
   onLike: (id: number) => void;
-  onToggleReplies: (id: number) => void;
+  toggleReplies: (id: number) => void;
   onAddReply: (id: number, replyText: string) => void;
   onDeleteComment: (commentId: number) => void;
+  showReplies: Record<number, boolean>;
 }
 
 const CommentList = ({
   comments,
   onLike,
-  onToggleReplies,
+  toggleReplies,
+  showReplies,
   onAddReply,
   onDeleteComment,
 }: Props) => {
+  const topLevelComments = comments?.filter((c) => !c.parentCommentId);
+
   return (
     <div>
-      {comments?.length > 0 ? (
-        comments.map((comment) => (
+      {topLevelComments?.length > 0 ? (
+        topLevelComments.map((comment) => (
           <CommentItem
             key={comment.id}
             comment={comment}
+            replies={comments.filter((c) => c.parentCommentId === comment.id)}
             onLike={onLike}
-            onToggleReplies={onToggleReplies}
+            toggleReplies={toggleReplies}
+            showReplies={showReplies[comment.id]}
             onAddReply={onAddReply}
             onDeleteComment={onDeleteComment}
           />

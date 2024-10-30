@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { getComments } from './getComments';
 import postComment from './postComment';
 import deleteComment from './deleteComment';
+import putComment from './putComment';
 
-export function useComments(postId: number | string, accessToken: string) {
+export function useComments(postId: number, accessToken: string) {
   const queryClient = useQueryClient();
+  const [showReplies, setShowReplies] = useState<Record<number, boolean>>({});
 
   const {
     data: comments,
@@ -13,9 +16,20 @@ export function useComments(postId: number | string, accessToken: string) {
     error,
   } = useQuery(['comments', postId], () => getComments(postId, accessToken));
 
+  const toggleReplies = (commentId: number) => {
+    setShowReplies((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
+  type CommentData = {
+    content: string;
+    parentCommentId?: number;
+  };
+
   const addCommentMutation = useMutation(
-    (newCommentText: string) =>
-      postComment({ content: newCommentText }, postId, accessToken),
+    (commentData: CommentData) => postComment(commentData, postId, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['comments', postId]);
@@ -32,12 +46,25 @@ export function useComments(postId: number | string, accessToken: string) {
     },
   );
 
+  const putCommentMutation = useMutation(
+    ({ commentId, content }: { commentId: number; content: string }) =>
+      putComment({ content }, commentId, accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['comments', postId]);
+      },
+    },
+  );
+
   return {
     comments,
     addComment: addCommentMutation.mutate,
     deleteComment: deleteCommentMutation.mutate,
+    putComment: putCommentMutation.mutate,
+    toggleReplies,
     isLoading,
     isError,
     error,
+    showReplies,
   };
 }
