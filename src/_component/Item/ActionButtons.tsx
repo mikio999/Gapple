@@ -1,7 +1,10 @@
 'use client';
 
-import { useOptimistic } from 'react';
-import { BASE_URL } from '@/_lib/utils/config';
+import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { submitBookmark, submitLike } from '@/app/(main)/_lib/submitButton';
 
 interface ActionButtonsProps {
   like: number;
@@ -16,41 +19,57 @@ const ActionButtons = ({
   like,
   comment,
   scrap,
-  isLiked,
-  isBookmarked,
+  isLiked: initialIsLiked,
+  isBookmarked: initialIsBookmarked,
   postId,
 }: ActionButtonsProps) => {
-  const [optimisticLikes, setOptimisticLikes] = useOptimistic(
-    like,
-    (prevLikes: number) => (isLiked ? prevLikes - 1 : prevLikes + 1),
-  );
+  const { data: session } = useSession();
+  const accessToken = session?.accessToken;
 
-  const [optimisticBookmark, setOptimisticBookmark] = useOptimistic(
-    isBookmarked,
-    (prevBookmark: boolean) => !prevBookmark,
-  );
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const [likes, setLikes] = useState(like);
+  const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
+  const [bookmarks, setBookmarks] = useState(scrap);
 
   const handleLikeToggle = async () => {
-    setOptimisticLikes(isLiked ? optimisticLikes - 1 : optimisticLikes + 1);
+    if (!accessToken) {
+      toast.error('You must be logged in to like a post.');
+      return;
+    }
+
+    const newIsLiked = !isLiked;
+    const newLikes = newIsLiked ? likes + 1 : likes - 1;
+
+    setIsLiked(newIsLiked);
+    setLikes(newLikes);
 
     try {
-      await fetch(`${BASE_URL}/document/like?id=${postId}`, { method: 'POST' });
+      await submitLike(postId, accessToken);
     } catch (error) {
-      setOptimisticLikes(isLiked ? optimisticLikes + 1 : optimisticLikes - 1);
-      console.error(error);
+      setIsLiked(isLiked);
+      setLikes(likes);
+      toast.error('Like action failed. Please try again.');
     }
   };
 
   const handleBookmarkToggle = async () => {
-    setOptimisticBookmark(!optimisticBookmark);
+    if (!accessToken) {
+      toast.error('You must be logged in to bookmark a post.');
+      return;
+    }
+
+    const newIsBookmarked = !isBookmarked;
+    const newBookmarks = newIsBookmarked ? bookmarks + 1 : bookmarks - 1;
+
+    setIsBookmarked(newIsBookmarked);
+    setBookmarks(newBookmarks);
 
     try {
-      await fetch(`${BASE_URL}/document/bookmark?id=${postId}`, {
-        method: 'POST',
-      });
+      await submitBookmark(postId, accessToken);
     } catch (error) {
-      setOptimisticBookmark(!optimisticBookmark);
-      console.error(error);
+      setIsBookmarked(isBookmarked);
+      setBookmarks(bookmarks);
+      toast.error('Bookmark action failed. Please try again.');
     }
   };
 
@@ -59,17 +78,15 @@ const ActionButtons = ({
       <div className={'flex space-x-2'}>
         <button
           type={'button'}
-          className={`flex items-center space-x-1 text-slate-600 hover:text-rose-500 ${
-            optimisticLikes > like ? 'text-rose-500' : 'text-slate-600'
-          }`}
+          className={`flex items-center space-x-1 text-slate-600 hover:text-rose-500 ${isLiked ? 'text-rose-500' : 'text-slate-600'}`}
           onClick={handleLikeToggle}
         >
           <span
-            className={`like-icon ${
-              optimisticLikes > like ? 'bg-heartRose' : 'bg-heart'
-            }`}
+            className={`like-icon ${isLiked ? 'bg-heartRose' : 'bg-heart'}`}
           />
-          <span>{optimisticLikes}</span>
+          <span className={`${isLiked ? 'text-rose-500' : 'text-slate-600'}`}>
+            {likes}
+          </span>
         </button>
         <button
           type={'button'}
@@ -83,21 +100,18 @@ const ActionButtons = ({
           />
           <span>{comment}</span>
         </button>
+        <button
+          type={'button'}
+          className={`flex items-center space-x-1 ${isBookmarked ? 'text-yellow-500' : 'text-slate-600'} hover:text-yellow-500`}
+          onClick={handleBookmarkToggle}
+        >
+          <span
+            className={`bookmark-icon ${isBookmarked ? 'bg-starYellow' : 'bg-star'}`}
+          />
+          <span>{bookmarks}</span>
+        </button>
       </div>
-      <button
-        type={'button'}
-        className={`flex items-center space-x-1 ${
-          optimisticBookmark ? 'text-yellow-500' : 'text-slate-600'
-        } hover:text-yellow-500`}
-        onClick={handleBookmarkToggle}
-      >
-        <span
-          className={`bookmark-icon ${
-            optimisticBookmark ? 'bg-starYellow' : 'bg-star'
-          }`}
-        />
-        <span>{scrap}</span>
-      </button>
+      <ToastContainer />
     </div>
   );
 };

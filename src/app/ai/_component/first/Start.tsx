@@ -50,7 +50,9 @@ const Start = ({ onProceed }: StartProps) => {
     <div className={'flex flex-col w-100 text-xl m-2'}>
       <div className={'mb-4'}>{'안녕하세요!'}</div>
       <TypingEffect text={introText} />
-      <MotionButton onClick={onProceed} />
+      <div className={'flex mx-auto mt-[40dvh]'}>
+        <MotionButton onClick={onProceed} />
+      </div>
     </div>
   );
 };

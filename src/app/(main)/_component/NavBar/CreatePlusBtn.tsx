@@ -51,7 +51,7 @@ const CreatePlusBtn = () => {
       {isOpen && (
         <div
           className={
-            'absolute right-1 laptop:right-0 laptop:left-20 laptop:top-1 w-48 bg-white shadow-lg mt-2 rounded-md z-10'
+            'absolute right-1 laptop:right-0 laptop:left-16 laptop:top-1 w-40 bg-white shadow-lg mt-2 rounded-md z-10 text-sm'
           }
         >
           {subMenuItems.map((item) => (

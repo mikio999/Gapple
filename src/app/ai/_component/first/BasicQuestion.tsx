@@ -22,6 +22,7 @@ const BasicQuestion = ({
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
   const [showInput, setShowInput] = useState(false);
 
+  console.log('answers', answers);
   const options = { age, groupSize, theme, category, recommendation };
 
   const handleInputChange = useCallback(
@@ -80,7 +81,7 @@ const BasicQuestion = ({
   };
 
   return (
-    <div className={'flex flex-col items-center'}>
+    <div className={'flex flex-col items-center bg-slate-50'}>
       <TypingEffect text={questions[questionKeys[currentStep - 1]]} />
       <div className={'mt-4'}>
         {showInput && !hasImages && (

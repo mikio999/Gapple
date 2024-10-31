@@ -5,7 +5,6 @@ import extractUrlId from '@/_lib/utils/extractUrlId';
 export async function POST(request: NextRequest) {
   const { id } = extractUrlId(request);
   const formData = await request.json();
-
   try {
     const response = await apiRequest(
       'post',
@@ -13,7 +12,6 @@ export async function POST(request: NextRequest) {
       request,
       formData,
     );
-
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     const errorMessage = extractErrorMessage(error);

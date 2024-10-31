@@ -73,7 +73,7 @@ const OptionSelector = ({
             custom={index}
             variants={itemVariants}
             onClick={() => onOptionSelect(option)}
-            className={`${options.length > 1 ? 'option-button' : 'laptop:w-52 w-28'} m-1 p-1 laptop:m-2 laptop:p-2 border rounded flex flex-col items-center button-effect bg-white`}
+            className={`${options.length > 1 ? 'option-button' : 'laptop:w-52 w-28'} m-1 p-1 laptop:m-2 laptop:p-2 border rounded flex flex-col items-center button-effect bg-white hover:bg-slate-200`}
           >
             {hasImages && option.image ? (
               <>

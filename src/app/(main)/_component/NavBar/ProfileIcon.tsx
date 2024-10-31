@@ -39,7 +39,7 @@ const DropdownMenu = () => {
 const ProfileIcon = () => {
   const { data: session, status } = useSession();
   const [menuVisible, setMenuVisible] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -49,6 +49,20 @@ const ProfileIcon = () => {
 
     handleRouteChange();
   }, [pathname]);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [menuRef]);
 
   if (status === 'loading') {
     return (

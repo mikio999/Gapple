@@ -18,7 +18,7 @@ const AnswerDisplay = ({
           key={key}
           onClick={() => onEditAnswer(index)}
           className={
-            'cursor-pointer p-2 rounded bg-slate-100 hover:bg-slate-200 mt-2'
+            'cursor-pointer p-2 rounded bg-slate-200 hover:bg-slate-300 mt-2'
           }
         >
           <span className={'font-semibold text-slate-600'}>

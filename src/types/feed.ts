@@ -1,5 +1,6 @@
 export interface IFeed {
   id: number;
+  age: number;
   type: string;
   authorNickname: string;
   authorThumbnailImage: string;

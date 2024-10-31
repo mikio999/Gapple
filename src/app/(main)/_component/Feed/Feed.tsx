@@ -51,21 +51,33 @@ export default function Feed({ feed }: FeedProps) {
           <Link href={`/lessonDetail/${feed.id}`} passHref>
             <h1 className={'text-xl font-bold'}>{feed.title}</h1>
           </Link>
-          <div className={'mt-2 space-x-2'}>
-            <span
-              className={
-                'text-white bg-slate-700 px-3 py-1 rounded-full font-light'
-              }
-            >
-              {feed.activity_type}
-            </span>
-            <span
-              className={
-                'text-white bg-slate-700 px-3 py-1 rounded-full font-light'
-              }
-            >
-              {feed.subject}
-            </span>
+          <div className={'flex desktop:flex-row flex-col mt-2'}>
+            <div className={'flex'}>
+              <span
+                className={
+                  'text-white bg-slate-700 px-3 py-1 mr-2 rounded-full font-light'
+                }
+              >
+                {feed.age} {'세'}
+              </span>
+              <span
+                className={
+                  'text-white bg-slate-700 px-3 py-1 mr-2 rounded-full font-light'
+                }
+              >
+                {feed.activity_type}
+              </span>
+            </div>
+            <div>
+              <span
+                className={
+                  'text-white bg-slate-700 px-3 py-1 rounded-full font-light desktop:mt-0 mt-2'
+                }
+                style={{ display: 'inline-block' }}
+              >
+                {feed.subject}
+              </span>
+            </div>
           </div>
         </div>
         {feed.images && feed.images.length > 0 && (
@@ -75,7 +87,7 @@ export default function Feed({ feed }: FeedProps) {
         )}
         <Link href={`/lessonDetail/${feed.id}`} passHref>
           <ul className={'px-4 py-2'}>
-            {feed.content_subtitles.map((subtitle) => (
+            {feed.content_subtitles?.map((subtitle) => (
               <li key={subtitle} className={'text-slate-700 text-base'}>
                 {subtitle}
               </li>
