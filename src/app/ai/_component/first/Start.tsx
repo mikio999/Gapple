@@ -33,7 +33,11 @@ const Start = ({ onProceed }: StartProps) => {
   }[season];
 
   if (status === 'loading') {
-    return <Loader />;
+    return (
+      <div className={'mt-20'}>
+        <Loader />
+      </div>
+    );
   }
 
   if (!session?.user) {

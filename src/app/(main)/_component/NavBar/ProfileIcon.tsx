@@ -1,16 +1,59 @@
-'use client';
-
-import { useSession } from 'next-auth/react';
+import { useState, useEffect, useRef } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MoonLoader } from 'react-spinners';
+import { BounceLoader } from 'react-spinners';
 import MenuItem from './MenuItem';
+
+const DropdownMenu = () => {
+  return (
+    <div
+      className={
+        'absolute left-12 mt-2 py-2 w-24 bg-white rounded-lg shadow-xl'
+      }
+    >
+      <Link
+        href={'/profile'}
+        className={
+          'block px-4 py-2 text-center text-sm text-slate-700 hover:bg-slate-100'
+        }
+      >
+        {'내 프로필'}
+      </Link>
+      <button
+        type={'button'}
+        onClick={(e) => {
+          e.preventDefault();
+          signOut();
+        }}
+        className={
+          'block px-4 py-2 w-full text-sm text-slate-700 hover:bg-slate-100'
+        }
+      >
+        {'로그아웃'}
+      </button>
+    </div>
+  );
+};
 
 const ProfileIcon = () => {
   const { data: session, status } = useSession();
+  const [menuVisible, setMenuVisible] = useState(false);
+  const menuRef = useRef(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setMenuVisible(false);
+    };
+
+    handleRouteChange();
+  }, [pathname]);
+
   if (status === 'loading') {
     return (
       <div className={'flex justify-center items-center mt-64'}>
-        <MoonLoader color={'#ED4264'} size={15} />
+        <BounceLoader />
       </div>
     );
   }
@@ -35,8 +78,12 @@ const ProfileIcon = () => {
   const imageSrc = userImg || '/images/gappler.png';
 
   return (
-    <div className={'flex items-center justify-center m-4'}>
-      <Link href={'/profile'}>
+    <div className={'flex items-center justify-center m-4 relative'}>
+      <button
+        type={'button'}
+        onClick={() => setMenuVisible(!menuVisible)}
+        aria-label={'Toggle profile options'}
+      >
         <div
           className={
             'w-10 laptop:w-12 laptop:h-12 h-10 rounded-full tablet:w-8 tablet:h-8'
@@ -49,7 +96,12 @@ const ProfileIcon = () => {
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
           }}
         />
-      </Link>
+      </button>
+      {menuVisible && (
+        <div ref={menuRef}>
+          <DropdownMenu />
+        </div>
+      )}
     </div>
   );
 };

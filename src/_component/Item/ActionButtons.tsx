@@ -1,7 +1,7 @@
 'use client';
 
-import { BASE_URL } from '@/_lib/utils/config';
 import { useOptimistic } from 'react';
+import { BASE_URL } from '@/_lib/utils/config';
 
 interface ActionButtonsProps {
   like: number;
