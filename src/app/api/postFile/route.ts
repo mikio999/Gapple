@@ -2,11 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
 
 export async function POST(request: NextRequest) {
-  const formData = await request.json();
-  console.log('!!!!!!!!!!!!formData!!!!!!!!!!!!');
-  console.log(formData);
+  if (request.method !== 'POST') {
+    return NextResponse.json(
+      { message: 'Method not allowed' },
+      { status: 405 },
+    );
+  }
+
+  const formData = await request.formData();
+
   try {
-    const data = await apiRequest('post', '/document/plan', request, formData);
+    const data = await apiRequest(
+      'post',
+      '/files/data',
+      request,
+      formData,
+      'multipart/form-data',
+    );
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     const message =

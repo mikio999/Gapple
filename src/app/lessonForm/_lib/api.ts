@@ -14,6 +14,8 @@ const submitLessonForm = async (
     evaluation_criteria: string[];
     activity_content: { subtitle: string; content: string }[];
     nuri_curriculum: any;
+    image_id: number;
+    attachment_id: number;
   },
   accessToken: string,
 ) => {
@@ -21,7 +23,8 @@ const submitLessonForm = async (
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   };
-
+  console.log('======formData=====');
+  console.log(formData);
   try {
     const response = await axios.post(`/api/lessonform`, formData, {
       headers,

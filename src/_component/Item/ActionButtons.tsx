@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { submitBookmark, submitLike } from '@/app/(main)/_lib/submitButton';
 
 interface ActionButtonsProps {

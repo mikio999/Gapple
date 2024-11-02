@@ -1,3 +1,5 @@
+import IComment from './comment';
+
 export interface IFeed {
   id: number;
   age: number;
@@ -15,4 +17,5 @@ export interface IFeed {
   liked_count: number;
   bookmarked: boolean;
   bookmark_count: number;
+  comments: IComment[];
 }

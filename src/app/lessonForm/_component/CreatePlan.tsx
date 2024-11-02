@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,7 +19,7 @@ import FileUploadSection from './section/FileUploadSection';
 import ToolSection from './section/ToolSection';
 import submitLessonForm from '../_lib/api';
 import SaveButtons from './section/SaveButtonsSection';
-import 'react-toastify/dist/ReactToastify.css';
+import ImageUploadSection from './section/ImageUploadSection';
 
 export default function FormPage() {
   const { data: session } = useSession();
@@ -39,6 +39,8 @@ export default function FormPage() {
   const [groupSize, setGroupSize] = useState('SMALL');
   const [activityType, setActivityType] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [fileId, setFileId] = useState(0);
+  const [imageId, setImageId] = useState(0);
   const initialState = [
     { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
   ];
@@ -50,6 +52,12 @@ export default function FormPage() {
     addCurriculumComponent,
     removeCurriculumComponent,
   } = useCurriculumHandlers(initialState);
+
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    titleInputRef.current?.focus();
+  }, []);
 
   const ageOptions = [
     { label: '만 3세', value: 3, image: '/images/age/age3.png' },
@@ -82,37 +90,40 @@ export default function FormPage() {
   const handleCategorySelect = (value: string) => {
     setActivityType(value);
   };
+  const formData = {
+    title,
+    subject,
+    detail_subject: detailSubject,
+    age,
+    image_id: imageId,
+    attachment_id: fileId,
+    attachmentId: fileId,
+    group_size: groupSize,
+    activity_type: activityType,
+    activity_goal: goals.map((goal) => goal.text),
+    activity_tool: tools.map((tool) => tool.value),
+    precautions: precautions.map((precaution) => precaution.text),
+    evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
+    activity_content: contents.map((content) => ({
+      subtitle: content.subtitle,
+      content: content.contents.join('\n'),
+    })),
+    nuri_curriculum: curriculumComponents.map(
+      (component: {
+        selectedNurri: string;
+        selectedSubNurri: string;
+        selectedCurriculum: string;
+      }) => ({
+        main_category: component.selectedNurri,
+        sub_category: component.selectedSubNurri,
+        content: component.selectedCurriculum,
+      }),
+    ),
+  };
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     setIsSaving(true);
-    const formData = {
-      title,
-      subject,
-      detail_subject: detailSubject,
-      age,
-      group_size: groupSize,
-      activity_type: activityType,
-      activity_goal: goals.map((goal) => goal.text),
-      activity_tool: tools.map((tool) => tool.value),
-      precautions: precautions.map((precaution) => precaution.text),
-      evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
-      activity_content: contents.map((content) => ({
-        subtitle: content.subtitle,
-        content: content.contents.join('\n'),
-      })),
-      nuri_curriculum: curriculumComponents.map(
-        (component: {
-          selectedNurri: string;
-          selectedSubNurri: string;
-          selectedCurriculum: string;
-        }) => ({
-          main_category: component.selectedNurri,
-          sub_category: component.selectedSubNurri,
-          content: component.selectedCurriculum,
-        }),
-      ),
-    };
 
     if (session) {
       try {
@@ -155,6 +166,7 @@ export default function FormPage() {
             type={'text'}
             name={'title'}
             value={title}
+            ref={titleInputRef}
             onChange={(e) => setTitle(e.target.value)}
             className={'text-xl laptop:text-3xl focus:outline-none w-full'}
             placeholder={'활동명을 입력하세요 '}
@@ -193,11 +205,27 @@ export default function FormPage() {
           canAddMore={curriculumComponents.length < 3}
         />
         <ToolSection tools={tools} setTools={setTools} />
-        <FileUploadSection
-          id={'activity-resource'}
-          label={'활동 자료'}
-          description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
-        />
+        {session && session.accessToken && (
+          <>
+            <ImageUploadSection
+              imageId={imageId}
+              setImageId={setImageId}
+              accessToken={session.accessToken}
+              id={'activity-resource'}
+              label={'이미지'}
+              description={'업로드할 이미지를 드롭하거나 클릭해서 선택하세요.'}
+            />
+            <FileUploadSection
+              fileId={fileId}
+              setFileId={setFileId}
+              accessToken={session.accessToken}
+              id={'activity-resource'}
+              label={'활동 자료'}
+              description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
+            />
+          </>
+        )}
+
         <ContentSection contents={contents} setContents={setContents} />
         <PrecautionsSection
           precautions={precautions}
