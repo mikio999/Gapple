@@ -117,16 +117,18 @@ const CommentItem = ({
                     'block px-4 py-2 text-sm text-slate-700 hover:bg-slate-700 hover:text-white w-full rounded-md'
                   }
                 >
-                  수정
+                  {'수정'}
                 </button>
               </li>
               <li>
                 <button
                   type={'button'}
                   onClick={handleDelete}
-                  className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-700 hover:text-white w-full rounded-md"
+                  className={
+                    'block px-4 py-2 text-sm text-slate-700 hover:bg-slate-700 hover:text-white w-full rounded-md'
+                  }
                 >
-                  삭제
+                  {'삭제'}
                 </button>
               </li>
             </ul>

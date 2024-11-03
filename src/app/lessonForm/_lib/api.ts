@@ -23,8 +23,7 @@ const submitLessonForm = async (
     'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
   };
-  console.log('======formData=====');
-  console.log(formData);
+
   try {
     const response = await axios.post(`/api/lessonform`, formData, {
       headers,

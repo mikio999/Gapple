@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IDocumentData } from '@/types/document';
 
 interface DocumentResponse {
   id: number;
@@ -22,22 +23,7 @@ interface DocumentResponse {
 }
 
 export async function postDocument(
-  documentData: {
-    title: string;
-    subject: string;
-    detailSubject: string;
-    age: number;
-    groupSize: string;
-    activityType: string;
-    activityGoal: string[];
-    activityTool: string[];
-    precautions: string[];
-    evaluationCriteria: string[];
-    activityContent: {
-      subtitle: string;
-      content: string;
-    }[];
-  },
+  documentData: IDocumentData,
   accessToken: string,
 ) {
   const headers = {

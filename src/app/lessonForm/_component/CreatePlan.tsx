@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
+import { IContentItem } from '@/types/content';
 import CategorySelect from './select/CategorySelect';
 import AgeSelect from './select/AgeSelect';
 import GroupSelect from './select/GroupSelect';
@@ -26,8 +26,15 @@ export default function FormPage() {
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
-  const initialContents = [{ id: uuidv4(), subtitle: '', contents: [''] }];
-  const [contents, setContents] = useState(initialContents);
+
+  const [contents, setContents] = useState<IContentItem[]>([]);
+
+  const memoizedSetContents: React.Dispatch<
+    React.SetStateAction<IContentItem[]>
+  > = useCallback((newContents: React.SetStateAction<IContentItem[]>) => {
+    setContents(newContents);
+  }, []);
+
   const initialGoals = [{ id: '', text: '' }];
   const [goals, setGoals] = useState(initialGoals);
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
@@ -90,6 +97,12 @@ export default function FormPage() {
   const handleCategorySelect = (value: string) => {
     setActivityType(value);
   };
+
+  const formattedContents = contents.map((content) => ({
+    subtitle: content.subtitle,
+    content: content.contents.map((item) => item.text).join('\n'),
+  }));
+
   const formData = {
     title,
     subject,
@@ -104,10 +117,8 @@ export default function FormPage() {
     activity_tool: tools.map((tool) => tool.value),
     precautions: precautions.map((precaution) => precaution.text),
     evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
-    activity_content: contents.map((content) => ({
-      subtitle: content.subtitle,
-      content: content.contents.join('\n'),
-    })),
+    activity_content: formattedContents,
+
     nuri_curriculum: curriculumComponents.map(
       (component: {
         selectedNurri: string;
@@ -129,7 +140,7 @@ export default function FormPage() {
       try {
         const result = await submitLessonForm(formData, session.accessToken);
         toast.success('계획안 생성 성공!');
-        console.log('서버 응답:', result);
+        console.log(result);
       } catch (error) {
         toast.error('계획안 생성 실패!');
         console.error('폼 제출 실패:', error);
@@ -226,7 +237,7 @@ export default function FormPage() {
           </>
         )}
 
-        <ContentSection contents={contents} setContents={setContents} />
+        <ContentSection contents={contents} setContents={memoizedSetContents} />
         <PrecautionsSection
           precautions={precautions}
           setPrecautions={setPrecautions}

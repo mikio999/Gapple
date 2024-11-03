@@ -67,7 +67,7 @@ const ProfileIcon = () => {
   if (status === 'loading') {
     return (
       <div className={'flex justify-center items-center mt-64'}>
-        <BounceLoader />
+        <BounceLoader color={'#FF69B4'} />
       </div>
     );
   }

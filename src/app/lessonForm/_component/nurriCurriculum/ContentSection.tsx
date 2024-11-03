@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -7,69 +7,73 @@ import {
   Draggable,
   DropResult,
 } from '@hello-pangea/dnd';
-
-interface ContentItem {
-  id: string;
-  subtitle: string;
-  contents: string[];
-}
+import { IContentItem } from '@/types/content';
 
 interface ContentSectionProps {
-  contents: ContentItem[];
-  setContents: React.Dispatch<React.SetStateAction<ContentItem[]>>;
+  contents: IContentItem[];
+  setContents: React.Dispatch<React.SetStateAction<IContentItem[]>>;
 }
 
 const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
   const [isAdding, setIsAdding] = useState(false);
   const inputRefs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({});
 
+  useEffect(() => {
+    const initialContents = [
+      {
+        id: uuidv4(),
+        subtitle: '',
+        contents: [{ id: uuidv4(), text: '' }],
+      },
+    ];
+    setContents(initialContents);
+  }, [setContents]);
+
   const addContent = () => {
     if (contents.length < 10 && !isAdding) {
       setIsAdding(true);
-      const newContent = { id: uuidv4(), subtitle: '', contents: [''] };
+      const newContent = {
+        id: uuidv4(),
+        subtitle: '',
+        contents: [{ id: uuidv4(), text: '' }],
+      };
       setContents((prevContents) => [...prevContents, newContent]);
       setIsAdding(false);
     }
   };
 
   const addItemContent = (contentId: string) => {
-    setContents((prevContents) =>
-      prevContents.map((content) =>
-        content.id === contentId
-          ? { ...content, contents: [...content.contents, ''] }
-          : content,
-      ),
-    );
-
-    const deleteItemContent = (contentId: string, contentIndex: number) => {
+    if (!isAdding) {
+      setIsAdding(true);
       setContents((prevContents) =>
         prevContents.map((content) =>
           content.id === contentId
             ? {
                 ...content,
-                contents: content.contents.filter((_, i) => i !== contentIndex),
+                contents: [...content.contents, { id: uuidv4(), text: '' }],
               }
             : content,
         ),
       );
-    };
 
-    setTimeout(() => {
-      const lastContent = contents.find((content) => content.id === contentId);
-      if (lastContent?.contents && lastContent.contents.length > 0) {
-        const lastKey = `${lastContent.id}-${lastContent.contents.length}`;
-        if (inputRefs.current[lastKey]) {
+      setTimeout(() => {
+        setIsAdding(false);
+        const lastContent = contents.find(
+          (content) => content.id === contentId,
+        );
+        if (lastContent?.contents) {
+          const lastKey = `${lastContent.id}-${lastContent.contents.length - 1}`;
           inputRefs.current[lastKey]?.focus();
         }
-      }
-    }, 50);
+      }, 50);
+    }
   };
 
   const reorder = (
-    list: ContentItem[],
+    list: IContentItem[],
     startIndex: number,
     endIndex: number,
-  ): ContentItem[] => {
+  ): IContentItem[] => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -87,10 +91,11 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
     );
     setContents(items);
   };
+
   const handleContentChange = (
     id: string,
-    field: keyof ContentItem,
-    value: string | string[],
+    field: keyof IContentItem,
+    value: string,
   ) => {
     setContents((prevContents) =>
       prevContents.map((content) =>
@@ -109,8 +114,8 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
         content.id === contentId
           ? {
               ...content,
-              contents: content.contents.map((text, i) =>
-                i === contentIndex ? value : text,
+              contents: content.contents.map((item, index) =>
+                index === contentIndex ? { ...item, text: value } : item,
               ),
             }
           : content,
@@ -130,21 +135,25 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
         content.id === contentId
           ? {
               ...content,
-              contents: content.contents.filter((_, i) => i !== contentIndex),
+              contents: content.contents.filter(
+                (_, index) => index !== contentIndex,
+              ),
             }
           : content,
       ),
     );
   };
+
   return (
     <div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable-content-section">
+        <Droppable droppableId={'droppable-content-section'}>
           {(provided, snapshot) => (
             <div
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="p-4"
+              className={'p-4'}
               style={{
                 backgroundColor: snapshot.isDraggingOver
                   ? 'rgb(248 250 252)'
@@ -160,11 +169,13 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                   {(provided, snapshot) => (
                     <div
                       ref={provided.innerRef}
+                      // eslint-disable-next-line react/jsx-props-no-spreading
                       {...provided.draggableProps}
                       className={`mb-4 p-4 border border-slate-100 shadow-sm ${snapshot.isDragging ? 'bg-primary100' : ''}`}
                     >
                       <div className={'flex justify-between'}>
                         <div
+                          // eslint-disable-next-line react/jsx-props-no-spreading
                           {...provided.dragHandleProps}
                           style={{ cursor: 'grab' }}
                         >
@@ -173,25 +184,32 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                             width={10}
                             height={10}
                             alt={'Drag Handle'}
-                            className="p-1 w-6 h-6 opacity-50"
+                            className={'p-1 w-6 h-6 opacity-50'}
                           />
                         </div>
-                        <button
-                          onClick={() => deleteContent(content.id)}
-                          className="flex justify-center items-center rounded-full hover:bg-primary100 ml-auto p-1 w-8 h-8"
-                        >
-                          <Image
-                            src={'/icons/deletetrash.png'}
-                            width={15}
-                            height={15}
-                            alt={'Delete'}
-                          />
-                        </button>
+                        {contents.length > 1 && (
+                          <button
+                            type={'button'}
+                            onClick={() => deleteContent(content.id)}
+                            className={
+                              'flex justify-center items-center rounded-full hover:bg-primary100 ml-auto p-1 w-8 h-8'
+                            }
+                          >
+                            <Image
+                              src={'/icons/deletetrash.png'}
+                              width={15}
+                              height={15}
+                              alt={'Delete'}
+                            />
+                          </button>
+                        )}
                       </div>
-                      <div className="flex items-center mb-2">
+                      <div className={'flex items-center mb-2'}>
                         <label
                           htmlFor={`subtitle-${index}`}
-                          className="text-sm font-medium mr-2 w-8 h-8 rounded-full bg-primary100 text-slate-600 flex justify-center items-center"
+                          className={
+                            'text-sm font-medium mr-2 w-8 h-8 rounded-full bg-primary100 text-slate-600 flex justify-center items-center'
+                          }
                         >
                           {index + 1}
                         </label>
@@ -205,17 +223,16 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                               e.target.value,
                             )
                           }
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
-                          placeholder="소제목을 입력하세요"
+                          className={
+                            'block w-full px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
+                          }
+                          placeholder={'소제목을 입력하세요'}
                         />
                       </div>
-                      {content.contents.map((itemContent, contentIndex) => (
-                        <div
-                          key={`${content.id}-${contentIndex}`}
-                          className="flex items-center"
-                        >
+                      {content.contents.map((item, contentIndex) => (
+                        <div key={item.id} className={'flex items-center'}>
                           <textarea
-                            value={itemContent}
+                            value={item.text}
                             onChange={(e) =>
                               handleItemContentChange(
                                 content.id,
@@ -223,15 +240,18 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                                 e.target.value,
                               )
                             }
-                            className="block w-full h-16 px-3 py-2 border mt-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
+                            className={
+                              'block w-full h-16 px-3 py-2 border mt-2 border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary'
+                            }
                             rows={3}
                             placeholder={`교사발문 ${contentIndex + 1}`}
                           />
                           <button
+                            type={'button'}
                             onClick={() =>
                               deleteItemContent(content.id, contentIndex)
                             }
-                            className="ml-2 text-red-500 hover:text-red-700"
+                            className={'ml-2 text-red-500 hover:text-red-700'}
                           >
                             <Image
                               src={'/icons/deleteContent.png'}
@@ -242,12 +262,15 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
                           </button>
                         </div>
                       ))}
-                      <div className="flex justify-center">
+                      <div className={'flex justify-center'}>
                         <button
+                          type={'button'}
                           onClick={() => addItemContent(content.id)}
-                          className="button-border py-2 px-4 bg-primary text-white text-lg rounded-full hover:bg-primary-dark hover:bg-white hover:text-primary mt-2 w-12 h-12 flex justify-center items-center"
+                          className={
+                            'button-border py-2 px-4 bg-primary text-white text-lg rounded-full hover:bg-primary-dark hover:bg-white hover:text-primary mt-2 w-12 h-12 flex justify-center items-center'
+                          }
                         >
-                          +
+                          {'+'}
                         </button>
                       </div>
                     </div>
@@ -259,12 +282,15 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
           )}
         </Droppable>
       </DragDropContext>
-      <div className="flex justify-center mt-2">
+      <div className={'flex justify-center mt-2'}>
         <button
+          type={'button'}
           onClick={addContent}
-          className="button-border py-2 px-4 bg-primary text-white text-sm rounded-full hover:bg-primary-dark hover:bg-white hover:text-primary h-12 flex justify-center items-center"
+          className={
+            'button-border py-2 px-4 bg-primary text-white text-sm rounded-full hover:bg-primary-dark hover:bg-white hover:text-primary h-12 flex justify-center items-center'
+          }
         >
-          세부내용 추가
+          {'세부내용 추가'}
         </button>
       </div>
     </div>

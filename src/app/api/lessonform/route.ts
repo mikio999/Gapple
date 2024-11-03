@@ -3,8 +3,7 @@ import { apiRequest } from '@/_lib/utils/api';
 
 export async function POST(request: NextRequest) {
   const formData = await request.json();
-  console.log('!!!!!!!!!!!!formData!!!!!!!!!!!!');
-  console.log(formData);
+
   try {
     const data = await apiRequest('post', '/document/plan', request, formData);
     return NextResponse.json(data, { status: 200 });

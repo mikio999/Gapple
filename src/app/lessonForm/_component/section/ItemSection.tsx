@@ -70,15 +70,15 @@ const ItemSection = ({
             />
             {items.length > 1 && (
               <button
-                type="button"
+                type={'button'}
                 onClick={() => deleteItem(item.id)}
-                className="ml-2 p-2 rounded-full hover:bg-primary100"
+                className={'ml-2 p-2 rounded-full hover:bg-primary100'}
               >
                 <Image
-                  src="/icons/deletetrash.png"
+                  src={'/icons/deletetrash.png'}
                   width={16}
                   height={16}
-                  alt="Delete"
+                  alt={'Delete'}
                 />
               </button>
             )}
@@ -87,11 +87,13 @@ const ItemSection = ({
         {items.length < maxItems && (
           <div className={'flex justify-center'}>
             <button
-              type="button"
+              type={'button'}
               onClick={addItem}
-              className="mt-2 bg-primary500 hover:bg-primary600 text-white font-bold py-2 px-4 rounded"
+              className={
+                'mt-2 bg-primary500 hover:bg-primary600 text-white font-bold py-2 px-4 rounded'
+              }
             >
-              +
+              {'+'}
             </button>
           </div>
         )}

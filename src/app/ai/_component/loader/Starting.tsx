@@ -18,24 +18,24 @@ const ButtonSpinner = () => {
     <div className={'flex justify-center items-center h-36 w-36 mx-auto'}>
       <AnimatePresence mode={'wait'}>
         <motion.div
-          key="loader1"
+          key={'loader1'}
           variants={loader1Variants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
+          initial={'hidden'}
+          animate={'visible'}
+          exit={'hidden'}
           transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
         >
-          <PuffLoader color="#F43F5E" size={100} />
+          <PuffLoader color={'#F43F5E'} size={100} />
         </motion.div>
         <motion.div
-          key="loader2"
+          key={'loader2'}
           variants={loader2Variants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
+          initial={'hidden'}
+          animate={'visible'}
+          exit={'hidden'}
           transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
         >
-          <PuffLoader color="#3B82F6" size={100} />
+          <PuffLoader color={'#3B82F6'} size={100} />
         </motion.div>
       </AnimatePresence>
     </div>

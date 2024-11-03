@@ -46,10 +46,10 @@ export default function ButtonSection({
 
     try {
       await submitLike(postId, accessToken);
-    } catch (error) {
-      setIsLiked(isLiked); // Revert to previous state on failure
+    } catch (error: any) {
+      setIsLiked(isLiked);
       setLikes(likes);
-      toast.error('Like action failed. Please try again.');
+      toast.error(`Like action failed : ${error.message}. Please try again.`);
     }
   };
 
@@ -66,17 +66,23 @@ export default function ButtonSection({
 
     try {
       await submitBookmark(postId, accessToken);
-    } catch (error) {
-      setIsBookmarked(isBookmarked); // Revert to previous state on failure
+    } catch (error: any) {
+      setIsBookmarked(isBookmarked);
       setBookmarks(bookmarks);
-      toast.error('Bookmark action failed. Please try again.');
+      toast.error(
+        `Bookmark action failed: ${error.message}. Please try again.`,
+      );
     }
   };
 
   return (
-    <div className="flex desktop:flex-col items-center desktop:space-y-8 justify-center bg-white shadow-md desktop:py-4 desktop:px-2 rounded-full px-4 py-2">
+    <div
+      className={
+        'flex desktop:flex-col items-center desktop:space-y-8 justify-center bg-white shadow-md desktop:py-4 desktop:px-2 rounded-full px-4 py-2'
+      }
+    >
       <div
-        className="flex items-center relative cursor-pointer"
+        className={'flex items-center relative cursor-pointer'}
         onMouseEnter={() => setActive((prev) => ({ ...prev, heart: true }))}
         onMouseLeave={() => setActive((prev) => ({ ...prev, heart: false }))}
         onClick={handleLikeToggle}
@@ -89,17 +95,25 @@ export default function ButtonSection({
           }
           width={35}
           height={35}
-          alt="Heart"
+          alt={'Heart'}
         />
-        <span className="desktop:hidden text-slate-400 text-xs font-semibold ml-2 mr-8">
+        <span
+          className={
+            'desktop:hidden text-slate-400 text-xs font-semibold ml-2 mr-8'
+          }
+        >
           {likes}
         </span>
-        <span className="hidden desktop:block absolute desktop:top-12 desktop:-translate-x-1/2 desktop:right-3 desktop:left-1/2 translate-x-full -translate-y-1/2 right-0 text-slate-500 text-xs font-semibold">
+        <span
+          className={
+            'hidden desktop:block absolute desktop:top-12 desktop:-translate-x-1/2 desktop:right-3 desktop:left-1/2 translate-x-full -translate-y-1/2 right-0 text-slate-500 text-xs font-semibold'
+          }
+        >
           {likes}
         </span>
       </div>
       <div
-        className="flex items-center relative cursor-pointer"
+        className={'flex items-center relative cursor-pointer'}
         onMouseEnter={() => setActive((prev) => ({ ...prev, star: true }))}
         onMouseLeave={() => setActive((prev) => ({ ...prev, star: false }))}
         onClick={handleBookmarkToggle}
@@ -112,17 +126,25 @@ export default function ButtonSection({
           }
           width={35}
           height={35}
-          alt="Star"
+          alt={'Star'}
         />
-        <span className="desktop:hidden text-slate-400 text-xs font-semibold ml-2 mr-2">
+        <span
+          className={
+            'desktop:hidden text-slate-400 text-xs font-semibold ml-2 mr-2'
+          }
+        >
           {bookmarks}
         </span>
-        <span className="hidden desktop:block absolute desktop:top-12 desktop:-translate-x-1/2 desktop:right-3 desktop:left-1/2 translate-x-full -translate-y-1/2 right-0 text-slate-500 text-xs font-semibold">
+        <span
+          className={
+            'hidden desktop:block absolute desktop:top-12 desktop:-translate-x-1/2 desktop:right-3 desktop:left-1/2 translate-x-full -translate-y-1/2 right-0 text-slate-500 text-xs font-semibold'
+          }
+        >
           {bookmarks}
         </span>
       </div>
       <div
-        className="relative cursor-pointer"
+        className={'relative cursor-pointer'}
         onMouseEnter={() => setActive((prev) => ({ ...prev, share: true }))}
         onMouseLeave={() => setActive((prev) => ({ ...prev, share: false }))}
         onClick={() => {
@@ -135,8 +157,8 @@ export default function ButtonSection({
           }
           width={35}
           height={35}
-          className="hidden desktop:block"
-          alt="Share"
+          className={'hidden desktop:block'}
+          alt={'Share'}
         />
       </div>
     </div>

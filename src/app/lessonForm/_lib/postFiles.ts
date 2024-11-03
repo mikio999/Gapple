@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-const postFile = async (file: File, accessToken: string) => {
-  const formData = new FormData();
-  formData.append('files', file);
-
+const postFiles = async (formData: FormData, accessToken: string) => {
   const headers = {
     Authorization: `Bearer ${accessToken}`,
     'Content-Type': 'multipart/form-data',
@@ -18,4 +15,4 @@ const postFile = async (file: File, accessToken: string) => {
   }
 };
 
-export default postFile;
+export default postFiles;

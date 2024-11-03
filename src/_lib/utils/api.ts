@@ -14,7 +14,7 @@ export async function apiRequest(
     throw new Error('Authorization token is required');
   }
 
-  let headers: Record<string, string> = {
+  const headers: Record<string, string> = {
     Authorization: `Bearer ${accessToken}`,
   };
 

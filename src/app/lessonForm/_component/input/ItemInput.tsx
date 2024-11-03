@@ -31,7 +31,7 @@ export const ItemInput = ({
         {id}
       </label>
       <input
-        type="text"
+        type={'text'}
         id={id}
         value={value}
         ref={inputRef}

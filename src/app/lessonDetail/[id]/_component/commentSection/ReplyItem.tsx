@@ -99,18 +99,22 @@ const ReplyItem = ({
                 <button
                   type={'button'}
                   onClick={handleEdit}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
+                  className={
+                    'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full'
+                  }
                 >
-                  수정
+                  {'수정'}
                 </button>
               </li>
               <li>
                 <button
                   type={'button'}
                   onClick={handleDelete}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
+                  className={
+                    'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full'
+                  }
                 >
-                  삭제
+                  {'삭제'}
                 </button>
               </li>
             </ul>

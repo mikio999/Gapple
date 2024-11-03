@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
-import postFile from '../../_lib/postFile';
+import postFiles from '../../_lib/postFiles';
 
 interface ImageUploadProps {
   imageId: number;
@@ -21,7 +21,6 @@ interface ImageWithPreview {
 }
 
 const ImageUploadSection = ({
-  imageId,
   setImageId,
   id,
   label,
@@ -30,60 +29,66 @@ const ImageUploadSection = ({
 }: ImageUploadProps) => {
   const [images, setImages] = useState<ImageWithPreview[]>([]);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const newImages = acceptedFiles.map((file) => ({
-        name: file.name,
-        preview: URL.createObjectURL(file),
-        size: file.size,
-        type: file.type,
-        file: file,
-      }));
-      setImages((prevImages) => [...prevImages, ...newImages]);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const newImages = acceptedFiles.map((file) => ({
+      name: file.name,
+      preview: URL.createObjectURL(file),
+      size: file.size,
+      type: file.type,
+      file,
+    }));
+    setImages((prevImages) => [...prevImages, ...newImages]);
+  }, []);
 
-      acceptedFiles.forEach((file) => {
-        postFile(file, accessToken)
-          .then((response) => {
-            console.log('Upload success:', response);
-            setImageId(response.data);
-          })
-          .catch((error) => {
-            console.error('Upload error:', error);
-          });
-      });
-    },
-    [accessToken, setImageId],
-  );
+  useEffect(() => {
+    if (images.length > 0) {
+      const formData = new FormData();
+      images.forEach(({ file }) => formData.append('files', file));
+
+      postFiles(formData, accessToken)
+        .then((response) => {
+          console.log('Upload success:', response);
+          setImageId(response.data);
+        })
+        .catch((error) => {
+          console.error('Upload error:', error);
+        });
+    }
+  }, [images, accessToken, setImageId]);
+
+  const handleDelete = (imageToDelete: ImageWithPreview) => {
+    setImages((currentImages) =>
+      currentImages.filter((image) => image !== imageToDelete),
+    );
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const imagePreviews = images.map((image, index) => (
+  const imagePreviews = images.map((image) => (
     <div
-      key={index}
-      className="mt-2 flex justify-between items-center bg-white p-2 rounded shadow w-36"
+      key={image.name}
+      className={
+        'mt-2 flex justify-between items-center bg-white p-2 rounded shadow w-36'
+      }
     >
-      <div className="relative w-24 h-24">
+      <div className={'relative w-24 h-24'}>
         <Image
           src={image.preview}
-          layout="fill"
-          objectFit="cover"
+          layout={'fill'}
+          objectFit={'cover'}
           alt={image.name}
         />
       </div>
       <button
-        type="button"
-        onClick={() =>
-          setImages((currentImages) =>
-            currentImages.filter((img) => img !== image),
-          )
-        }
-        className="text-red-500 hover:text-red-700"
+        type={'button'}
+        onClick={() => handleDelete(image)}
+        className={'text-red-500 hover:text-red-700'}
       >
         <Image
-          src="/icons/deletetrash.png"
+          src={'/icons/deletetrash.png'}
           width={16}
           height={16}
-          alt="Delete"
+          alt={'Delete'}
         />
       </button>
     </div>
@@ -91,12 +96,16 @@ const ImageUploadSection = ({
 
   return (
     <>
-      <h1 className="title-effect">{label}</h1>
+      <h1 className={'title-effect'}>{label}</h1>
       <div
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...getRootProps()}
-        className="flex justify-center items-center mt-1 w-full px-3 py-12 border-2 border-primary500 hover:bg-primary100 rounded-md shadow-sm focus:outline-none focus:ring-primary200 focus:bg-primary100 cursor-pointer"
+        className={
+          'flex justify-center items-center mt-1 w-full px-3 py-12 border-2 border-primary500 hover:bg-primary100 rounded-md shadow-sm focus:outline-none focus:ring-primary200 focus:bg-primary100 cursor-pointer'
+        }
       >
         <input
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...getInputProps()}
           id={id}
           aria-label={label}
@@ -117,7 +126,15 @@ const ImageUploadSection = ({
               '클릭해서 이미지를 업로드하거나 여기에 이미지를 드롭해주세요!'}
         </p>
       </div>
-      {imagePreviews.length > 0 && <div className="mt-4">{imagePreviews}</div>}
+      {imagePreviews.length > 0 && (
+        <div
+          className={
+            'mt-4 grid grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-5'
+          }
+        >
+          {imagePreviews}
+        </div>
+      )}
     </>
   );
 };

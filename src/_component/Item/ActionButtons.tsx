@@ -44,10 +44,10 @@ const ActionButtons = ({
 
     try {
       await submitLike(postId, accessToken);
-    } catch (error) {
+    } catch (error: any) {
       setIsLiked(isLiked);
       setLikes(likes);
-      toast.error('Like action failed. Please try again.');
+      toast.error(`Like action failed: ${error.message}. Please try again.`);
     }
   };
 
@@ -65,10 +65,12 @@ const ActionButtons = ({
 
     try {
       await submitBookmark(postId, accessToken);
-    } catch (error) {
+    } catch (error: any) {
       setIsBookmarked(isBookmarked);
       setBookmarks(bookmarks);
-      toast.error('Bookmark action failed. Please try again.');
+      toast.error(
+        `Bookmark action failed: ${error.message}. Please try again.`,
+      );
     }
   };
 

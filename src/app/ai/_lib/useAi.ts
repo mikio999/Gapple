@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { IDocumentData } from '@/types/document';
 import { postSubject } from './subjectApi';
 import { postDocument } from './documentApi';
 
@@ -28,8 +29,7 @@ export function useAi(
   );
 
   const postDocumentMutation = useMutation(
-    (documentData: { title: string; content: string }) =>
-      postDocument(documentData, accessToken),
+    (documentData: IDocumentData) => postDocument(documentData, accessToken),
     {
       onSuccess: (data) => {
         console.log('Document posted successfully:', data);
