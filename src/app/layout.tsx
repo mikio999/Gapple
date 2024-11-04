@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
 import AuthSession from '@/_component/AuthSession';
+import RQProvider from '@/providers/RQProvider';
 import SideBar from './(main)/_component/NavBar/SideBar';
 
 export const metadata: Metadata = {
@@ -25,15 +26,17 @@ export default function RootLayout({
         style={{ fontFamily: 'Pretendard' }}
       >
         <AuthSession>
-          <SideBar />
-          <main
-            className={
-              'flex justify-center tablet:ml-0 laptop:ml-20 desktop:ml-36 flex-grow p-4 bg-slate-50'
-            }
-          >
-            {children}
-          </main>
-          {modal && <div>{modal}</div>}
+          <RQProvider>
+            <SideBar />
+            <main
+              className={
+                'flex justify-center tablet:ml-0 laptop:ml-20 desktop:ml-36 flex-grow p-4 bg-slate-50 w-dvw'
+              }
+            >
+              {children}
+            </main>
+            {modal && <div>{modal}</div>}
+          </RQProvider>
         </AuthSession>
       </body>
     </html>

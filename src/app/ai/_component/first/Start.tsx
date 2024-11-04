@@ -1,10 +1,12 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { greetings } from '@/_lib/constants/greetings';
 import TypingEffect from '../motion/TypingEffect';
 import MotionButton from '../motion/MotionButton';
 import Loader from '../loader/Loader';
+import { useSubjectStore } from '../../_store/useSubjectStore';
 
 interface StartProps {
   onProceed: () => void;
@@ -12,6 +14,12 @@ interface StartProps {
 
 const Start = ({ onProceed }: StartProps) => {
   const { data: session, status } = useSession();
+  const { setSubjectData, setDocumentData } = useSubjectStore();
+
+  useEffect(() => {
+    setSubjectData(null);
+    setDocumentData(null);
+  }, [setSubjectData, setDocumentData]);
 
   const currentMonth = new Date().getMonth();
   const season =
@@ -33,7 +41,11 @@ const Start = ({ onProceed }: StartProps) => {
   }[season];
 
   if (status === 'loading') {
-    return <Loader />;
+    return (
+      <div className={'mt-20'}>
+        <Loader />
+      </div>
+    );
   }
 
   if (!session?.user) {
@@ -46,7 +58,9 @@ const Start = ({ onProceed }: StartProps) => {
     <div className={'flex flex-col w-100 text-xl m-2'}>
       <div className={'mb-4'}>{'안녕하세요!'}</div>
       <TypingEffect text={introText} />
-      <MotionButton onClick={onProceed} />
+      <div className={'flex mx-auto mt-[40dvh]'}>
+        <MotionButton onClick={onProceed} />
+      </div>
     </div>
   );
 };

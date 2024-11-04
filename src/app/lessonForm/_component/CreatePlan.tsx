@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
+import { IContentItem } from '@/types/content';
 import CategorySelect from './select/CategorySelect';
 import AgeSelect from './select/AgeSelect';
 import GroupSelect from './select/GroupSelect';
@@ -19,15 +19,22 @@ import FileUploadSection from './section/FileUploadSection';
 import ToolSection from './section/ToolSection';
 import submitLessonForm from '../_lib/api';
 import SaveButtons from './section/SaveButtonsSection';
-import 'react-toastify/dist/ReactToastify.css';
+import ImageUploadSection from './section/ImageUploadSection';
 
 export default function FormPage() {
   const { data: session } = useSession();
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
-  const initialContents = [{ id: uuidv4(), subtitle: '', contents: [''] }];
-  const [contents, setContents] = useState(initialContents);
+
+  const [contents, setContents] = useState<IContentItem[]>([]);
+
+  const memoizedSetContents: React.Dispatch<
+    React.SetStateAction<IContentItem[]>
+  > = useCallback((newContents: React.SetStateAction<IContentItem[]>) => {
+    setContents(newContents);
+  }, []);
+
   const initialGoals = [{ id: '', text: '' }];
   const [goals, setGoals] = useState(initialGoals);
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
@@ -39,6 +46,8 @@ export default function FormPage() {
   const [groupSize, setGroupSize] = useState('SMALL');
   const [activityType, setActivityType] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [fileId, setFileId] = useState(0);
+  const [imageId, setImageId] = useState(0);
   const initialState = [
     { selectedNurri: '', selectedSubNurri: '', selectedCurriculum: '' },
   ];
@@ -50,6 +59,12 @@ export default function FormPage() {
     addCurriculumComponent,
     removeCurriculumComponent,
   } = useCurriculumHandlers(initialState);
+
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    titleInputRef.current?.focus();
+  }, []);
 
   const ageOptions = [
     { label: '만 3세', value: 3, image: '/images/age/age3.png' },
@@ -83,42 +98,49 @@ export default function FormPage() {
     setActivityType(value);
   };
 
+  const formattedContents = contents.map((content) => ({
+    subtitle: content.subtitle,
+    content: content.contents.map((item) => item.text).join('\n'),
+  }));
+
+  const formData = {
+    title,
+    subject,
+    detail_subject: detailSubject,
+    age,
+    image_id: imageId,
+    attachment_id: fileId,
+    attachmentId: fileId,
+    group_size: groupSize,
+    activity_type: activityType,
+    activity_goal: goals.map((goal) => goal.text),
+    activity_tool: tools.map((tool) => tool.value),
+    precautions: precautions.map((precaution) => precaution.text),
+    evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
+    activity_content: formattedContents,
+
+    nuri_curriculum: curriculumComponents.map(
+      (component: {
+        selectedNurri: string;
+        selectedSubNurri: string;
+        selectedCurriculum: string;
+      }) => ({
+        main_category: component.selectedNurri,
+        sub_category: component.selectedSubNurri,
+        content: component.selectedCurriculum,
+      }),
+    ),
+  };
+
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     setIsSaving(true);
-    const formData = {
-      title,
-      subject,
-      detail_subject: detailSubject,
-      age,
-      group_size: groupSize,
-      activity_type: activityType,
-      activity_goal: goals.map((goal) => goal.text),
-      activity_tool: tools.map((tool) => tool.value),
-      precautions: precautions.map((precaution) => precaution.text),
-      evaluation_criteria: evaluations.map((evaluation) => evaluation.text),
-      activity_content: contents.map((content) => ({
-        subtitle: content.subtitle,
-        content: content.contents.join('\n'),
-      })),
-      nuri_curriculum: curriculumComponents.map(
-        (component: {
-          selectedNurri: string;
-          selectedSubNurri: string;
-          selectedCurriculum: string;
-        }) => ({
-          main_category: component.selectedNurri,
-          sub_category: component.selectedSubNurri,
-          content: component.selectedCurriculum,
-        }),
-      ),
-    };
 
     if (session) {
       try {
         const result = await submitLessonForm(formData, session.accessToken);
         toast.success('계획안 생성 성공!');
-        console.log('서버 응답:', result);
+        console.log(result);
       } catch (error) {
         toast.error('계획안 생성 실패!');
         console.error('폼 제출 실패:', error);
@@ -147,7 +169,7 @@ export default function FormPage() {
     <div>
       <div
         className={
-          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-12 mb-16 laptop:mt-0 laptop:mb-0 flex flex-col w-full max-w-4xl mx-auto'
+          'space-y-6 bg-white p-6 rounded-lg shadow-md mt-4 mb-16 laptop:mt-0 laptop:mb-0 flex flex-col w-full max-w-4xl mx-auto'
         }
       >
         <div>
@@ -155,11 +177,11 @@ export default function FormPage() {
             type={'text'}
             name={'title'}
             value={title}
+            ref={titleInputRef}
             onChange={(e) => setTitle(e.target.value)}
             className={'text-xl laptop:text-3xl focus:outline-none w-full'}
             placeholder={'활동명을 입력하세요 '}
           />
-          <div className={'ml-2 p-2  w-1/12 '} />
         </div>
         <SubjectInputSection
           subject={subject}
@@ -194,12 +216,28 @@ export default function FormPage() {
           canAddMore={curriculumComponents.length < 3}
         />
         <ToolSection tools={tools} setTools={setTools} />
-        <FileUploadSection
-          id={'activity-resource'}
-          label={'활동 자료'}
-          description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
-        />
-        <ContentSection contents={contents} setContents={setContents} />
+        {session && session.accessToken && (
+          <>
+            <ImageUploadSection
+              imageId={imageId}
+              setImageId={setImageId}
+              accessToken={session.accessToken}
+              id={'activity-resource'}
+              label={'이미지'}
+              description={'업로드할 이미지를 드롭하거나 클릭해서 선택하세요.'}
+            />
+            <FileUploadSection
+              fileId={fileId}
+              setFileId={setFileId}
+              accessToken={session.accessToken}
+              id={'activity-resource'}
+              label={'활동 자료'}
+              description={'업로드할 파일을 드롭하거나 클릭해서 선택하세요.'}
+            />
+          </>
+        )}
+
+        <ContentSection contents={contents} setContents={memoizedSetContents} />
         <PrecautionsSection
           precautions={precautions}
           setPrecautions={setPrecautions}

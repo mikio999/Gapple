@@ -12,6 +12,7 @@ import Attachments from './Attachments';
 import ImageGallery from './ImageGallery';
 
 const LessonDetails = ({ planner }: { planner: IPlanner }) => {
+  console.log(planner);
   return (
     <div className={'bg-white py-4 px-6 shadow rounded-lg'}>
       <div className={'my-4'}>
@@ -23,19 +24,33 @@ const LessonDetails = ({ planner }: { planner: IPlanner }) => {
         activityType={planner.class_plan.activity_type}
       />
       <GoalTable title={'활동 목표'}>
-        {planner.class_plan.activity_goal.map((goal) => (
-          <div key={goal} className={'flex py-2'}>
+        {Array.isArray(planner.class_plan.activity_goal) ? (
+          planner.class_plan.activity_goal.map((goal) => (
+            <div key={goal} className={'flex py-2'}>
+              <Image
+                src={'/icons/idea.png'}
+                width={20}
+                height={20}
+                alt={'Goal icon'}
+                className={'h-5 w-5 mr-2 text-slate-700'}
+              />
+              {goal}
+            </div>
+          ))
+        ) : (
+          <div className={'flex py-2'}>
             <Image
               src={'/icons/idea.png'}
               width={20}
               height={20}
-              alt={'subject'}
+              alt={'Goal icon'}
               className={'h-5 w-5 mr-2 text-slate-700'}
             />
-            {goal}
+            {planner.class_plan.activity_goal}
           </div>
-        ))}
+        )}
       </GoalTable>
+
       <NuriCurriculum curriculum={planner.class_plan.nuri_curriculum} />
       <div className={'flex justify-between my-4'}>
         <ActivityTool tools={planner.class_plan.activity_tool} />

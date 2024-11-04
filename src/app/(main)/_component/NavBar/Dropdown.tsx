@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState, ReactNode, useCallback } from 'react';
-import { SubMenuItem } from '@/types/menu';
 import Link from 'next/link';
+import { SubMenuItem } from '@/types/menu';
 
 interface DropdownProps {
   toggleComponent: ReactNode;

@@ -1,32 +1,49 @@
-'use client';
-
 import IComment from '@/types/comment';
 import CommentItem from './CommentItem';
 
 interface Props {
   comments: IComment[];
   onLike: (id: number) => void;
-  onToggleReplies: (id: number) => void;
-  onAddReply: (id: number, replyText: string) => void;
+  toggleReplies: (id: number) => void;
+  onAddReply: (commentData: {
+    content: string;
+    parentCommentId?: number;
+  }) => void;
+  onDeleteComment: (commentId: number) => void;
+  onEditComment: (commentData: { commentId: number; content: string }) => void;
+  showReplies: Record<number, boolean>;
 }
 
 const CommentList = ({
   comments,
   onLike,
-  onToggleReplies,
+  toggleReplies,
+  showReplies,
   onAddReply,
+  onDeleteComment,
+  onEditComment,
 }: Props) => {
+  const topLevelComments = comments?.filter((c) => !c.parentCommentId);
+
   return (
     <div>
-      {comments.map((comment) => (
-        <CommentItem
-          key={comment.id}
-          comment={comment}
-          onLike={onLike}
-          onToggleReplies={onToggleReplies}
-          onAddReply={onAddReply}
-        />
-      ))}
+      {topLevelComments?.length > 0 ? (
+        topLevelComments.map((comment) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            replies={comments.filter((c) => c.parentCommentId === comment.id)}
+            onLike={onLike}
+            toggleReplies={toggleReplies}
+            showReplies={showReplies[comment.id]}
+            onAddReply={onAddReply}
+            onDeleteComment={onDeleteComment}
+            onEditComment={onEditComment}
+          />
+        ))
+      ) : (
+        <div>{'댓글이 없습니다'}</div>
+      )}
     </div>
   );
 };

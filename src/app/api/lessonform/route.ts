@@ -1,24 +1,19 @@
-import axios from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
-import { BASE_URL } from '@/_lib/utils/config';
+import { apiRequest } from '@/_lib/utils/api';
 
 export async function POST(request: NextRequest) {
   const formData = await request.json();
-  const accessToken = request.headers.get('authorization')?.split(' ')[1];
 
   try {
-    const response = await axios.post(`${BASE_URL}/document/plan`, formData, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return NextResponse.json(response.data, { status: 200 });
+    const data = await apiRequest('post', '/document/plan', request, formData);
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error('외부 API 호출 실패:', error);
+    const message =
+      error instanceof Error ? error.message : 'Internal Server Error';
+    console.error('외부 API 호출 실패:', message);
     return NextResponse.json(
-      { message: 'Internal Server Error' },
-      { status: 500 },
+      { message },
+      { status: message === 'Authorization token is required' ? 401 : 500 },
     );
   }
 }

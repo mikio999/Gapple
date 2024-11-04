@@ -36,7 +36,7 @@ const TypingTop = () => {
         setShowAll(true);
       }, 1000);
     }
-  }, [subIndex, index, fullText]); // fullText는 이제 useMemo에 의해 안정적인 참조를 유지
+  }, [subIndex, index, fullText]);
 
   return (
     <h1 className={'text-xl'}>

@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidv4 } from 'uuid';
 
 interface PreviewFile extends File {

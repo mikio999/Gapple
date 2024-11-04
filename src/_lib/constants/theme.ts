@@ -1,4 +1,6 @@
-export const theme = [
+import { IOption } from '@/types/aiOption';
+
+export const theme: IOption[] = [
   { name: '단풍', value: '단풍' },
   { name: '한글날', value: '한글날' },
   { name: '도토리', value: '도토리' },

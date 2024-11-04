@@ -23,14 +23,12 @@ const MotionButton = ({ onClick }: MotionButtonProps) => {
         type={'button'}
         onClick={onClick}
         className={
-          'items-center p-2 bg-primary text-white font-bold rounded-full cursor-pointer'
+          'flex mx-auto items-center justify-center p-2 bg-primary text-white font-semibold rounded-full cursor-pointer'
         }
         style={{
           width: '80px',
           height: '80px',
-          position: 'fixed',
-          bottom: '120px',
-          left: '50%',
+          display: 'flex',
           transform: 'translateX(-50%)',
           boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
         }}

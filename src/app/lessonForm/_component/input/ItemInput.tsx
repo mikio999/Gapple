@@ -3,7 +3,7 @@ interface ItemInputProps {
   value: string;
   onChange: (value: string) => void;
   onEnterPress: () => void;
-  inputRef?: (instance: HTMLInputElement | null) => void;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
 export const ItemInput = ({
@@ -21,11 +21,11 @@ export const ItemInput = ({
   };
 
   return (
-    <div className={'flex items-center'}>
+    <div className={'flex flex-grow items-center'}>
       <label
         htmlFor={id}
         className={
-          'flex justify-center items-center text-sm font-medium mr-2 w-8 h-8 rounded-full bg-primary100 text-slate-600'
+          'text-sm font-medium mr-2 w-8 h-8 rounded-full bg-primary100 text-slate-600 flex justify-center items-center'
         }
       >
         {id}
@@ -38,7 +38,7 @@ export const ItemInput = ({
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         className={
-          'block mt-1 px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary w-[60dvw] laptop:w-[70dvw]'
+          'flex-grow px-3 py-2 border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-primary500 focus:border-primary500'
         }
       />
     </div>

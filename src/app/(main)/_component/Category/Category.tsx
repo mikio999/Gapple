@@ -10,13 +10,17 @@ function Category() {
             key={activity.name}
             className={'flex flex-col items-center text-center'}
           >
-            <Image
-              src={activity.image}
-              alt={activity.name}
-              width={60}
-              height={60}
-              className={'rounded-xl button-effect shadow-md shadow-slate-300'}
-            />
+            {activity.image && (
+              <Image
+                src={activity.image}
+                alt={activity.name}
+                width={60}
+                height={60}
+                className={
+                  'rounded-xl button-effect shadow-md shadow-slate-300'
+                }
+              />
+            )}
             <p className={'mt-2 text-slate-600 font-pretendard'}>
               {activity.name}
             </p>
