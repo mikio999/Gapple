@@ -1,10 +1,12 @@
 export interface IDocumentData {
-  title: string;
+  title?: string;
   subject: string;
   detailSubject?: string;
-  age: number;
+  age: number | string;
   groupSize: string;
   activityType: string;
+  selectedSubtitle?: string;
+  selectedContent?: string;
   activityGoal?: string[];
   activityTool?: string[];
   precautions?: string[];

@@ -12,7 +12,7 @@ export interface IAnswers {
 }
 
 export interface ISelectedAnswers {
-  age: number;
+  age: number | string;
   groupSize: string;
   subject: string;
   activityType: string;
@@ -27,4 +27,10 @@ export interface ISubjectData {
   status: string;
   data: ISubjectContent[];
   message: string | null;
+}
+
+export interface IQuestion {
+  question: string;
+  options: IOption[];
+  field: keyof ISelectedAnswers;
 }

@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { IDocumentData } from '@/types/document';
+import { ISelectedAnswers } from '@/types/aiOption';
 import { postSubject } from './subjectApi';
 import { postDocument } from './documentApi';
-import { ISelectedAnswers } from '@/types/aiOption';
 import { useSubjectStore } from '../_store/useSubjectStore';
 
 export function useAi(

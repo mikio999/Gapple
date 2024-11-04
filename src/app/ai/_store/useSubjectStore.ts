@@ -5,8 +5,8 @@ import { IDocument } from '@/types/document';
 interface SubjectStore {
   subjectData: ISubjectData | null;
   documentData: IDocument | null;
-  setSubjectData: (data: ISubjectData) => void;
-  setDocumentData: (data: IDocument) => void;
+  setSubjectData: (data: ISubjectData | null) => void;
+  setDocumentData: (data: IDocument | null) => void;
 
   selectedAnswers: ISelectedAnswers;
   setSelectedAnswers: (answers: ISelectedAnswers) => void;

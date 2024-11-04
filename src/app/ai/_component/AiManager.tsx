@@ -37,12 +37,7 @@ const AiManager = () => {
         />
       )}
       {currentStep === 4 && <GeneratingSubject />}
-      {currentStep === 5 && (
-        <DetailQuestion
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
-        />
-      )}
+      {currentStep === 5 && <DetailQuestion setCurrentStep={setCurrentStep} />}
       {currentStep === 6 && <GeneratingDocument />}
       {currentStep === 7 && <AiPlan />}
     </div>

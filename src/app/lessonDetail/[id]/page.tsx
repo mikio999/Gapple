@@ -22,8 +22,7 @@ export default async function LessonPage({
   }
 
   const planner = await getPlanners(params.id, session.accessToken);
-  console.log('=======planner========');
-  console.log(planner);
+
   return (
     <div className={'container mx-auto desktop:px-28 h-dvh]'}>
       <div className={'flex justify-between'}>

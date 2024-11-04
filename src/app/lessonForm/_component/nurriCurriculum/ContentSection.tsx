@@ -51,7 +51,7 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
       ];
       setContents(initialContents);
     }
-  }, [setContents]);
+  }, [setContents, documentData, pathname]);
 
   const addContent = () => {
     if (contents.length < 10 && !isAdding) {

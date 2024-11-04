@@ -32,8 +32,6 @@ export default function AiPlan() {
 
   const [contents, setContents] = useState<IContentItem[]>([]);
 
-  console.log('documentData', documentData);
-
   const memoizedSetContents: React.Dispatch<
     React.SetStateAction<IContentItem[]>
   > = useCallback((newContents: React.SetStateAction<IContentItem[]>) => {

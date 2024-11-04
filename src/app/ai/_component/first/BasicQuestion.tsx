@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { Dispatch, SetStateAction, useState, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import {
   ageQuestion,
@@ -8,12 +8,16 @@ import {
   subjectQuestion,
   activityTypeQuestion,
 } from '@/_lib/constants/aiQuestionList';
+import { IOption, ISelectedAnswers } from '@/types/aiOption';
 import TypingEffect from '../motion/TypingEffect';
 import OptionSelector from '../motion/OptionSelector';
-import { IOption, ISelectedAnswers } from '@/types/aiOption';
 import { useAi } from '../../_lib/useAi';
-
 import { useSubjectStore } from '../../_store/useSubjectStore';
+
+type BasicQuestionProps = {
+  currentStep: number;
+  setCurrentStep: Dispatch<SetStateAction<number>>;
+};
 
 const questions = [
   ageQuestion,
@@ -22,22 +26,16 @@ const questions = [
   activityTypeQuestion,
 ];
 
-const BasicQuestion = ({ currentStep, setCurrentStep }) => {
+const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
   const [customSubject, setCustomSubject] = useState('');
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
 
   const { addSubject } = useAi(accessToken!, 1, 1);
 
-  const {
-    selectedAnswers,
-    updateSelectedAnswer,
-    subjectData,
-    loading,
-    setLoading,
-  } = useSubjectStore();
-  console.log(subjectData?.data);
-  console.log('selectedAnswers', selectedAnswers);
+  const { selectedAnswers, updateSelectedAnswer, setLoading } =
+    useSubjectStore();
+
   const handleOptionSelect = useCallback(
     (option: IOption) => {
       const currentQuestion = questions[currentStep];
@@ -81,7 +79,6 @@ const BasicQuestion = ({ currentStep, setCurrentStep }) => {
   const handleGenerateAI = async () => {
     setLoading(true);
     if (accessToken && isCompleteAnswers(selectedAnswers)) {
-      console.log('initiate ai...');
       try {
         await addSubject(selectedAnswers);
         console.log('AI generation initiated.');

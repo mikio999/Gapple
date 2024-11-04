@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
+import { IDocumentData } from '@/types/document';
 import { useAi } from '../../_lib/useAi';
 import { useSubjectStore } from '../../_store/useSubjectStore';
 import TypingEffect from '../motion/TypingEffect';
 
-const DetailQuestion = ({ currentStep, setCurrentStep }) => {
+type DetailQuestionProps = {
+  setCurrentStep: Dispatch<SetStateAction<number>>;
+};
+
+type ISubjectItem = {
+  subtitle: string;
+  content: string;
+};
+
+const DetailQuestion = ({ setCurrentStep }: DetailQuestionProps) => {
   const { selectedAnswers, subjectData } = useSubjectStore();
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
@@ -14,14 +24,14 @@ const DetailQuestion = ({ currentStep, setCurrentStep }) => {
   const [selectedContent, setSelectedContent] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleOptionSelect = (item) => {
+  const handleOptionSelect = (item: ISubjectItem) => {
     setSelectedSubtitle(item.subtitle);
     setSelectedContent(item.content);
     setShowConfirmation(true);
   };
 
   const handleCreatePlan = () => {
-    const documentData = {
+    const documentData: IDocumentData = {
       ...selectedAnswers,
       selectedSubtitle,
       selectedContent,
