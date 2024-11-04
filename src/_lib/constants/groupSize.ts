@@ -1,4 +1,6 @@
-export const groupSize = [
+import { IOption } from '@/types/aiOption';
+
+export const groupSize: IOption[] = [
   {
     name: '소집단 (5명 이하)',
     value: '소집단',

@@ -1,4 +1,6 @@
-export const category = [
+import { IOption } from '@/types/aiOption';
+
+export const category: IOption[] = [
   { name: '요리', value: '요리', image: '/images/category/cook.png' },
   {
     name: '음악감상',

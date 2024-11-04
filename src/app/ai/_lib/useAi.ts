@@ -2,21 +2,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { IDocumentData } from '@/types/document';
 import { postSubject } from './subjectApi';
 import { postDocument } from './documentApi';
+import { ISelectedAnswers } from '@/types/aiOption';
 
 export function useAi(
+  accessToken: string,
   subjectId: number,
   documentId: number,
-  accessToken: string,
 ) {
   const queryClient = useQueryClient();
 
   const postSubjectMutation = useMutation(
-    (subjectData: {
-      age: number;
-      groupSize: string;
-      subject: string;
-      activityType: string;
-    }) => postSubject(subjectData, accessToken),
+    (subjectData: ISelectedAnswers) => postSubject(subjectData, accessToken),
     {
       onSuccess: (data) => {
         console.log('Subject posted successfully:', data);

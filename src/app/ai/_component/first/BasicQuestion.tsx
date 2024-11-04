@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { category } from '@/_lib/constants/category';
 import { age } from '@/_lib/constants/age';
 import { groupSize } from '@/_lib/constants/groupSize';
@@ -11,80 +12,32 @@ import SubmitButton from '../SubmitButton';
 import AnswerDisplay from './AnswerDisplay';
 import AIActionDisplay from './AIActionDisplay';
 import OptionSelector from '../motion/OptionSelector';
+import { useAi } from '../../_lib/useAi';
 
 const BasicQuestion = ({
   currentStep,
   setCurrentStep,
   questions,
   questionKeys,
+  inputValue,
+  answers,
+  showInput,
+  handleInputChange,
+  handleNextStep,
+  handleOptionSelect,
+  handleEditAnswer,
+  handleGenerateAI,
 }: BasicQuestionProps) => {
-  const [inputValue, setInputValue] = useState('');
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [showInput, setShowInput] = useState(false);
-
-  console.log('answers', answers);
-  const options = { age, groupSize, theme, category, recommendation };
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
-    },
-    [],
-  );
-
-  const handleNextStep = () => {
-    const key = questionKeys[currentStep - 1];
-    setAnswers((prev) => ({
-      ...prev,
-      [key]: inputValue,
-    }));
-    setInputValue('');
-    if (currentStep < questionKeys.length) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handleOptionSelect = (option: Option) => {
-    const key = questionKeys[currentStep - 1];
-    setAnswers((prev) => ({
-      ...prev,
-      [key]: option.value,
-    }));
-    setCurrentStep(currentStep + 1);
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowInput(true);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleEditAnswer = (index: number) => {
-    const key = questionKeys[index];
-    setCurrentStep(index + 1);
-    setInputValue(answers[key]);
-  };
-
   const currentKey = questionKeys[currentStep - 1] as keyof Options;
-  const currentOptions = options[currentKey];
-  const hasImages = currentOptions.some((option: Option) => option.image);
-
-  const areAllQuestionsAnswered =
-    questionKeys.length === Object.keys(answers).length + 1;
-
-  const handleGenerateAI = () => {
-    if (currentStep < questionKeys.length) {
-      setCurrentStep(6);
-    }
-  };
+  console.log(answers);
+  const currentOptions = answers[currentKey];
+  // const hasImages = currentOptions.some((option: Option) => option.image);
 
   return (
     <div className={'flex flex-col items-center bg-slate-50'}>
       <TypingEffect text={questions[questionKeys[currentStep - 1]]} />
       <div className={'mt-4'}>
-        {showInput && !hasImages && (
+        {/* {showInput && !hasImages && (
           <div className={'flex m-4'}>
             <InputField
               value={inputValue}
@@ -93,21 +46,21 @@ const BasicQuestion = ({
             />
             <SubmitButton onClick={handleNextStep} label={'등록'} />
           </div>
-        )}
-        <OptionSelector
+        )} */}
+        {/* <OptionSelector
           options={currentOptions}
           onOptionSelect={handleOptionSelect}
           hasImages={hasImages}
-        />
+        /> */}
       </div>
       <AnswerDisplay
         answers={answers}
         questions={questions}
         onEditAnswer={handleEditAnswer}
       />
-      {areAllQuestionsAnswered && (
+      {/* {areAllQuestionsAnswered && (
         <AIActionDisplay onGenerateAI={handleGenerateAI} />
-      )}
+      )} */}
     </div>
   );
 };
