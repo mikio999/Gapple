@@ -17,3 +17,14 @@ export interface ISelectedAnswers {
   subject: string;
   activityType: string;
 }
+
+export interface ISubjectContent {
+  subtitle: string;
+  content: string;
+}
+
+export interface ISubjectData {
+  status: string;
+  data: ISubjectContent[];
+  message: string | null;
+}

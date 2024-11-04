@@ -1,14 +1,9 @@
 import Image from 'next/image';
 import React from 'react';
-
-interface CategoryOptionProps {
-  name: string;
-  value: string;
-  image: string;
-}
+import { IOption } from '@/types/aiOption';
 
 interface CategorySelectorProps {
-  options: CategoryOptionProps[];
+  options: IOption[];
   selectedActivityType: string;
   onSelect: (value: string) => void;
 }

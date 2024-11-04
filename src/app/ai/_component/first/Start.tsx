@@ -5,6 +5,8 @@ import { greetings } from '@/_lib/constants/greetings';
 import TypingEffect from '../motion/TypingEffect';
 import MotionButton from '../motion/MotionButton';
 import Loader from '../loader/Loader';
+import { useSubjectStore } from '../../_store/useSubjectStore';
+import { useEffect } from 'react';
 
 interface StartProps {
   onProceed: () => void;
@@ -12,6 +14,12 @@ interface StartProps {
 
 const Start = ({ onProceed }: StartProps) => {
   const { data: session, status } = useSession();
+  const { setSubjectData, setDocumentData } = useSubjectStore();
+
+  useEffect(() => {
+    setSubjectData(null);
+    setDocumentData(null);
+  }, [setSubjectData, setDocumentData]);
 
   const currentMonth = new Date().getMonth();
   const season =

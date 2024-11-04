@@ -15,9 +15,32 @@ export interface IDocumentData {
   images?: string[];
 }
 
+export interface IDocument {
+  status: string;
+  data: IReceivedDocumentData;
+  message: null | string;
+}
+
+export interface IReceivedDocumentData {
+  title: string;
+  subject: string;
+  detail_subject?: string;
+  age: number;
+  group_size: string;
+  activity_type: string;
+  activity_goal: string[];
+  activity_tool: string[];
+  precautions: string[];
+  evaluation_criteria: string[];
+  activity_content: IActivityContent[];
+  nurri_curriculum?: INuriCurriculum;
+  attachments?: IAttachment[];
+  images?: string[];
+}
+
 interface IActivityContent {
-  subtitle: string; // 활동 부제목
-  content: string; // 활동 내용 설명
+  subtitle: string;
+  content: string;
 }
 
 interface INuriCurriculum {
@@ -27,7 +50,7 @@ interface INuriCurriculum {
 }
 
 interface IAttachment {
-  url: string; // 파일 URL
-  fileName: string; // 파일 이름
-  type?: string; // 파일 유형
+  url: string;
+  fileName: string;
+  type?: string;
 }

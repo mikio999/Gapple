@@ -3,6 +3,7 @@ import { IDocumentData } from '@/types/document';
 import { postSubject } from './subjectApi';
 import { postDocument } from './documentApi';
 import { ISelectedAnswers } from '@/types/aiOption';
+import { useSubjectStore } from '../_store/useSubjectStore';
 
 export function useAi(
   accessToken: string,
@@ -16,6 +17,8 @@ export function useAi(
     {
       onSuccess: (data) => {
         console.log('Subject posted successfully:', data);
+        const { setSubjectData } = useSubjectStore.getState();
+        setSubjectData(data);
         queryClient.invalidateQueries(['subject', subjectId]);
       },
       onError: (error) => {
@@ -29,6 +32,8 @@ export function useAi(
     {
       onSuccess: (data) => {
         console.log('Document posted successfully:', data);
+        const { setDocumentData } = useSubjectStore.getState();
+        setDocumentData(data);
         queryClient.invalidateQueries(['document', documentId]);
       },
       onError: (error) => {

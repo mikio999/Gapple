@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -8,6 +9,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import { IContentItem } from '@/types/content';
+import { useSubjectStore } from '@/app/ai/_store/useSubjectStore';
 
 interface ContentSectionProps {
   contents: IContentItem[];
@@ -15,18 +17,40 @@ interface ContentSectionProps {
 }
 
 const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
+  const { documentData } = useSubjectStore();
+  const pathname = usePathname();
+
   const [isAdding, setIsAdding] = useState(false);
   const inputRefs = useRef<{ [key: string]: HTMLTextAreaElement | null }>({});
 
   useEffect(() => {
-    const initialContents = [
-      {
-        id: uuidv4(),
-        subtitle: '',
-        contents: [{ id: uuidv4(), text: '' }],
-      },
-    ];
-    setContents(initialContents);
+    if (documentData && pathname === '/ai') {
+      const loadedContents = documentData.data.activity_content.map((item) => {
+        const splitContents = item.content
+          .split(/(?<=[.?])\s*/)
+          .map((text) => ({
+            id: uuidv4(),
+            text: text.trim(),
+          }));
+
+        return {
+          id: uuidv4(),
+          subtitle: item.subtitle,
+          contents: splitContents,
+        };
+      });
+
+      setContents(loadedContents);
+    } else {
+      const initialContents = [
+        {
+          id: uuidv4(),
+          subtitle: '',
+          contents: [{ id: uuidv4(), text: '' }],
+        },
+      ];
+      setContents(initialContents);
+    }
   }, [setContents]);
 
   const addContent = () => {
