@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { ClimbingBoxLoader } from 'react-spinners';
+import { BounceLoader } from 'react-spinners';
 
 const GeneratingSubject = () => {
   return (
     <motion.div
       className={
-        'fixed inset-0 bg-pink-800 bg-opacity-70 flex flex-col items-center justify-center z-50'
+        'fixed inset-0 bg-purple-800 bg-opacity-70 flex flex-col items-center justify-center z-50'
       }
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -24,7 +24,7 @@ const GeneratingSubject = () => {
         animate={{ scale: 1, rotate: 20 }}
         transition={{ duration: 1, ease: 'linear', repeat: Infinity }}
       >
-        <ClimbingBoxLoader size={60} color={'#ffffff'} />
+        <BounceLoader size={60} color={'#ffffff'} />
       </motion.div>
     </motion.div>
   );

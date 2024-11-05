@@ -47,7 +47,6 @@ const ImageUploadSection = ({
 
       postFiles(formData, accessToken)
         .then((response) => {
-          console.log('Upload success:', response);
           setImageId(response.data);
         })
         .catch((error) => {
