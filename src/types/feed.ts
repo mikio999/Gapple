@@ -18,4 +18,5 @@ export interface IFeed {
   bookmarked: boolean;
   bookmark_count: number;
   comments: IComment[];
+  activity_goal: string;
 }

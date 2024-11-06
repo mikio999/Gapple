@@ -2,6 +2,7 @@ import Link from 'next/link';
 import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
 import ImageCarousel from './ImageCarousel';
+import Image from 'next/image';
 import formatRelativeTime from '../../_lib/formatRelativeTime';
 
 interface FeedProps {
@@ -85,19 +86,48 @@ export default function Feed({ feed }: FeedProps) {
             <ImageCarousel images={feed.images} />
           </div>
         )}
+        <div className={'flex items-center py-1 pl-4 mt-2'}>
+          <Image
+            src={'/icons/idea.png'}
+            width={20}
+            height={20}
+            alt={'idea'}
+            className={'flex justify-center w-4 h-4 mr-1'}
+          />
+          <div className={'text-sm text-slate-800 font-medium'}>
+            {feed.activity_goal}
+          </div>
+        </div>
         <Link href={`/lessonDetail/${feed.id}`} passHref>
           <ul className={'px-4 py-2'}>
-            {feed.content_subtitles?.map((subtitle) => (
-              <li key={subtitle} className={'text-slate-700 text-base'}>
+            {feed.content_subtitles?.map((subtitle, index) => (
+              <li
+                key={subtitle}
+                className={'flex items-center text-slate-700 text-sm mb-1'}
+              >
+                <div
+                  className={
+                    'flex justify-center items-center text-slate-400 w-4 h-4 rounded-full mr-2'
+                  }
+                >
+                  {index + 1}
+                </div>
                 {subtitle}
               </li>
             ))}
           </ul>
+          <span
+            className={
+              'flex justify-end mr-4 text-slate-600 hover:text-slate-400'
+            }
+          >
+            ...더보기
+          </span>
         </Link>
-        <div className={'px-4 pb-4'}>
+        <div className={'px-4 pb-2'}>
           <ActionButtons
             like={feed.liked_count}
-            comment={feed.comments.length} // Update comment count
+            comment={feed.comments.length}
             scrap={feed.bookmark_count}
             isLiked={feed.liked}
             isBookmarked={feed.bookmarked}

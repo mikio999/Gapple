@@ -1,6 +1,6 @@
-import FollowList from './_component/FollowList';
-import TabComponent from './_component/TabComponent';
-import UserInfo from './_component/UserInfo';
+import FollowList from './[id]/_component/FollowList';
+import TabComponent from './[id]/_component/TabComponent';
+import UserInfo from './[id]/_component/UserInfo';
 
 interface ProfileLayoutProps {
   children: React.ReactNode;
