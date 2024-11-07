@@ -1,3 +1,4 @@
+import { BASE_NEXT_URL } from '@/_lib/utils/config';
 import axios from 'axios';
 
 const submitLessonForm = async (
@@ -25,9 +26,13 @@ const submitLessonForm = async (
   };
 
   try {
-    const response = await axios.post(`/api/lessonform`, formData, {
-      headers,
-    });
+    const response = await axios.post(
+      `${BASE_NEXT_URL}/api/document/lessonform`,
+      formData,
+      {
+        headers,
+      },
+    );
     return response.data;
   } catch (error) {
     console.error('폼 제출 실패:', error);

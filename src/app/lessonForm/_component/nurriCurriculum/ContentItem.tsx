@@ -184,7 +184,7 @@ const ContentItem = ({
             type={'button'}
             onClick={() => addItemContent(content.id)}
             className={
-              'button-border py-2 px-4 bg-primary text-white text-lg rounded-full hover:bg-primary-dark hover:bg-white hover:text-primary mt-2 w-12 h-12 flex justify-center items-center'
+              'button-border py-2 px-4 bg-primary text-white text-lg rounded-full hover:bg-primary-dark hover:bg-white hover:text-primary mt-2 w-12 h-12 flex justify-center items-center mx-auto'
             }
           >
             {'+'}

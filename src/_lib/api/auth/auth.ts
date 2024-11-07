@@ -4,6 +4,7 @@ type ResponseValue = {
   email: string;
   name: string;
   profileImg?: string;
+  userId: number;
   accessToken: string;
   refreshToken: string;
 };
@@ -56,6 +57,7 @@ async function _signIn(
 
     if (typeof data !== 'string') {
       return {
+        userId: data.userId,
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
         name: data.name,

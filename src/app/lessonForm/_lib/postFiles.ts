@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_NEXT_URL } from '@/_lib/utils/config';
 
 const postFiles = async (formData: FormData, accessToken: string) => {
   const headers = {
@@ -7,7 +8,13 @@ const postFiles = async (formData: FormData, accessToken: string) => {
   };
 
   try {
-    const response = await axios.post(`/api/postFile`, formData, { headers });
+    const response = await axios.post(
+      `${BASE_NEXT_URL}/api/document/postFile`,
+      formData,
+      {
+        headers,
+      },
+    );
     return response.data;
   } catch (error) {
     console.error('File upload failed:', error);

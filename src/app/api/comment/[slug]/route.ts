@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
 import extractUrlId from '@/_lib/utils/extractUrlId';
+import extractErrorMessage from '@/_lib/utils/extractErrorMessage';
 
 export async function POST(request: NextRequest) {
   const { id } = extractUrlId(request);
@@ -88,11 +89,4 @@ export async function PUT(req: NextRequest) {
       },
     );
   }
-}
-
-function extractErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return 'Unknown error occurred';
 }

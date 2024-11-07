@@ -6,6 +6,8 @@ import { BounceLoader } from 'react-spinners';
 import MenuItem from './MenuItem';
 
 const DropdownMenu = () => {
+  const { data: session } = useSession();
+
   return (
     <div
       className={
@@ -13,7 +15,7 @@ const DropdownMenu = () => {
       }
     >
       <Link
-        href={'/profile'}
+        href={`/profile/${session?.userId}/plan`}
         className={
           'block px-4 py-2 text-center text-sm text-slate-700 hover:bg-slate-100'
         }

@@ -1,9 +1,9 @@
-import { auth } from '@/auth';
 import { v4 as uuidv4 } from 'uuid';
-import ScrapItem from './_component/ScrapItem';
+import { auth } from '@/auth';
 import { getScrap } from '../../_lib/getScrap';
 import PlanItem from '../plan/_component/PlanItem';
 import RecordItem from '../record/_component/RecordItem';
+import { IFeed } from '@/types/feed';
 
 interface Session {
   accessToken: string;
@@ -19,23 +19,22 @@ export default async function ScrapPage() {
 
   const scrapData = await getScrap(session.accessToken);
   console.log(scrapData.data.list);
+
+  if (!scrapData.data.list || scrapData.data.list.length === 0) {
+    return <div>{'No items found.'}</div>;
+  }
+
   return (
     <div>
-      {scrapData.data.list.map((item) => {
+      {scrapData.data.list.map((item: IFeed) => {
+        const key = uuidv4();
         switch (item.type) {
           case 'PLAN':
-            return <PlanItem data={item} />;
+            return <PlanItem key={key} data={item} />;
           case 'LOG':
-            return (
-              <RecordItem
-                key={item.id}
-                title={item.title}
-                description={item.description}
-                likedBy={item.likedBy}
-              />
-            );
+            return <RecordItem key={key} data={item} />;
           default:
-            return null; // Handle unknown types or add a default item type
+            return null;
         }
       })}
     </div>

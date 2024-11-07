@@ -25,7 +25,6 @@ const AiManager = () => {
   }, [documentData, currentStep, setCurrentStep]);
 
   const handleProceed = () => setCurrentStep(0);
-  console.log('currentStep', currentStep);
 
   return (
     <div>

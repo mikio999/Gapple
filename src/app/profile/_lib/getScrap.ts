@@ -6,7 +6,7 @@ export async function getScrap(token: string) {
     Authorization: `Bearer ${token}`,
   };
   try {
-    const res = await fetch(`${BASE_NEXT_URL}/api/getBookmark`, {
+    const res = await fetch(`${BASE_NEXT_URL}/api/profile/getBookmark`, {
       headers,
     });
 
