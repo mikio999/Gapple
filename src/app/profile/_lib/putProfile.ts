@@ -3,14 +3,14 @@ import axios from 'axios';
 interface ProfileResponse {
   nickname: string;
   selfIntro: string;
-  image_file_id: number;
+  image_file_id?: number;
 }
 
 const putProfile = async (
   profileData: {
     nickname: string;
     selfIntro: string;
-    image_file_id: number;
+    image_file_id?: number;
   },
   accessToken: string,
 ) => {

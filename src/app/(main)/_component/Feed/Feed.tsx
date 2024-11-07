@@ -10,38 +10,40 @@ interface FeedProps {
 }
 
 export default function Feed({ feed }: FeedProps) {
+  console.log(feed);
   return (
     <div
       className={
         'mx-auto my-4 max-w-xs tablet:max-w-sm laptop:max-w-md desktop:max-w-lg font-pretendard'
       }
     >
-      <div className={'flex items-center mb-4'}>
-        <div
-          className={'w-10 h-10 laptop:w-12 laptop:h-12 rounded-full'}
-          style={{
-            backgroundImage: `url(${feed.authorThumbnailImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            border: '2px solid white',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
-          }}
-        />
-        <div className={'ml-2'}>
-          <strong>{feed.authorNickname}</strong>
-          <span className={'text-slate-600'}>
-            {'의'}
-            <strong className={'text-primary ml-1'}>
-              {feed.type === 'PLAN' ? '교육계획안' : '기록'}
-            </strong>
-            {'이 올라왔어요!'}
-          </span>
-          <div className={'text-slate-500 text-xs'}>
-            {formatRelativeTime(feed.createdAt)}
+      <Link href={`/profile/${feed.authorId}/plan`}>
+        <div className={'flex items-center mb-4'}>
+          <div
+            className={'w-10 h-10 laptop:w-12 laptop:h-12 rounded-full'}
+            style={{
+              backgroundImage: `url(${feed.authorThumbnailImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              border: '2px solid white',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+            }}
+          />
+          <div className={'ml-2'}>
+            <strong>{feed.authorNickname}</strong>
+            <span className={'text-slate-600'}>
+              {'의'}
+              <strong className={'text-primary ml-1'}>
+                {feed.type === 'PLAN' ? '교육계획안' : '기록'}
+              </strong>
+              {'이 올라왔어요!'}
+            </span>
+            <div className={'text-slate-500 text-xs'}>
+              {formatRelativeTime(feed.createdAt)}
+            </div>
           </div>
         </div>
-      </div>
-
+      </Link>
       <div
         key={feed.id}
         className={

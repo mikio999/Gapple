@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import AuthSession from '@/_component/AuthSession';
 import RQProvider from '@/providers/RQProvider';
 import SideBar from './(main)/_component/NavBar/SideBar';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: 'GA:Pl',
@@ -36,6 +37,7 @@ export default function RootLayout({
               {children}
             </main>
             {modal && <div>{modal}</div>}
+            <ToastContainer position={'bottom-right'} />
           </RQProvider>
         </AuthSession>
       </body>

@@ -5,6 +5,7 @@ export interface IFeed {
   age: number;
   type: string;
   authorNickname: string;
+  authorId: number;
   authorThumbnailImage: string;
   createdAt: string;
   title: string;

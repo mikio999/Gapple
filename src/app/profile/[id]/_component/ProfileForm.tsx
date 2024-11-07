@@ -1,74 +1,104 @@
-import React, {
-  useState,
-  useCallback,
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-} from 'react';
+'use client';
+
+import React, { useState, useCallback, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
+import { ToastContainer, toast } from 'react-toastify';
 import { useDropzone } from 'react-dropzone';
-import { IProfileData } from '@/types/profile';
 import postFiles from '@/app/lessonForm/_lib/postFiles';
+import { IUpdateUser } from '@/types/profile';
 
 interface ProfileFormProps {
-  profileData: IProfileData;
-  handleInputChange: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  profileData: any;
+  updateUserInfo: (
+    data: IUpdateUser,
+    callbacks: { onSuccess?: () => void; onError?: (error: any) => void },
   ) => void;
-  handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
-  handleImageChange: (imageSrc: string) => void;
-  handleSetImageId: (id: number) => void;
+  setModalIsOpen: (isOpen: boolean) => void;
+  setLoading: (loading: boolean) => void;
   accessToken: string;
   loading: boolean;
 }
 
-interface ImageWithPreview {
-  name: string;
-  preview: string;
-  size: number;
-  type: string;
-  file: File;
-}
-
 const ProfileForm = ({
   profileData,
-  handleInputChange,
-  handleSubmit,
-  handleImageChange,
-  handleSetImageId,
+  updateUserInfo,
+  setModalIsOpen,
   accessToken,
+  setLoading,
   loading,
 }: ProfileFormProps) => {
-  const [imagePreview, setImagePreview] = useState<string>(profileData.image);
-  const [toast, setToast] = useState<string>('');
+  const [formData, setFormData] = useState<Partial<IUpdateUser>>({
+    nickname: profileData.nickname,
+    selfIntro: profileData.selfIntro,
+    image_file_id: undefined,
+  });
+
+  const [imagePreview, setImagePreview] = useState(
+    profileData.profileImg || '/default-profile.jpg',
+  );
+
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 1) {
-        setToast('하나의 이미지만 업로드할 수 있습니다.');
-        setTimeout(() => setToast(''), 5000);
+        toast.error('하나의 이미지만 업로드할 수 있습니다.');
         return;
       }
 
       const file = acceptedFiles[0];
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
+
       const formData = new FormData();
       formData.append('files', file);
 
       postFiles(formData, accessToken)
         .then((response) => {
-          if (response.imageId) {
-            handleSetImageId(response.imageId);
-            handleImageChange(response.data);
+          if (response.data) {
+            setFormData((prev) => ({
+              ...prev,
+              image_file_id: response.data,
+            }));
           }
         })
         .catch((error) => {
           console.error('Failed to upload file:', error);
         });
     },
-    [accessToken, handleSetImageId, handleImageChange],
+    [accessToken],
   );
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const payload: Partial<IUpdateUser> = { ...formData };
+
+    if (payload.image_file_id === undefined) {
+      delete payload.image_file_id;
+    }
+
+    try {
+      await updateUserInfo(payload, {
+        onSuccess: () => {
+          toast.success('프로필 업데이트에 성공했습니다!');
+          setModalIsOpen(false);
+        },
+        onError: (error) => {
+          toast.error('프로필 업데이트에 실패했습니다.');
+          console.error('Failed to update profile:', error);
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -76,12 +106,7 @@ const ProfileForm = ({
   });
 
   return (
-    <form onSubmit={handleSubmit} className={'flex flex-col space-y-4 p-6'}>
-      {toast && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded">
-          {toast}
-        </div>
-      )}
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-6">
       <div
         {...getRootProps()}
         className={`flex justify-center items-center cursor-pointer ${isDragActive ? 'bg-slate-700 text-white' : 'bg-white'}`}
@@ -92,23 +117,24 @@ const ProfileForm = ({
           type="file"
           style={{ display: 'none' }}
         />
-        <div
-          className="relative w-24 h-24 mb-4"
-          style={{
-            backgroundImage: `url(${imagePreview || '/default-profile.jpg'})`,
-            backgroundSize: 'cover',
-          }}
-        >
+        <div className="relative w-24 h-24 mb-4 rounded-full">
           <Image
-            src={imagePreview || '/default-profile.jpg'}
+            src={imagePreview}
             alt="Profile Picture"
             layout="fill"
-            className="rounded-full"
+            className="rounded-full object-cover"
           />
           <div
-            className={`absolute inset-0 flex justify-center items-center ${isDragActive ? 'bg-slate-900 bg-opacity-50' : 'bg-slate-100 bg-opacity-50'}`}
+            className={
+              'absolute bottom-0 right-0 bg-slate-300 bg-opacity-70 text-white rounded-full p-1 text-xs cursor-pointer'
+            }
           >
-            {isDragActive ? '이미지를 여기에 드롭해주세요!' : '수정하기'}
+            <Image
+              src="/icons/pencil.png"
+              height={20}
+              width={20}
+              alt="Edit Icon"
+            />
           </div>
         </div>
       </div>
@@ -123,8 +149,8 @@ const ProfileForm = ({
           <input
             id="name"
             type="text"
-            name="name"
-            value={profileData.name}
+            name="nickname"
+            value={formData.nickname}
             onChange={handleInputChange}
             placeholder="이름"
             className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500"
@@ -139,8 +165,8 @@ const ProfileForm = ({
           </label>
           <textarea
             id="introduction"
-            name="introduction"
-            value={profileData.introduction}
+            name="selfIntro"
+            value={formData.selfIntro}
             onChange={handleInputChange}
             placeholder="소개글"
             className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500"
