@@ -1,9 +1,13 @@
 import axios from 'axios';
+import { updateSession } from '@/serverActions/auth';
 
 interface ProfileResponse {
-  nickname: string;
-  selfIntro: string;
-  image_file_id?: number;
+  user: {
+    nickname: string;
+    selfIntro: string;
+    profileImg: string;
+    image_file_id?: number;
+  };
 }
 
 const putProfile = async (
@@ -27,6 +31,13 @@ const putProfile = async (
         headers,
       },
     );
+    const updatedUser = response.data.user;
+
+    await updateSession({
+      name: updatedUser.nickname,
+      profileImg: updatedUser.profileImg,
+      selfIntro: updatedUser.selfIntro,
+    });
     return response.data;
   } catch (error) {
     console.error('프로필 수정 실패:', error);

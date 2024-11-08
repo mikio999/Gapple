@@ -1,7 +1,7 @@
 export interface IProfileData {
   nickname: string;
   profileImg: string;
-  experienceLevel?: string;
+  level?: string;
   selfIntro?: string;
   image_file_id?: number;
 }

@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, ChangeEvent, FormEvent } from 'react';
 import Image from 'next/image';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useDropzone } from 'react-dropzone';
 import postFiles from '@/app/lessonForm/_lib/postFiles';
 import { IUpdateUser } from '@/types/profile';
@@ -106,7 +106,7 @@ const ProfileForm = ({
   });
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 p-6">
+    <form onSubmit={handleSubmit} className={'flex flex-col space-y-4 p-6'}>
       <div
         {...getRootProps()}
         className={`flex justify-center items-center cursor-pointer ${isDragActive ? 'bg-slate-700 text-white' : 'bg-white'}`}
@@ -117,12 +117,19 @@ const ProfileForm = ({
           type="file"
           style={{ display: 'none' }}
         />
-        <div className="relative w-24 h-24 mb-4 rounded-full">
+        <div className={'relative w-36 h-36 mb-4 rounded-full'}>
           <Image
             src={imagePreview}
             alt="Profile Picture"
-            layout="fill"
-            className="rounded-full object-cover"
+            width={150}
+            height={150}
+            className={'rounded-full object-cover shadow-md'}
+            style={{
+              width: '150px',
+              height: '150px',
+              objectFit: 'cover',
+              borderRadius: '100%',
+            }}
           />
           <div
             className={
@@ -139,11 +146,8 @@ const ProfileForm = ({
         </div>
       </div>
       <div className="flex flex-col space-y-2 laptop:text-base text-sm">
-        <div className="grid grid-cols-[20%_80%] items-center">
-          <label
-            htmlFor="name"
-            className="font-semibold text-slate-500 flex-nowrap"
-          >
+        <div className="grid grid-cols-[25%_70%] items-center">
+          <label htmlFor="name" className="text-sm text-slate-500 flex-nowrap">
             이름
           </label>
           <input
@@ -153,13 +157,13 @@ const ProfileForm = ({
             value={formData.nickname}
             onChange={handleInputChange}
             placeholder="이름"
-            className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500"
+            className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500 text-slate-600"
           />
         </div>
-        <div className="grid grid-cols-[20%_80%] items-center">
+        <div className="grid grid-cols-[25%_75%] items-center">
           <label
             htmlFor="introduction"
-            className="font-semibold text-slate-500 flex-nowrap mb-auto"
+            className="text-sm text-slate-500 flex-nowrap mb-auto"
           >
             소개글
           </label>
@@ -169,7 +173,7 @@ const ProfileForm = ({
             value={formData.selfIntro}
             onChange={handleInputChange}
             placeholder="소개글"
-            className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500"
+            className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500 text-slate-600"
             rows={4}
           />
         </div>
@@ -178,7 +182,7 @@ const ProfileForm = ({
         <button
           type="submit"
           disabled={loading}
-          className="bg-primary hover:bg-primary700 text-white font-bold py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200"
+          className="bg-primary700 hover:bg-primary text-white py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 text-sm"
         >
           {loading ? '저장중...' : '저장하기'}
         </button>

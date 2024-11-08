@@ -3,5 +3,6 @@ export interface IUser {
   refreshToken: string;
   name: string;
   email: string;
+  userId?: number;
   profileImg?: string;
 }

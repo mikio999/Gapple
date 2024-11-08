@@ -75,7 +75,7 @@ const ProfileIcon = () => {
   }
 
   const isLoggedIn = status === 'authenticated';
-  const userImg = session?.user?.image;
+  const userImg = session?.profileImg;
 
   if (!isLoggedIn) {
     return (

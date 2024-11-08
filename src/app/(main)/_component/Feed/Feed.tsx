@@ -10,7 +10,6 @@ interface FeedProps {
 }
 
 export default function Feed({ feed }: FeedProps) {
-  console.log(feed);
   return (
     <div
       className={

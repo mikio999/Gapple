@@ -60,7 +60,8 @@ export const {
         Object.assign(token, user);
       }
       if (trigger === 'update' && session) {
-        Object.assign(token, session.user);
+        Object.assign(token, session);
+        token.profileImg = session.profileImg;
       }
       return token;
     },
