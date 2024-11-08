@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import CustomModal from '@/_component/Modal/CustomModal';
 import ProfileForm from './ProfileForm';
 import Loader from './Loader';
 import { IProfileData, IUpdateUser } from '@/types/profile';
-import { useSession } from 'next-auth/react';
+import FollowButton from './FollowButton';
 
 interface UserInfoProps {
   userInfo: IProfileData;
@@ -28,7 +29,7 @@ const UserInfo = ({
   error,
 }: UserInfoProps) => {
   const { data: session, status } = useSession();
-
+  console.log(userInfo);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const openModal = () => setModalIsOpen(true);
@@ -44,11 +45,15 @@ const UserInfo = ({
   }
 
   return (
-    <div className="flex laptop:flex-row laptop:justify-around laptop:h-52 flex-col items-center space-y-4 bg-white px-8 rounded-lg pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out h-[30dvh]">
+    <div
+      className={
+        'flex laptop:flex-row laptop:justify-around laptop:h-52 flex-col items-center space-y-4 bg-white px-8 rounded-lg pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out h-[30dvh]'
+      }
+    >
       <div className={'relative w-36 h-36 rounded-full'}>
         <Image
           src={userInfo.profileImg || '/images/gappler.png'}
-          alt="Profile"
+          alt={'Profile'}
           width={150}
           height={150}
           className={'rounded-full object-cover shadow-md'}
@@ -60,24 +65,32 @@ const UserInfo = ({
           }}
         />
       </div>
-      <div className="flex flex-col laptop:ml-8">
-        <h1 className="text-xl font-semibold text-slate-800">
+      <div className={'flex flex-col laptop:ml-8'}>
+        <h1 className={'text-xl font-semibold text-slate-800'}>
           {userInfo.nickname}
         </h1>
-        <div className="text-sm text-slate-500">
+        <div className={'text-sm text-slate-500'}>
           {userInfo.level || 'Level Info'}
         </div>
-        <div className="text-sm text-slate-600 mt-2">
+        <div className={'text-sm text-slate-600 mt-2'}>
           {userInfo.selfIntro || '교육의 가치를 믿습니다!'}
         </div>
-        {userId === session.userId && (
+        {userId === session.userId ? (
           <button
-            type="button"
-            className="mt-2 w-20 py-1 bg-slate-700 hover:bg-slate-500 text-white font-medium rounded-md text-xs"
+            type={'button'}
+            className={
+              'mt-2 w-20 py-1 bg-slate-700 hover:bg-slate-500 text-white font-medium rounded-md text-xs'
+            }
             onClick={openModal}
           >
-            프로필 수정
+            {'프로필 수정'}
           </button>
+        ) : (
+          <FollowButton
+            personId={userId}
+            initialFollowed={userInfo.is_followed_by_current_user}
+            accessToken={session.accessToken}
+          />
         )}
       </div>
       {modalIsOpen && (
