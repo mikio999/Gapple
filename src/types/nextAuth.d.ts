@@ -6,6 +6,12 @@ export declare module 'next-auth' {
   interface Session {
     accessToken: string;
     refreshToken: string;
+    nickname?: string;
+    name?: string;
+    image?: string;
+    selfIntro?: string;
+    profileImg?: string;
+    userId?: number;
   }
 }
 export declare module '@auth/core/jwt' {

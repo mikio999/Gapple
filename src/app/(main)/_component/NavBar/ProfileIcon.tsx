@@ -18,7 +18,7 @@ const DropdownMenu = () => {
       }
     >
       <Link
-        href={'/'}
+        href={`/profile/${session.userId}/plan`}
         className={
           'block px-4 py-2 text-center text-sm text-slate-700 hover:bg-slate-100'
         }

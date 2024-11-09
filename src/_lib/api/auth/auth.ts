@@ -18,13 +18,15 @@ async function _existUser(
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
-
+  console.log('email', email, type);
+  console.log(headers);
   try {
     const response = await axios.get(`${process.env.BASE_API}/auth/exists`, {
       params: { type, email },
       headers,
     });
-
+    console.log('====response');
+    console.log(response);
     return response.status === 200;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -46,6 +48,10 @@ async function _signIn(
     type?: 'KAKAO' | 'NAVER';
   },
 ) {
+  console.log('type!!1');
+  console.log(type);
+  console.log('==body==');
+  console.log(body);
   const headers = {
     'Content-Type': 'application/json',
     apikey: process.env.GAPPLE_API_KEY!,
