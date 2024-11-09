@@ -14,7 +14,6 @@ interface PlanProps {
 const PlanItem = ({ data }: PlanProps) => {
   if (!data) return null;
 
-  console.log(data);
   return (
     <div className={'flex flex-col items-center mb-4'}>
       <div className={'flex justify-start items-center mb-2 mr-auto'}>

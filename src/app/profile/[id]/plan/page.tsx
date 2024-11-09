@@ -1,41 +1,33 @@
-import { auth } from '@/auth';
 import { v4 as uuidv4 } from 'uuid';
+import { auth } from '@/auth';
 import PlanItem from './_component/PlanItem';
+import { getPlan } from '../../_lib/getPlan';
+import { IFeed } from '@/types/feed';
 
-const data = [
-  {
-    title: '고구마 캐기',
-    description:
-      '고구마밭을 찾아라.\n고구마 밭을 걸어보자. \n땅 속 고구마를 찾아보자. \n고구마 수확 축제 ...',
-    object: '고구마에 대해 관심을 가진다.',
-    subject: '가을 고구마',
-    age: 4,
-    activity_type: '게임',
-    date: '2024.10.24',
-    comment: 12,
-    like: 12,
-    scrap: 12,
-  },
-];
+interface Session {
+  accessToken: string;
+}
 
-export default function PlanPage() {
-  return (
-    <div>
-      {data.map((item) => (
-        <PlanItem
-          key={uuidv4()}
-          title={item.title}
-          description={item.description}
-          date={item.date}
-          comment={item.comment}
-          like={item.like}
-          scrap={item.scrap}
-          object={item.object}
-          subject={item.subject}
-          age={item.age}
-          activityType={item.activity_type}
-        />
-      ))}
-    </div>
-  );
+export default async function PlanPage({ params }: { params: { id: string } }) {
+  const session: Session | null = await auth();
+
+  if (!session) {
+    console.error('No session available, user might not be logged in');
+    return <div>{'유저 정보가 존재하지 않습니다. '}</div>;
+  }
+
+  try {
+    const plans = await getPlan(session.accessToken, params.id);
+
+    return (
+      <div>
+        {plans.data.list.map((item: IFeed) => (
+          <PlanItem key={uuidv4()} data={item} />
+        ))}
+      </div>
+    );
+  } catch (error) {
+    console.error('Failed to fetch plans:', error);
+    return <div>{'Error loading plans'}</div>;
+  }
 }
