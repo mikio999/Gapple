@@ -9,17 +9,22 @@ type ResponseValue = {
   refreshToken: string;
 };
 
-async function _existUser(email: string): Promise<boolean> {
+async function _existUser(
+  email: string,
+  type: 'KAKAO' | 'NAVER',
+): Promise<boolean> {
   const headers = {
     'Content-Type': 'application/json',
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
+
   try {
     const response = await axios.get(`${process.env.BASE_API}/auth/exists`, {
-      params: { email },
+      params: { type, email },
       headers,
     });
+
     return response.status === 200;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -40,16 +45,15 @@ async function _signIn(
     profileImg?: string;
     type?: 'KAKAO' | 'NAVER';
   },
-  provider: 'KAKAO' | 'NAVER',
 ) {
   const headers = {
     'Content-Type': 'application/json',
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
+
   const requestBody = {
     ...body,
-    type: provider,
   };
 
   try {
