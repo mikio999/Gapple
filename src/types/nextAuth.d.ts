@@ -2,6 +2,8 @@ export declare module 'next-auth' {
   interface User {
     accessToken: string;
     refreshToken: string;
+    image?: string;
+    selfIntro?: string;
   }
   interface Session {
     accessToken: string;
