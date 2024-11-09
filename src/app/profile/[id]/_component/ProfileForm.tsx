@@ -5,12 +5,12 @@ import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { useDropzone } from 'react-dropzone';
 import postFiles from '@/app/lessonForm/_lib/postFiles';
-import { IUpdateUser } from '@/types/profile';
+import { IProfileData, PutProfileParams } from '@/types/profile';
 
 interface ProfileFormProps {
-  profileData: any;
+  profileData: IProfileData;
   updateUserInfo: (
-    data: IUpdateUser,
+    data: PutProfileParams,
     callbacks: { onSuccess?: () => void; onError?: (error: any) => void },
   ) => void;
   setModalIsOpen: (isOpen: boolean) => void;
@@ -27,7 +27,7 @@ const ProfileForm = ({
   setLoading,
   loading,
 }: ProfileFormProps) => {
-  const [formData, setFormData] = useState<Partial<IUpdateUser>>({
+  const [formData, setFormData] = useState<PutProfileParams>({
     nickname: profileData.nickname,
     selfIntro: profileData.selfIntro,
     image_file_id: undefined,
@@ -78,7 +78,7 @@ const ProfileForm = ({
     event.preventDefault();
     setLoading(true);
 
-    const payload: Partial<IUpdateUser> = { ...formData };
+    const payload: Partial<PutProfileParams> = { ...formData };
 
     if (payload.image_file_id === undefined) {
       delete payload.image_file_id;
@@ -108,19 +108,21 @@ const ProfileForm = ({
   return (
     <form onSubmit={handleSubmit} className={'flex flex-col space-y-4 p-6'}>
       <div
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...getRootProps()}
         className={`flex justify-center items-center cursor-pointer ${isDragActive ? 'bg-slate-700 text-white' : 'bg-white'}`}
       >
         <input
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...getInputProps()}
-          id="file-input"
-          type="file"
+          id={'file-input'}
+          type={'file'}
           style={{ display: 'none' }}
         />
         <div className={'relative w-36 h-36 mb-4 rounded-full'}>
           <Image
             src={imagePreview}
-            alt="Profile Picture"
+            alt={'Profile Picture'}
             width={150}
             height={150}
             className={'rounded-full object-cover shadow-md'}
@@ -137,50 +139,57 @@ const ProfileForm = ({
             }
           >
             <Image
-              src="/icons/pencil.png"
+              src={'/icons/pencil.png'}
               height={20}
               width={20}
-              alt="Edit Icon"
+              alt={'Edit Icon'}
             />
           </div>
         </div>
       </div>
-      <div className="flex flex-col space-y-2 laptop:text-base text-sm">
-        <div className="grid grid-cols-[25%_70%] items-center">
-          <label htmlFor="name" className="text-sm text-slate-500 flex-nowrap">
-            이름
+      <div className={'flex flex-col space-y-2 laptop:text-base text-sm'}>
+        <div className={'grid grid-cols-[25%_70%] items-center'}>
+          <label
+            htmlFor={'name'}
+            className={'text-sm text-slate-500 flex-nowrap'}
+          >
+            {'이름'}
           </label>
           <input
-            id="name"
-            type="text"
-            name="nickname"
+            id={'name'}
+            type={'text'}
+            name={'nickname'}
             value={formData.nickname}
             onChange={handleInputChange}
-            placeholder="이름"
-            className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500 text-slate-600"
+            placeholder={'이름'}
+            className={
+              'p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500 text-slate-600'
+            }
           />
         </div>
-        <div className="grid grid-cols-[25%_75%] items-center">
+        <div className={'grid grid-cols-[25%_75%] items-center'}>
           <label
-            htmlFor="introduction"
-            className="text-sm text-slate-500 flex-nowrap mb-auto"
+            htmlFor={'introduction'}
+            className={'text-sm text-slate-500 flex-nowrap mb-auto'}
           >
-            소개글
+            {'소개글'}
           </label>
           <textarea
-            id="introduction"
-            name="selfIntro"
+            id={'introduction'}
+            name={'selfIntro'}
             value={formData.selfIntro}
             onChange={handleInputChange}
-            placeholder="소개글"
-            className="p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500 text-slate-600"
+            placeholder={'소개글'}
+            className={
+              'p-2 rounded-md bg-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary500 text-slate-600'
+            }
             rows={4}
           />
         </div>
       </div>
-      <div className="flex justify-center mt-4">
+      <div className={'flex justify-center mt-4'}>
         <button
-          type="submit"
+          type={'submit'}
           disabled={loading}
           className="bg-primary700 hover:bg-primary text-white py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 text-sm"
         >

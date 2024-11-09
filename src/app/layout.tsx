@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
+import { ToastContainer } from 'react-toastify';
 import AuthSession from '@/_component/AuthSession';
 import RQProvider from '@/providers/RQProvider';
 import SideBar from './(main)/_component/NavBar/SideBar';
-import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: 'GA:Pl',

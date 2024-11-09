@@ -4,15 +4,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import CustomModal from '@/_component/Modal/CustomModal';
+import { IProfileData, PutProfileParams } from '@/types/profile';
 import ProfileForm from './ProfileForm';
 import Loader from './Loader';
-import { IProfileData, IUpdateUser } from '@/types/profile';
 import FollowButton from './FollowButton';
 
 interface UserInfoProps {
   userInfo: IProfileData;
   updateUserInfo: (
-    data: IUpdateUser,
+    data: PutProfileParams,
     callbacks: { onSuccess?: () => void; onError?: (error: any) => void },
   ) => void;
   userId: number;

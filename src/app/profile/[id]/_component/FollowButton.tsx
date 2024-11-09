@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useFollow } from '../../_lib/useFollow';
 import { toast } from 'react-toastify';
+import { useFollow } from '../../_lib/useFollow';
 
 interface FollowProps {
   personId: number;
@@ -25,6 +25,7 @@ const FollowButton = ({
       await follow();
     } catch (error) {
       setFollowed(initialFollowed);
+      console.error(error);
       toast.error('요청 중에 오류가 생겼습니다. 다시 시도해주세요.');
     } finally {
       toast.success(followed ? '언팔로우 완료!' : '팔로우 완료!');

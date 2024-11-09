@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from '@/auth';
+import { IFeed } from '@/types/feed';
 import PlanItem from './_component/PlanItem';
 import { getPlan } from '../../_lib/getPlan';
-import { IFeed } from '@/types/feed';
 
 interface Session {
   accessToken: string;
@@ -16,8 +16,10 @@ export default async function PlanPage({ params }: { params: { id: string } }) {
     return <div>{'유저 정보가 존재하지 않습니다. '}</div>;
   }
 
+  const userId = Number(params.id);
+
   try {
-    const plans = await getPlan(session.accessToken, params.id);
+    const plans = await getPlan(session.accessToken, userId);
 
     return (
       <div>

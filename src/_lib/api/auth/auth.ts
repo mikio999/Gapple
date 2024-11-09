@@ -38,18 +38,24 @@ async function _signIn(
     refreshToken: string;
     displayName: string;
     profileImg?: string;
+    type?: 'KAKAO' | 'NAVER';
   },
+  provider: 'KAKAO' | 'NAVER',
 ) {
   const headers = {
     'Content-Type': 'application/json',
     apikey: process.env.GAPPLE_API_KEY!,
     username: process.env.GAPPLE_API_USERNAME!,
   };
+  const requestBody = {
+    ...body,
+    type: provider,
+  };
 
   try {
     const response = await axios.post(
       `${process.env.BASE_API}/auth/${type}`,
-      body,
+      requestBody,
       { headers },
     );
 

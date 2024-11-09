@@ -12,8 +12,8 @@ interface ProfileResponse {
 
 const putProfile = async (
   profileData: {
-    nickname: string;
-    selfIntro: string;
+    nickname?: string;
+    selfIntro?: string;
     image_file_id?: number;
   },
   accessToken: string,

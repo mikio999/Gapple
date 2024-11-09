@@ -11,7 +11,13 @@ export interface IProfileData {
 }
 
 export interface IUpdateUser {
+  nickname: string;
+  selfIntro: string;
+  image_file_id?: number | undefined;
+}
+
+export interface PutProfileParams {
   nickname?: string;
   selfIntro?: string;
-  image_file_id?: number | undefined;
+  image_file_id?: number;
 }

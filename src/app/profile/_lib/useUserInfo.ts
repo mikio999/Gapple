@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { PutProfileParams } from '@/types/profile';
 import { getUserInfo } from './getUserInfo';
 import putProfile from './putProfile';
-import { IUpdateUser } from '@/types/profile';
 
 export function useUserInfo(userId: number, accessToken: string) {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ export function useUserInfo(userId: number, accessToken: string) {
   });
 
   const updateUserInfoMutation = useMutation(
-    (userInfoData: IUpdateUser) => putProfile(userInfoData, accessToken),
+    (userInfoData: PutProfileParams) => putProfile(userInfoData, accessToken),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['userInfo', userId]);

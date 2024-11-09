@@ -2,9 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
 
 export async function GET(req: NextRequest) {
-  const host = req.headers.get('host');
-  const url = new URL(req.url, `http://${host}`);
-
   try {
     const data = await apiRequest(
       'get',

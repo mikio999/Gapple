@@ -5,9 +5,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import CustomModal from '@/_component/Modal/CustomModal';
-import { IFollowData, IPerson } from '@/types/follow';
+import { IPerson } from '@/types/follow';
+import { IProfileData } from '@/types/profile';
 
-const FollowList = ({ userInfo, follow, following }: IFollowData) => {
+interface FollowListProps {
+  userInfo: IProfileData;
+  follow: IPerson[];
+  following: IPerson[];
+}
+const FollowList = ({ userInfo, follow, following }: FollowListProps) => {
   const { data: session, status } = useSession();
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<IPerson[]>([]);
@@ -18,11 +24,10 @@ const FollowList = ({ userInfo, follow, following }: IFollowData) => {
   if (!isLoggedIn) {
     return null;
   }
-
+  console.log(modalContent);
   const openModal = (category: string) => {
     const content = category === 'follow' ? follow : following;
     setModalContent(content);
-
     const userName = userInfo.nickname || 'Someone';
     const title = category === 'follow' ? '팔로워 목록' : '팔로잉 목록';
     setModalTitle(`${userName}의 ${title}`);

@@ -251,11 +251,7 @@ export default function FormPage() {
           onTempSave={handleTempSave}
           isSaving={isSaving}
         />
-        <ToastContainer
-          position={'bottom-center'}
-          autoClose={3000}
-          draggable={true}
-        />
+        <ToastContainer position={'bottom-center'} autoClose={3000} draggable />
       </div>
     </div>
   );

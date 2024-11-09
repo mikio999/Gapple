@@ -6,16 +6,7 @@ import ActionButtons from '@/_component/Item/ActionButtons';
 import RecordSwiper from './RecordSwiper';
 
 interface RecordItemProps {
-  item: {
-    id: number;
-    images: string[];
-    activity_type: string;
-    subject: string;
-    description: string;
-    comment: number;
-    like: number;
-    scrap: number;
-  };
+  item: any;
 }
 
 const RecordItem = ({ item }: RecordItemProps) => {

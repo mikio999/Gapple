@@ -26,14 +26,18 @@ export default function TabComponent() {
   const isUserMatch = session?.userId === urlUserId;
 
   return (
-    <div className="flex justify-around mb-4 border-b text-slate-800 w-[90vw] laptop:w-[60vw]">
+    <div
+      className={
+        'flex justify-around mb-4 border-b text-slate-800 w-[90vw] laptop:w-[60vw]'
+      }
+    >
       {['plan', 'record'].concat(isUserMatch ? ['scrap'] : []).map((tab) => (
         <motion.div
           key={tab}
-          className="relative"
-          initial="rest"
-          whileHover="hover"
-          animate="rest"
+          className={'relative'}
+          initial={'rest'}
+          whileHover={'hover'}
+          animate={'rest'}
           variants={hoverEffect}
         >
           <Link
@@ -44,8 +48,10 @@ export default function TabComponent() {
           </Link>
           {pathname.includes(`/profile/${urlUserId}/${tab}`) && (
             <motion.div
-              className="absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500 mt-1"
-              layoutId="underline"
+              className={
+                'absolute bottom-0 left-0 right-0 h-[2px] bg-blue-500 mt-1'
+              }
+              layoutId={'underline'}
               transition={tabTransition}
             />
           )}

@@ -1,8 +1,8 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
 import ImageCarousel from './ImageCarousel';
-import Image from 'next/image';
 import formatRelativeTime from '../../_lib/formatRelativeTime';
 
 interface FeedProps {
@@ -122,7 +122,7 @@ export default function Feed({ feed }: FeedProps) {
               'flex justify-end mr-4 text-slate-600 hover:text-slate-400'
             }
           >
-            ...더보기
+            {'...더보기'}
           </span>
         </Link>
         <div className={'px-4 pb-2'}>

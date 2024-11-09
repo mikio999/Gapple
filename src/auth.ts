@@ -36,13 +36,20 @@ export const {
           const type = (await _existUser(user.email as string))
             ? 'oauth/login'
             : 'oauth/signup';
-          const userInfo = await _signIn(type, {
-            email: user.email as string,
-            accessToken: account.access_token as string,
-            refreshToken: account.refresh_token as string,
-            displayName: user.name as string,
-            profileImg: user.image as string,
-          });
+          const providerType = account.provider.toUpperCase() as
+            | 'KAKAO'
+            | 'NAVER';
+          const userInfo = await _signIn(
+            type,
+            {
+              email: user.email as string,
+              accessToken: account.access_token as string,
+              refreshToken: account.refresh_token as string,
+              displayName: user.name as string,
+              profileImg: user.image as string,
+            },
+            providerType,
+          );
 
           if (userInfo) {
             Object.assign(user, userInfo);
@@ -61,6 +68,7 @@ export const {
       }
       if (trigger === 'update' && session) {
         Object.assign(token, session);
+        // eslint-disable-next-line no-param-reassign
         token.profileImg = session.profileImg;
       }
       return token;

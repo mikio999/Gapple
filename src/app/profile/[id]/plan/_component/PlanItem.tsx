@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { IFeed } from '@/types/feed';
 import ActionButtons from '@/_component/Item/ActionButtons';
 import CustomItem from '@/_component/Item/CustomItem';
-import RecordSwiper from '../../record/_component/RecordSwiper';
 import formatRelativeTime from '@/app/(main)/_lib/formatRelativeTime';
+import RecordSwiper from '../../record/_component/RecordSwiper';
 
 interface PlanProps {
   data: IFeed | null;
