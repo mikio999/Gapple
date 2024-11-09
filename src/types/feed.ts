@@ -5,6 +5,7 @@ export interface IFeed {
   age: number;
   type: string;
   authorNickname: string;
+  authorId: number;
   authorThumbnailImage: string;
   createdAt: string;
   title: string;
@@ -18,4 +19,5 @@ export interface IFeed {
   bookmarked: boolean;
   bookmark_count: number;
   comments: IComment[];
+  activity_goal: string;
 }

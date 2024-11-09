@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
 import ImageCarousel from './ImageCarousel';
@@ -15,32 +16,33 @@ export default function Feed({ feed }: FeedProps) {
         'mx-auto my-4 max-w-xs tablet:max-w-sm laptop:max-w-md desktop:max-w-lg font-pretendard'
       }
     >
-      <div className={'flex items-center mb-4'}>
-        <div
-          className={'w-10 h-10 laptop:w-12 laptop:h-12 rounded-full'}
-          style={{
-            backgroundImage: `url(${feed.authorThumbnailImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            border: '2px solid white',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
-          }}
-        />
-        <div className={'ml-2'}>
-          <strong>{feed.authorNickname}</strong>
-          <span className={'text-slate-600'}>
-            {'의'}
-            <strong className={'text-primary ml-1'}>
-              {feed.type === 'PLAN' ? '교육계획안' : '기록'}
-            </strong>
-            {'이 올라왔어요!'}
-          </span>
-          <div className={'text-slate-500 text-xs'}>
-            {formatRelativeTime(feed.createdAt)}
+      <Link href={`/profile/${feed.authorId}/plan`}>
+        <div className={'flex items-center mb-4'}>
+          <div
+            className={'w-10 h-10 laptop:w-12 laptop:h-12 rounded-full'}
+            style={{
+              backgroundImage: `url(${feed.authorThumbnailImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              border: '2px solid white',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
+            }}
+          />
+          <div className={'ml-2'}>
+            <strong>{feed.authorNickname}</strong>
+            <span className={'text-slate-600'}>
+              {'의'}
+              <strong className={'text-primary ml-1'}>
+                {feed.type === 'PLAN' ? '교육계획안' : '기록'}
+              </strong>
+              {'이 올라왔어요!'}
+            </span>
+            <div className={'text-slate-500 text-xs'}>
+              {formatRelativeTime(feed.createdAt)}
+            </div>
           </div>
         </div>
-      </div>
-
+      </Link>
       <div
         key={feed.id}
         className={
@@ -85,19 +87,48 @@ export default function Feed({ feed }: FeedProps) {
             <ImageCarousel images={feed.images} />
           </div>
         )}
+        <div className={'flex items-center py-1 pl-4 mt-2'}>
+          <Image
+            src={'/icons/idea.png'}
+            width={20}
+            height={20}
+            alt={'idea'}
+            className={'flex justify-center w-4 h-4 mr-1'}
+          />
+          <div className={'text-sm text-slate-800 font-medium'}>
+            {feed.activity_goal}
+          </div>
+        </div>
         <Link href={`/lessonDetail/${feed.id}`} passHref>
           <ul className={'px-4 py-2'}>
-            {feed.content_subtitles?.map((subtitle) => (
-              <li key={subtitle} className={'text-slate-700 text-base'}>
+            {feed.content_subtitles?.map((subtitle, index) => (
+              <li
+                key={subtitle}
+                className={'flex items-center text-slate-700 text-sm mb-1'}
+              >
+                <div
+                  className={
+                    'flex justify-center items-center text-slate-400 w-4 h-4 rounded-full mr-2'
+                  }
+                >
+                  {index + 1}
+                </div>
                 {subtitle}
               </li>
             ))}
           </ul>
+          <span
+            className={
+              'flex justify-end mr-4 text-slate-600 hover:text-slate-400'
+            }
+          >
+            {'...더보기'}
+          </span>
         </Link>
-        <div className={'px-4 pb-4'}>
+        <div className={'px-4 pb-2'}>
           <ActionButtons
             like={feed.liked_count}
-            comment={feed.comments.length} // Update comment count
+            comment={feed.comments.length}
             scrap={feed.bookmark_count}
             isLiked={feed.liked}
             isBookmarked={feed.bookmarked}

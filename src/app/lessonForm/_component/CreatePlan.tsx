@@ -42,8 +42,8 @@ export default function FormPage() {
   const [precautions, setPrecautions] = useState(initialPrecautions);
   const initialEvaluations = [{ id: '', text: '' }];
   const [evaluations, setEvaluations] = useState(initialEvaluations);
-  const [age, setAge] = useState(3);
-  const [groupSize, setGroupSize] = useState('SMALL');
+  const [age, setAge] = useState(0);
+  const [groupSize, setGroupSize] = useState('');
   const [activityType, setActivityType] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [fileId, setFileId] = useState(0);
@@ -251,7 +251,7 @@ export default function FormPage() {
           onTempSave={handleTempSave}
           isSaving={isSaving}
         />
-        <ToastContainer />
+        <ToastContainer position={'bottom-center'} autoClose={3000} draggable />
       </div>
     </div>
   );

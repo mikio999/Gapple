@@ -24,7 +24,7 @@ const RecordSwiper = ({ images }: RecordSwiperProps) => {
       className={'mySwiper'}
       style={{ objectFit: 'contain' }}
     >
-      {images.map((img: string) => (
+      {images?.map((img: string) => (
         <SwiperSlide key={uuidv4()}>
           <div
             className={
