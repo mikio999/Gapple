@@ -29,7 +29,6 @@ const UserInfo = ({
   error,
 }: UserInfoProps) => {
   const { data: session, status } = useSession();
-  console.log(userInfo);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const openModal = () => setModalIsOpen(true);
