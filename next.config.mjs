@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['phinf.pstatic.net'],
+    domains: ['phinf.pstatic.net', 'img1.kakaocdn.net'],
     remotePatterns: [
       {
         protocol: 'https',

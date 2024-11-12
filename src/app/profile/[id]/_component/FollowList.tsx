@@ -24,7 +24,7 @@ const FollowList = ({ userInfo, follow, following }: FollowListProps) => {
   if (!isLoggedIn) {
     return null;
   }
-  console.log(modalContent);
+
   const openModal = (category: string) => {
     const content = category === 'follow' ? follow : following;
     setModalContent(content);

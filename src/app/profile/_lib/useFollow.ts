@@ -29,11 +29,10 @@ export function useFollow(userId: number, accessToken: string) {
   const queryClient = useQueryClient();
 
   const followMutation = useMutation(() => postFollow(userId, accessToken), {
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(['userInfo', userId]);
       queryClient.invalidateQueries(['followers', userId]);
       queryClient.invalidateQueries(['following', userId]);
-      console.log('Follow successful:', data);
     },
     onError: (error: Error) => {
       console.error('Failed to follow user:', error);

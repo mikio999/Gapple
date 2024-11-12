@@ -14,6 +14,7 @@ export function useAi(
 
   const postSubjectMutation = useMutation(
     (subjectData: ISelectedAnswers) => postSubject(subjectData, accessToken),
+
     {
       onSuccess: (data) => {
         console.log('Subject posted successfully:', data);
