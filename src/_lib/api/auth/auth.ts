@@ -20,7 +20,7 @@ async function _existUser(
   };
 
   try {
-    const response = await axios.get(`${process.env.BASE_API}/`, {
+    const response = await axios.get(`${process.env.BASE_API}/auth/exists`, {
       params: { type, email },
       headers,
     });

@@ -3,14 +3,14 @@
 import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 
 interface PreviewFile extends File {
   preview: string;
 }
 
-const PhotoUpload = () => {
+const PhotoUpload = ({ onNext }) => {
   const [files, setFiles] = useState<PreviewFile[]>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -46,7 +46,7 @@ const PhotoUpload = () => {
   });
 
   return (
-    <div className={'container mx-auto px-4'}>
+    <div className={'mx-auto px-4'}>
       <div
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...getRootProps()}
@@ -102,7 +102,7 @@ const PhotoUpload = () => {
           ))}
         </div>
       </div>
-      <ToastContainer />
+      <button onClick={() => onNext(files)}>Next</button>
       {/* {files.length > 0 && <ImageSwiper files={files} />} */}
     </div>
   );

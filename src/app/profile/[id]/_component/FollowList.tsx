@@ -39,7 +39,7 @@ const FollowList = ({ userInfo, follow, following }: FollowListProps) => {
   };
 
   return (
-    <div className={'flex justify-end text-slate-500 text-sm mt-2'}>
+    <div className={'flex justify-end text-slate-500 text-sm mt-2 '}>
       <div
         className={'flex hover:text-slate-800 hover:cursor-pointer'}
         onClick={() => openModal('follow')}

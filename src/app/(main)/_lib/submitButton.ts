@@ -3,7 +3,7 @@ import axios from 'axios';
 const submitLike = async (postId: number, accessToken: string) => {
   try {
     const response = await axios.post(
-      `/api/postLike/${postId}`,
+      `/api/document/postLike/${postId}`,
       {},
       {
         headers: {
@@ -22,7 +22,7 @@ const submitLike = async (postId: number, accessToken: string) => {
 const submitBookmark = async (postId: number, accessToken: string) => {
   try {
     const response = await axios.post(
-      `/api/postBookmark/${postId}`,
+      `/api/document/postBookmark/${postId}`,
       {},
       {
         headers: {

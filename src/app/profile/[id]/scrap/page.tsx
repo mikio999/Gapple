@@ -20,7 +20,7 @@ export default async function ScrapPage() {
   const scrapData = await getScrap(session.accessToken);
 
   if (!scrapData.data.list || scrapData.data.list.length === 0) {
-    return <div>{'No items found.'}</div>;
+    return <div className={'h-dvh ml-4'}>{'스크랩한 글이 없습니다.'}</div>;
   }
 
   return (

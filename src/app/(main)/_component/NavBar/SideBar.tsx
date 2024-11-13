@@ -14,7 +14,7 @@ export default function SideBar() {
   const pathname = usePathname();
   const isLoggedIn = status === 'authenticated';
 
-  const isSearchPage = pathname === '/search';
+  const isSearchPage = pathname === '/search' || 'createRecord';
 
   const MENU_ITEMS: MenuItemProps[] = [
     {
@@ -37,10 +37,10 @@ export default function SideBar() {
       link: '/search',
     },
     {
-      name: '스크랩',
+      name: '기록',
       icon: '/icons/heartIcon.png',
       activeIcon: '/icons/heartIconPink.png',
-      link: '/scraps',
+      link: '/createRecord',
     },
     {
       name: '설정',

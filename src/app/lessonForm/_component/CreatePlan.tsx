@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import { IContentItem } from '@/types/content';
@@ -251,7 +251,6 @@ export default function FormPage() {
           onTempSave={handleTempSave}
           isSaving={isSaving}
         />
-        <ToastContainer position={'bottom-center'} autoClose={3000} draggable />
       </div>
     </div>
   );
