@@ -1,7 +1,12 @@
 import React from 'react';
+import { IFeed } from '@/types/feed';
 import ImageCarousel from './ImageCarousel';
 
-const LogFeed = ({ log }) => {
+interface LogProps {
+  log: IFeed;
+}
+
+const LogFeed = ({ log }: LogProps) => {
   return (
     <div className={'p-4'}>
       {log.images && log.images.length > 0 && (
@@ -9,7 +14,9 @@ const LogFeed = ({ log }) => {
           <ImageCarousel images={log.images} />
         </div>
       )}
-      <div> {log.content}</div>
+      <div>{log.content}</div>
+      <div>{log.subject}</div>
+      <div>{log.activity_type}</div>
     </div>
   );
 };

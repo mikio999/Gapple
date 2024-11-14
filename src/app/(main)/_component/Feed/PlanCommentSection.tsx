@@ -1,6 +1,6 @@
 import React from 'react';
-import formatRelativeTime from '../../_lib/formatRelativeTime';
 import IComment from '@/types/comment';
+import formatRelativeTime from '../../_lib/formatRelativeTime';
 
 interface CommentProps {
   comments: IComment[];

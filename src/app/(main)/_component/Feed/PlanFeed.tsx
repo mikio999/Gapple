@@ -1,9 +1,14 @@
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
+import { IFeed } from '@/types/feed';
 import ImageCarousel from './ImageCarousel';
 
-const PlanFeed = ({ plan }) => {
+interface PlanProps {
+  plan: IFeed;
+}
+
+const PlanFeed = ({ plan }: PlanProps) => {
   return (
     <div>
       <div className={'p-4'}>
