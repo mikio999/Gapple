@@ -1,14 +1,7 @@
-import CreateRecord from './_component/CreateRecord';
+import RecordModal from './_component/RecordModal';
 
 const RecordPage = () => {
-  return (
-    <div>
-      <h1 className={'text-xl px-4 font-maple text-gray700'}>
-        {'수업 기록지 페이지'}
-      </h1>
-      <CreateRecord />
-    </div>
-  );
+  return <RecordModal />;
 };
 
 export default RecordPage;

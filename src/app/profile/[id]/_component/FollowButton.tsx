@@ -42,7 +42,7 @@ const FollowButton = ({
 
   return (
     <button
-      type="button"
+      type={'button'}
       className={`bg-${followed ? 'primary100' : 'primary'} text-${followed ? 'primary' : 'primary100'} rounded-full px-4 py-1 hover:bg-primary600 hover:text-white transition-colors duration-300 mt-4 text-sm`}
       onClick={handleFollowToggle}
       onMouseEnter={handleMouseEnter}

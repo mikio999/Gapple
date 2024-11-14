@@ -1,21 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
-import extractUrlId from '@/_lib/utils/extractUrlId';
 import extractErrorMessage from '@/_lib/utils/extractErrorMessage';
+import extractUrlId from '@/_lib/utils/extractUrlId';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
-  const { id } = extractUrlId(request);
-  const formData = await request.json();
-  console.log('fdfdfdf');
+export async function POST(req: NextRequest) {
+  const { id } = extractUrlId(req);
+  const formData = await req.json();
+  console.log('===id===');
+  console.log(id);
+  console.log('===formData');
   console.log(formData);
   try {
     const response = await apiRequest(
       'post',
-      `/document/like?id=${id}`,
-      request,
+      `/document/like/comment?comment_id=${id}`,
+      req,
       formData,
     );
-    console.log(response);
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     const errorMessage = extractErrorMessage(error);

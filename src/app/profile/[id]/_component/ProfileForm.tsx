@@ -191,7 +191,9 @@ const ProfileForm = ({
         <button
           type={'submit'}
           disabled={loading}
-          className="bg-primary700 hover:bg-primary text-white py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 text-sm"
+          className={
+            'bg-primary700 hover:bg-primary text-white py-2 px-4 rounded shadow-lg hover:shadow-xl transition duration-200 text-sm'
+          }
         >
           {loading ? '저장중...' : '저장하기'}
         </button>

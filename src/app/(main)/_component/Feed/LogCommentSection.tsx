@@ -1,15 +1,16 @@
 'use client';
 
+import NewCommentInput from '@/app/lessonDetail/[id]/_component/commentSection/CommentInput';
+import CommentList from '@/app/lessonDetail/[id]/_component/commentSection/CommentList';
 import { useComments } from '@/app/lessonDetail/_lib/useComments';
-import CommentList from './CommentList';
-import NewCommentInput from './CommentInput';
 
-interface CommentProps {
+const LogCommentSection = ({
+  postId,
+  accessToken,
+}: {
   postId: number;
   accessToken: string;
-}
-
-const CommentSection = ({ postId, accessToken }: CommentProps) => {
+}) => {
   const {
     comments,
     addComment,
@@ -21,8 +22,7 @@ const CommentSection = ({ postId, accessToken }: CommentProps) => {
   } = useComments(postId, accessToken);
 
   return (
-    <div className={'bg-white shadow-md rounded-lg p-4 mt-4'}>
-      <h3 className={'text-lg font-semibold mb-4'}>{'댓글'}</h3>
+    <div className={'p-2'}>
       <CommentList
         comments={comments?.data}
         onLike={likeComment}
@@ -37,4 +37,4 @@ const CommentSection = ({ postId, accessToken }: CommentProps) => {
   );
 };
 
-export default CommentSection;
+export default LogCommentSection;

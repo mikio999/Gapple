@@ -4,19 +4,20 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 interface LikeButtonProps {
+  isLiked: boolean;
   count: number;
   onLike: (liked: boolean) => void;
 }
 
-const LikeButton = ({ count, onLike }: LikeButtonProps) => {
-  const [liked, setLiked] = useState(false);
+const LikeButton = ({ isLiked, count, onLike }: LikeButtonProps) => {
+  const [liked, setLiked] = useState(isLiked);
 
   const handleLike = () => {
     setLiked(!liked);
     onLike(!liked);
   };
 
-  const iconPath = liked ? '/icons/heartIconPink.png' : '/icons/heartIcon.png';
+  const iconPath = liked ? '/icons/heartRose.png' : '/icons/heartIcon.png';
 
   return (
     <button
@@ -33,7 +34,7 @@ const LikeButton = ({ count, onLike }: LikeButtonProps) => {
         alt={'Like icon'}
         className={'w-4 h-4'}
       />
-      <span>{count}</span>
+      <span className={'text-sm'}>{count}</span>
     </button>
   );
 };

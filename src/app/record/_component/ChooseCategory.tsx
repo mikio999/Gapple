@@ -2,19 +2,42 @@
 
 import React, { useState } from 'react';
 import { category } from '@/_lib/constants/category';
-import CategorySelect from '@/app/lessonForm/_component/select/CategorySelect';
+import RecordCategorySelect from './RecordCategorySelect';
 
-export default function ChooseCategory() {
-  const [selectCategory, setSelectCategory] = useState('');
-  const handleCategorySelect = (value: string) => {
-    setSelectCategory(value);
-    console.log(`선택된 카테고리: ${selectCategory}`);
+interface ChooseCategoryProps {
+  onSelectCategory: (category: string) => void;
+}
+
+export default function ChooseCategory({
+  onSelectCategory,
+}: ChooseCategoryProps) {
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const handleSelectCategory = (category: string) => {
+    setSelectedCategory(category);
   };
+
+  const handleConfirmCategory = () => {
+    onSelectCategory(selectedCategory);
+  };
+
   return (
-    <CategorySelect
-      options={category}
-      onSelect={handleCategorySelect}
-      selectedActivityType={''}
-    />
+    <>
+      <RecordCategorySelect
+        options={category}
+        onSelect={handleSelectCategory}
+        selectedActivityType={selectedCategory}
+      />
+      {selectedCategory && (
+        <button
+          type={'button'}
+          onClick={handleConfirmCategory}
+          className={
+            'ml-auto mt-4 bg-primary700 text-white px-4 py-2 rounded hover:bg-primary'
+          }
+        >
+          {'다음'}
+        </button>
+      )}
+    </>
   );
 }

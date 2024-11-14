@@ -28,7 +28,7 @@ const ImageUploadSection = ({
   accessToken,
 }: ImageUploadProps) => {
   const [images, setImages] = useState<ImageWithPreview[]>([]);
-
+  console.log(images);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newImages = acceptedFiles.map((file) => ({
       name: file.name,
@@ -47,7 +47,6 @@ const ImageUploadSection = ({
 
       postFiles(formData, accessToken)
         .then((response) => {
-          console.log('Upload success:', response);
           setImageId(response.data);
         })
         .catch((error) => {

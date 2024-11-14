@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
@@ -293,7 +293,6 @@ export default function AiPlan() {
           onTempSave={handleTempSave}
           isSaving={isSaving}
         />
-        <ToastContainer />
       </div>
     </div>
   );

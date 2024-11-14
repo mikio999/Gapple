@@ -1,15 +1,29 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
-import ImageCarousel from './ImageCarousel';
+import { auth } from '@/auth';
 import formatRelativeTime from '../../_lib/formatRelativeTime';
+import PlanFeed from './PlanFeed';
+import LogFeed from './LogFeed';
+import PlanCommentSection from './PlanCommentSection';
+import LogCommentSection from './LogCommentSection';
 
 interface FeedProps {
   feed: IFeed;
 }
 
-export default function Feed({ feed }: FeedProps) {
+interface Session {
+  accessToken: string;
+}
+
+export default async function Feed({ feed }: FeedProps) {
+  const session: Session | null = await auth();
+
+  if (!session) {
+    console.error('No session available, user might not be logged in');
+    return <div>{'유저 정보가 존재하지 않습니다'}</div>;
+  }
+
   return (
     <div
       className={
@@ -49,82 +63,12 @@ export default function Feed({ feed }: FeedProps) {
           'bg-slate-200 shadow-md rounded-lg overflow-hidden cursor-pointer'
         }
       >
-        <div className={'p-4'}>
-          <Link href={`/lessonDetail/${feed.id}`} passHref>
-            <h1 className={'text-xl font-bold'}>{feed.title}</h1>
-          </Link>
-          <div className={'flex desktop:flex-row flex-col mt-2'}>
-            <div className={'flex'}>
-              <span
-                className={
-                  'text-white bg-slate-700 px-3 py-1 mr-2 rounded-full font-light'
-                }
-              >
-                {feed.age} {'세'}
-              </span>
-              <span
-                className={
-                  'text-white bg-slate-700 px-3 py-1 mr-2 rounded-full font-light'
-                }
-              >
-                {feed.activity_type}
-              </span>
-            </div>
-            <div>
-              <span
-                className={
-                  'text-white bg-slate-700 px-3 py-1 rounded-full font-light desktop:mt-0 mt-2'
-                }
-                style={{ display: 'inline-block' }}
-              >
-                {feed.subject}
-              </span>
-            </div>
-          </div>
-        </div>
-        {feed.images && feed.images.length > 0 && (
-          <div className={'px-4 py-0 border-t z-10'}>
-            <ImageCarousel images={feed.images} />
-          </div>
+        {feed.type === 'PLAN' ? (
+          <PlanFeed plan={feed} />
+        ) : (
+          <LogFeed log={feed} />
         )}
-        <div className={'flex items-center py-1 pl-4 mt-2'}>
-          <Image
-            src={'/icons/idea.png'}
-            width={20}
-            height={20}
-            alt={'idea'}
-            className={'flex justify-center w-4 h-4 mr-1'}
-          />
-          <div className={'text-sm text-slate-800 font-medium'}>
-            {feed.activity_goal}
-          </div>
-        </div>
-        <Link href={`/lessonDetail/${feed.id}`} passHref>
-          <ul className={'px-4 py-2'}>
-            {feed.content_subtitles?.map((subtitle, index) => (
-              <li
-                key={subtitle}
-                className={'flex items-center text-slate-700 text-sm mb-1'}
-              >
-                <div
-                  className={
-                    'flex justify-center items-center text-slate-400 w-4 h-4 rounded-full mr-2'
-                  }
-                >
-                  {index + 1}
-                </div>
-                {subtitle}
-              </li>
-            ))}
-          </ul>
-          <span
-            className={
-              'flex justify-end mr-4 text-slate-600 hover:text-slate-400'
-            }
-          >
-            {'...더보기'}
-          </span>
-        </Link>
+
         <div className={'px-4 pb-2'}>
           <ActionButtons
             like={feed.liked_count}
@@ -136,37 +80,13 @@ export default function Feed({ feed }: FeedProps) {
           />
         </div>
 
-        {feed.comments.length > 0 && (
-          <div className={'px-4 py-2'}>
-            {feed.comments.map((comment) => (
-              <div
-                key={comment.id}
-                className={'mt-2 p-2 bg-slate-100 rounded-lg shadow'}
-              >
-                <div className={'flex items-center space-x-3'}>
-                  <div
-                    className={'w-8 h-8 rounded-full'}
-                    style={{
-                      backgroundImage: `url(${comment.authorThumbnailImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                  <div>
-                    <div className={'flex items-center'}>
-                      <strong>{comment.authorNickname}</strong>
-                      <div className={'text-slate-500 text-xs ml-2'}>
-                        {formatRelativeTime(comment.createdAt)}
-                      </div>
-                    </div>
-                    <div className={'text-slate-600 text-sm'}>
-                      {comment.content}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {feed.type === 'PLAN' ? (
+          <PlanCommentSection comments={feed.comments} />
+        ) : (
+          <LogCommentSection
+            postId={feed.id}
+            accessToken={session.accessToken}
+          />
         )}
       </div>
     </div>

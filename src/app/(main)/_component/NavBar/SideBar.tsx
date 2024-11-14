@@ -37,10 +37,10 @@ export default function SideBar() {
       link: '/search',
     },
     {
-      name: '스크랩',
+      name: '기록',
       icon: '/icons/heartIcon.png',
       activeIcon: '/icons/heartIconPink.png',
-      link: '/scraps',
+      link: '/createRecord',
     },
     {
       name: '설정',

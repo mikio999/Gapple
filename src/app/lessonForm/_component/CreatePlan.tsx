@@ -2,31 +2,37 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import { IContentItem } from '@/types/content';
-import CategorySelect from './select/CategorySelect';
-import AgeSelect from './select/AgeSelect';
-import GroupSelect from './select/GroupSelect';
-import CurriculumSection from './nurriCurriculum/CurriculumSection';
-import SubjectInputSection from './section/SubjectInputSelection';
-import ContentSection from './nurriCurriculum/ContentSection';
-import GoalsSection from './section/GoalsSection';
-import PrecautionsSection from './section/PrecautionSection';
-import EvaluationsSection from './section/EvaluationSection';
-import FileUploadSection from './section/FileUploadSection';
-import ToolSection from './section/ToolSection';
-import submitLessonForm from '../_lib/api';
-import SaveButtons from './section/SaveButtonsSection';
-import ImageUploadSection from './section/ImageUploadSection';
+import SubjectInputSection from '@/app/lessonForm/_component/section/SubjectInputSelection';
+import AgeSelect from '@/app/lessonForm/_component/select/AgeSelect';
+import GroupSelect from '@/app/lessonForm/_component/select/GroupSelect';
+import CategorySelect from '@/app/lessonForm/_component/select/CategorySelect';
+import GoalsSection from '@/app/lessonForm/_component/section/GoalsSection';
+import CurriculumSection from '@/app/lessonForm/_component/nurriCurriculum/CurriculumSection';
+import ToolSection from '@/app/lessonForm/_component/section/ToolSection';
+import ImageUploadSection from '@/app/lessonForm/_component/section/ImageUploadSection';
+import FileUploadSection from '@/app/lessonForm/_component/section/FileUploadSection';
+import ContentSection from '@/app/lessonForm/_component/nurriCurriculum/ContentSection';
+import PrecautionsSection from '@/app/lessonForm/_component/section/PrecautionSection';
+import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSection';
+import SaveButtons from '@/app/lessonForm/_component/section/SaveButtonsSection';
+import submitLessonForm from '@/app/lessonForm/_lib/api';
+import { useSubjectStore } from '@/app/ai/_store/useSubjectStore';
 
-export default function FormPage() {
+export default function CreatePlan() {
+  const { documentData } = useSubjectStore();
   const { data: session } = useSession();
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [detailSubject, setDetailSubject] = useState('');
-
+  const router = useRouter();
+  const pathname = usePathname();
   const [contents, setContents] = useState<IContentItem[]>([]);
 
   const memoizedSetContents: React.Dispatch<
@@ -65,6 +71,47 @@ export default function FormPage() {
   useEffect(() => {
     titleInputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    titleInputRef.current?.focus();
+    if (documentData && pathname === '/ai') {
+      titleInputRef.current?.focus();
+      setTitle(documentData.data.title || '');
+      setSubject(documentData.data.subject || '');
+      setDetailSubject(documentData.data.detail_subject || '');
+      setActivityType(documentData.data.activity_type || '');
+      const loadedGoals = documentData.data.activity_goal.map(
+        (goal: string) => ({
+          id: uuidv4(),
+          text: goal,
+        }),
+      );
+      setGoals(loadedGoals);
+
+      const loadedTools = documentData?.data.activity_tool.map(
+        (tool: string) => ({
+          id: uuidv4(),
+          value: tool,
+        }),
+      );
+      setTools(loadedTools);
+      const loadedPrecautions = documentData?.data.precautions.map(
+        (precaution) => ({
+          id: uuidv4(),
+          text: precaution,
+        }),
+      );
+      setPrecautions(loadedPrecautions);
+
+      const loadedEvaluations = documentData?.data.evaluation_criteria.map(
+        (criterion) => ({
+          id: uuidv4(),
+          text: criterion,
+        }),
+      );
+      setEvaluations(loadedEvaluations);
+    }
+  }, [documentData, pathname]);
 
   const ageOptions = [
     { label: '만 3세', value: 3, image: '/images/age/age3.png' },
@@ -140,7 +187,7 @@ export default function FormPage() {
       try {
         const result = await submitLessonForm(formData, session.accessToken);
         toast.success('계획안 생성 성공!');
-        console.log(result);
+        router.push(`/lessonDetail/${result.data}`);
       } catch (error) {
         toast.error('계획안 생성 실패!');
         console.error('폼 제출 실패:', error);
@@ -251,7 +298,6 @@ export default function FormPage() {
           onTempSave={handleTempSave}
           isSaving={isSaving}
         />
-        <ToastContainer position={'bottom-center'} autoClose={3000} draggable />
       </div>
     </div>
   );
