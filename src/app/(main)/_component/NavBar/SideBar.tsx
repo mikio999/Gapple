@@ -14,7 +14,7 @@ export default function SideBar() {
   const pathname = usePathname();
   const isLoggedIn = status === 'authenticated';
 
-  const isSearchPage = pathname === '/search' || 'createRecord';
+  const isSearchPage = pathname === '/search';
 
   const MENU_ITEMS: MenuItemProps[] = [
     {
