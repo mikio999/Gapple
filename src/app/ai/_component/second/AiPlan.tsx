@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import CreatePlan from '@/app/lessonForm/_component/CreatePlan';
-
-export default function AiPlan() {
-  return <CreatePlan />;
-=======
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
@@ -302,5 +296,4 @@ export default function AiPlan() {
       </div>
     </div>
   );
->>>>>>> feat/75
 }

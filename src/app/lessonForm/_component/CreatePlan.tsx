@@ -2,12 +2,8 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-<<<<<<< HEAD
-import { ToastContainer, toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
-=======
 import { toast } from 'react-toastify';
->>>>>>> feat/75
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import { IContentItem } from '@/types/content';
