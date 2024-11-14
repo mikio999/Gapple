@@ -34,6 +34,8 @@ const CommentList = ({
             comment={comment}
             replies={comments.filter((c) => c.parentCommentId === comment.id)}
             onLike={onLike}
+            isLiked={comment.isLiked}
+            likeCount={comment.likedCount}
             toggleReplies={toggleReplies}
             showReplies={showReplies[comment.id]}
             onAddReply={onAddReply}
@@ -42,7 +44,7 @@ const CommentList = ({
           />
         ))
       ) : (
-        <div>{'댓글이 없습니다'}</div>
+        <div>{'댓글이 존재하지 않습니다'}</div>
       )}
     </div>
   );

@@ -6,12 +6,13 @@ export async function postSubject(
   accessToken: string,
 ): Promise<ISubjectData> {
   try {
-    const response = await axios.post('/api/aiSubject', subjectData, {
+    const response = await axios.post('/api/ai/aiSubject', subjectData, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
     });
+
     return response.data;
   } catch (error) {
     console.error('Error posting subject:', error);

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { submitBookmark, submitLike } from '@/app/(main)/_lib/submitButton';
 
 interface ActionButtonsProps {
@@ -112,7 +112,6 @@ const ActionButtons = ({
           <span>{bookmarks}</span>
         </button>
       </div>
-      <ToastContainer />
     </div>
   );
 };

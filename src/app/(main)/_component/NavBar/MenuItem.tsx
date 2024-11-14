@@ -43,7 +43,7 @@ const MenuItem = ({
         </div>
         <span
           className={
-            'ml-2 hidden tablet:hidden laptop:hidden desktop:block sidebar-transition'
+            'ml-2 hidden tablet:hidden laptop:hidden desktop:block sidebar-transition text-slate-800'
           }
         >
           {name}

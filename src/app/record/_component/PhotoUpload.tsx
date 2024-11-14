@@ -1,29 +1,50 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
+import ImagePreview from './ImagePreview';
+import { usePhotoStore } from '../_store/usePhotoStore';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import postFiles from '@/app/lessonForm/_lib/postFiles';
+import { useRecordStore } from '../_store/useRecordStore';
+import Spinner from './Spinner';
 
-interface PreviewFile extends File {
-  preview: string;
+interface PhotoUploadProps {
+  onNext: () => void;
+  accessToken: string;
 }
 
-const PhotoUpload = () => {
-  const [files, setFiles] = useState<PreviewFile[]>([]);
+const PhotoUpload = ({ onNext, accessToken }: PhotoUploadProps) => {
+  const { addPhotos, removePhoto, setPhotos, photos } = usePhotoStore(
+    (state) => ({
+      photos: state.photos,
+      addPhotos: state.addPhotos,
+      removePhoto: state.removePhoto,
+      setPhotos: state.setPhotos,
+    }),
+  );
+  const { setAttachmentId } = useRecordStore();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newFiles: PreviewFile[] = acceptedFiles.map((file) =>
-      Object.assign(file, {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const newImages = acceptedFiles.map((file) => ({
+        id: uuidv4(),
+        name: file.name,
         preview: URL.createObjectURL(file),
-      }),
-    );
-    setFiles((prevFiles) => [
-      ...prevFiles,
-      ...newFiles.slice(0, 5 - prevFiles.length),
-    ]);
-  }, []);
+        size: file.size,
+        type: file.type,
+        file,
+      }));
+
+      addPhotos(newImages);
+    },
+    [addPhotos],
+  );
 
   const onDropRejected = useCallback((fileRejections: string | any[]) => {
     if (fileRejections.length > 0) {
@@ -31,27 +52,54 @@ const PhotoUpload = () => {
     }
   }, []);
 
-  const removeFile = (fileToRemove: PreviewFile) => {
-    setFiles((currentFiles) =>
-      currentFiles.filter((file) => file !== fileToRemove),
-    );
+  const removeImage = (imageId: string) => {
+    removePhoto(imageId);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    onDropRejected,
-    accept: 'image/*' as any,
-    maxFiles: 5,
-    maxSize: 1048576,
   });
 
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(photos);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setPhotos(items);
+  };
+
+  const formData = new FormData();
+  photos.forEach((photo) => {
+    formData.append('files', photo.file);
+  });
+  console.log('formData');
+  console.log(formData);
+
+  const handleNext = async () => {
+    setIsLoading(true);
+
+    try {
+      const data = await postFiles(formData, accessToken);
+      if (data && data.data) {
+        setAttachmentId(data.data);
+        onNext();
+      }
+    } catch (error) {
+      toast.error('Failed to upload files. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className={'container mx-auto px-4'}>
+    <div className={'flex flex-col items-center px-4'}>
       <div
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...getRootProps()}
         className={
-          'flex flex-col w-72 p-4 bg-white border-2 border-dashed border-primary items-center justify-center text-primary cursor-pointer mb-4'
+          'flex flex-col p-4 bg-white border-2 border-dashed border-primary items-center justify-center text-primary cursor-pointer mb-4 w-full laptop:w-[28rem] desktop:w-[35rem] mx-auto laptop:h-72 h-100'
         }
       >
         <input
@@ -71,39 +119,47 @@ const PhotoUpload = () => {
           className={'mt-4'}
         />
         <div className={'mt-4 text-sm'}>{'(최대 5개)'}</div>
-        <div
-          className={
-            'grid grid-cols-3 border-t-2 border-t-primary200 gap-2 mt-4 pt-4'
-          }
-        >
-          {files.map((file, index) => (
-            <div key={uuidv4()} className={'relative'}>
-              <Image
-                src={file.preview}
-                alt={`Preview ${index + 1}`}
-                width={100}
-                height={100}
-                className={'object-contain'}
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                }}
-              />
-              <button
-                type={'button'}
-                onClick={() => removeFile(file)}
-                className={'absolute top-0 right-0 bg-red-500 text-white p-1'}
-              >
-                {'✕'}
-              </button>
-            </div>
-          ))}
-        </div>
       </div>
-      <ToastContainer />
-      {/* {files.length > 0 && <ImageSwiper files={files} />} */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={'photos'} direction={'horizontal'}>
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className={'grid laptop:grid-cols-5 grid-cols-3 gap-2 mt-4 pt-4'}
+            >
+              {photos.map((image, index) => (
+                <Draggable key={image.id} draggableId={image.id} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <ImagePreview
+                        src={image.preview}
+                        alt={`Preview of ${image.name}`}
+                        onRemove={() => removeImage(image.id)}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {photos.length >= 1 && (
+        <button
+          className={
+            'ml-auto bg-blue-400 px-4 py-1 text-slate-50 rounded-sm hover:bg-blue-600'
+          }
+          onClick={handleNext}
+        >
+          {isLoading ? <Spinner /> : '다음'}
+        </button>
+      )}
     </div>
   );
 };

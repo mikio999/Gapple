@@ -75,6 +75,15 @@ export default function ButtonSection({
     }
   };
 
+  const handleShareClick = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('링크 복사 완료!');
+    } catch (error) {
+      toast.error('링크 복사에 실패하였습니다. 다시 시도해주세요.');
+    }
+  };
+
   return (
     <div
       className={
@@ -96,6 +105,7 @@ export default function ButtonSection({
           width={35}
           height={35}
           alt={'Heart'}
+          className={'w-6 desktop:w-8'}
         />
         <span
           className={
@@ -127,6 +137,7 @@ export default function ButtonSection({
           width={35}
           height={35}
           alt={'Star'}
+          className={'w-6 desktop:w-8'}
         />
         <span
           className={
@@ -147,9 +158,7 @@ export default function ButtonSection({
         className={'relative cursor-pointer'}
         onMouseEnter={() => setActive((prev) => ({ ...prev, share: true }))}
         onMouseLeave={() => setActive((prev) => ({ ...prev, share: false }))}
-        onClick={() => {
-          setActive((prev) => ({ ...prev, share: !prev.share }));
-        }}
+        onClick={handleShareClick}
       >
         <Image
           src={

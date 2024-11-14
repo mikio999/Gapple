@@ -4,6 +4,7 @@ import { getComments } from './getComments';
 import postComment from './postComment';
 import deleteComment from './deleteComment';
 import putComment from './putComment';
+import { postCommentLike } from './postCommentLike';
 
 export function useComments(postId: number, accessToken: string) {
   const queryClient = useQueryClient();
@@ -56,11 +57,21 @@ export function useComments(postId: number, accessToken: string) {
     },
   );
 
+  const likeCommentMutation = useMutation(
+    (commentId: number) => postCommentLike(commentId.toString(), accessToken),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['comments', postId]);
+      },
+    },
+  );
+
   return {
     comments,
     addComment: addCommentMutation.mutate,
     deleteComment: deleteCommentMutation.mutate,
     putComment: putCommentMutation.mutate,
+    likeComment: likeCommentMutation.mutate,
     toggleReplies,
     isLoading,
     isError,
