@@ -12,6 +12,8 @@ interface Props {
   comment: IComment;
   replies: IComment[];
   onLike: (id: number) => void;
+  isLiked: boolean;
+  likeCount: number;
   toggleReplies: (id: number) => void;
   showReplies: boolean;
   onAddReply: (commentData: {
@@ -26,6 +28,8 @@ const CommentItem = ({
   comment,
   replies,
   onLike,
+  isLiked,
+  likeCount,
   toggleReplies,
   showReplies,
   onAddReply,
@@ -149,7 +153,11 @@ const CommentItem = ({
         <p className={'my-2'}>{comment.content}</p>
       )}
       <div className={'flex items-center space-x-4'}>
-        <LikeButton count={comment.likes} onLike={() => onLike(comment.id)} />
+        <LikeButton
+          isLiked={isLiked}
+          count={likeCount}
+          onLike={() => onLike(comment.id)}
+        />
         <button
           type={'button'}
           onClick={() => toggleReplies(comment.id)}

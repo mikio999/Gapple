@@ -1,4 +1,6 @@
 export default interface IComment {
+  likedCount: number;
+  isLiked: boolean;
   id: number;
   authorNickname: string;
   content: string;

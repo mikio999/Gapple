@@ -46,7 +46,7 @@ const UserInfo = ({
   return (
     <div
       className={
-        'flex laptop:flex-row laptop:justify-around laptop:h-52 flex-col items-center space-y-4 bg-white px-8 rounded-lg pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out h-[30dvh]'
+        'flex flex-col items-center space-y-4 bg-white px-8 rounded-lg pb-4 shadow-sm hover:shadow-md transition-shadow duration-300 ease-in-out laptop:h-[35dvh] h-[45dvh] mx-auto laptop:flex-row laptop:justify-around laptop:w-[60dvw] desktop:w-60dvw w-[90dvw] desktop:w-[45rem]'
       }
     >
       <div className={'relative w-36 h-36 rounded-full'}>
