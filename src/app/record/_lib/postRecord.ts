@@ -1,5 +1,5 @@
-import { BASE_NEXT_URL } from '@/_lib/utils/config';
 import axios from 'axios';
+import { BASE_NEXT_URL } from '@/_lib/utils/config';
 
 interface PostRecordData {
   attachmentId: number;

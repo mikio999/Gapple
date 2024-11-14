@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import { IContentItem } from '@/types/content';
@@ -21,8 +23,6 @@ import PrecautionsSection from '@/app/lessonForm/_component/section/PrecautionSe
 import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSection';
 import SaveButtons from '@/app/lessonForm/_component/section/SaveButtonsSection';
 import submitLessonForm from '@/app/lessonForm/_lib/api';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
 import { useSubjectStore } from '@/app/ai/_store/useSubjectStore';
 
 export default function CreatePlan() {
@@ -111,7 +111,7 @@ export default function CreatePlan() {
       );
       setEvaluations(loadedEvaluations);
     }
-  }, [documentData]);
+  }, [documentData, pathname]);
 
   const ageOptions = [
     { label: '만 3세', value: 3, image: '/images/age/age3.png' },

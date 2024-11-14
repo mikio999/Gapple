@@ -1,12 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface imagePreviewProps {
+interface ImagePreviewProps {
   src: string;
   alt: string;
   onRemove: () => void;
 }
-const ImagePreview = React.memo(({ src, alt, onRemove }: imagePreviewProps) => {
+
+const ImagePreview = React.memo(({ src, alt, onRemove }: ImagePreviewProps) => {
   return (
     <div className={'relative'}>
       <Image
@@ -32,5 +33,7 @@ const ImagePreview = React.memo(({ src, alt, onRemove }: imagePreviewProps) => {
     </div>
   );
 });
+
+ImagePreview.displayName = 'ImagePreview';
 
 export default ImagePreview;

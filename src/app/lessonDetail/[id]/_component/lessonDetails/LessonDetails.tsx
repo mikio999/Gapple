@@ -12,7 +12,6 @@ import Attachments from './Attachments';
 import ImageGallery from './ImageGallery';
 
 const LessonDetails = ({ planner }: { planner: IPlanner }) => {
-  console.log(planner);
   return (
     <div className={'bg-white py-4 px-6 shadow rounded-lg'}>
       <div className={'my-4'}>

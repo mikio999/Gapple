@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 interface RecordStoreState {
-  attachmentId: string | null;
+  attachmentId: number | null;
   category: string;
   subject: string;
   content: string;
-  setAttachmentId: (id: string) => void;
+  setAttachmentId: (id: number) => void;
   setCategory: (category: string) => void;
   setSubject: (subject: string) => void;
   setContent: (content: string) => void;

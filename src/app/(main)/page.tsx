@@ -1,4 +1,3 @@
-import Category from './_component/Category/Category';
 import FeedList from './_component/Feed/FeedList';
 import MainTop from './_component/MainTop/MainTop';
 import MonthlyTheme from './_component/MonthlyTheme/MonthlyTheme';
@@ -9,7 +8,7 @@ export default function MainPage() {
     <div>
       <div className={'flex flex-col text-sm'}>
         <MainTop />
-        <Category />
+
         <div
           className={
             'flex flex-col desktop:flex-row tablet:flex-col laptop:flex-row justify-between w-full'

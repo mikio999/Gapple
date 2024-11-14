@@ -81,6 +81,7 @@ export default function ButtonSection({
       toast.success('링크 복사 완료!');
     } catch (error) {
       toast.error('링크 복사에 실패하였습니다. 다시 시도해주세요.');
+      console.error(error);
     }
   };
 

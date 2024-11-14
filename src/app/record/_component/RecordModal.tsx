@@ -2,28 +2,20 @@
 
 import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 import PhotoUpload from './PhotoUpload';
 import ChooseCategory from './ChooseCategory';
 import DetailsForm from './DetailsForm';
 import { useRecordStore } from '../_store/useRecordStore';
-import { useRouter } from 'next/navigation';
 import postRecord from '../_lib/postRecord';
-import { toast, ToastContainer } from 'react-toastify';
-
-interface PostRecordData {
-  attachmentId: number;
-  activity_type: string;
-  subject: string;
-  content: string;
-}
 
 export default function RecordModal() {
   const { data: session } = useSession();
   const [step, setStep] = useState<number>(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { setCategory, attachmentId, category, subject, content } =
-    useRecordStore();
+  const { setCategory, attachmentId, category } = useRecordStore();
 
   const router = useRouter();
 
@@ -88,12 +80,12 @@ export default function RecordModal() {
             'flex justify-center text-slate-600 border-b border-b-slate-400 py-2 mb-2'
           }
         >
-          수업 기록하기
+          {'수업 기록하기'}
         </div>
         {step === 1 && (
           <PhotoUpload
             onNext={handleNextFromPhotos}
-            accessToken={session?.accessToken}
+            accessToken={session?.accessToken || ''}
           />
         )}
         {step === 2 && (

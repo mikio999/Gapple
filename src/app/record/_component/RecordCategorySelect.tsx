@@ -15,11 +15,16 @@ const RecordCategorySelect = ({
 }: CategorySelectorProps) => {
   return (
     <>
-      <h1 className={'title-effect mr-auto text-base'}>활동 유형 선택</h1>
+      <h1 className={'title-effect mr-auto text-base'}>{'활동 유형 선택'}</h1>
       <div className={'flex justify-center items-center'}>
-        <div className="grid grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-6 gap-x-1">
+        <div
+          className={
+            'grid grid-cols-3 laptop:grid-cols-4 desktop:grid-cols-6 gap-x-1'
+          }
+        >
           {options.map((option) => (
             <button
+              type={'button'}
               key={option.value}
               onClick={() => onSelect(option.name)}
               className={`focus:outline-none bg-transparent border-4 transition duration-300 ease-in-out 
@@ -31,10 +36,10 @@ const RecordCategorySelect = ({
                   height={100}
                   src={option.image}
                   alt={option.name}
-                  className="w-20 h-20 laptop:w-28 laptop:h-28 object-contain"
+                  className={'w-20 h-20 laptop:w-28 laptop:h-28 object-contain'}
                 />
               )}
-              <div className="text-slate-700 text-xs desktop:text-base">
+              <div className={'text-slate-700 text-xs desktop:text-base'}>
                 {option.name}
               </div>
             </button>
