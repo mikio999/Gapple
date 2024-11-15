@@ -31,6 +31,7 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^15.0.3",
     "@tanstack/eslint-plugin-query": "4",
     "@types/node": "^20",
     "@types/react": "^18",

@@ -12,10 +12,6 @@ interface FeedProps {
   feed: IFeed;
 }
 
-interface Session {
-  accessToken: string;
-}
-
 export default function Feed({ feed }: FeedProps) {
   const { data: session } = useSession();
 
