@@ -67,14 +67,28 @@ export default function AiPlan() {
   const titleInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    titleInputRef.current?.focus();
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
     if (documentData) {
       titleInputRef.current?.focus();
       setAge(documentData.data.age || 3);
-      setGroupSize(documentData.data.group_size || 'MEDIUM');
+      let mappedGroupSize = 'MEDIUM';
+      switch (documentData.data.group_size) {
+        case '소집단':
+          mappedGroupSize = 'SMALL';
+          break;
+        case '대집단':
+          mappedGroupSize = 'LARGE';
+          break;
+        case '중집단':
+          mappedGroupSize = 'MEDIUM';
+          break;
+        default:
+          mappedGroupSize = 'MEDIUM';
+      }
+      setGroupSize(mappedGroupSize);
       setTitle(documentData.data.title || '');
       setSubject(documentData.data.subject || '');
       setDetailSubject(documentData.data.detail_subject || '');

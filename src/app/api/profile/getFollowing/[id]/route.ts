@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
     const data = await apiRequest(
       'get',
       `/profile/follow?user_id=${id}&type=FOLLOWING`,
-      req,
     );
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

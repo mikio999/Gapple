@@ -1,12 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const data = await apiRequest(
       'get',
       `/document/profile/bookmarked?cursor=`,
-      req,
     );
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

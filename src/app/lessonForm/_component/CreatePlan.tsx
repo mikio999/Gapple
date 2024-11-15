@@ -23,6 +23,7 @@ import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSe
 import SaveButtons from '@/app/lessonForm/_component/section/SaveButtonsSection';
 import submitLessonForm from '@/app/lessonForm/_lib/api';
 import { useSubjectStore } from '@/app/ai/_store/useSubjectStore';
+import { validateFormData } from '@/app/lessonForm/_component/validation/validateFormData';
 
 export default function CreatePlan() {
   const { documentData } = useSubjectStore();
@@ -180,6 +181,26 @@ export default function CreatePlan() {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+
+    const isValid = validateFormData(
+      title,
+      subject,
+      detailSubject,
+      age,
+      groupSize,
+      activityType,
+      goals,
+      tools,
+      precautions,
+      evaluations,
+      contents,
+      curriculumComponents,
+    );
+
+    if (!isValid) {
+      return;
+    }
+
     setIsSaving(true);
 
     if (session) {

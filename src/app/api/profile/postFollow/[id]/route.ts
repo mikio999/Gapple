@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
     const response = await apiRequest(
       'post',
       `/profile/follow?user_id=${id}`,
-      request,
       formData,
     );
     return NextResponse.json(response, { status: 200 });

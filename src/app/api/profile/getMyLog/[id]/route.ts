@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
     const data = await apiRequest(
       'get',
       `/document/profile/post?cursor=&type=LOG&user_id=${id}`,
-      req,
     );
     return NextResponse.json(data, { status: 200 });
   } catch (error) {

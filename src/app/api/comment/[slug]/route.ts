@@ -11,7 +11,6 @@ export async function POST(request: NextRequest) {
     const response = await apiRequest(
       'post',
       `/document/comment?id=${id}`,
-      request,
       formData,
     );
 
@@ -32,7 +31,7 @@ export async function GET(req: NextRequest) {
   const { id } = extractUrlId(req);
 
   try {
-    const data = await apiRequest('get', `/document/comments?id=${id}`, req);
+    const data = await apiRequest('get', `/document/comments?id=${id}`);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     const errorMessage = extractErrorMessage(error);
@@ -50,7 +49,7 @@ export async function DELETE(req: NextRequest) {
   const { id } = extractUrlId(req);
 
   try {
-    await apiRequest('delete', `/document/comment?id=${id}`, req);
+    await apiRequest('delete', `/document/comment?id=${id}`);
     return NextResponse.json(
       { message: 'Comment deleted successfully' },
       { status: 200 },
@@ -75,7 +74,6 @@ export async function PUT(req: NextRequest) {
     const response = await apiRequest(
       'put',
       `/document/comment?id=${id}`,
-      req,
       formData,
     );
     return NextResponse.json(response, { status: 200 });

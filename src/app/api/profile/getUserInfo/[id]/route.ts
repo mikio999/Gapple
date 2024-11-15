@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const id = url.pathname.split('/').pop();
 
   try {
-    const data = await apiRequest('get', `/profile/user?user_id=${id}`, req);
+    const data = await apiRequest('get', `/profile/user?user_id=${id}`);
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     const message =
