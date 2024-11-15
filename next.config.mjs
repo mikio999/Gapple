@@ -4,6 +4,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'store.kyobobook.co.kr',
+      },
+      {
+        protocol: 'https',
         hostname: 'phinf.pstatic.net',
       },
       {

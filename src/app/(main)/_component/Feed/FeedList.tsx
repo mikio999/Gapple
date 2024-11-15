@@ -1,10 +1,11 @@
 'use client';
 
-import { IFeed } from '@/types/feed';
 import { useSession } from 'next-auth/react';
+import { useQuery } from '@tanstack/react-query';
+import { IFeed } from '@/types/feed';
+import Loader from '@/app/profile/[id]/_component/Loader';
 import Feed from './Feed';
 import { getFeeds } from '../../_lib/getFeeds';
-import { useQuery } from '@tanstack/react-query';
 
 export default function FeedList() {
   const { data: session } = useSession();
@@ -23,11 +24,19 @@ export default function FeedList() {
   );
 
   if (!session) {
-    return <div>{'유저 정보가 존재하지 않습니다'}</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   if (isLoading) {
-    return <div>{'Loading feeds...'}</div>;
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   }
 
   if (error) {

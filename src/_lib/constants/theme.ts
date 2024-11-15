@@ -1,16 +1,16 @@
 import { IOption } from '@/types/aiOption';
 
 export const theme: IOption[] = [
-  { name: '단풍', value: '단풍' },
-  { name: '한글날', value: '한글날' },
-  { name: '도토리', value: '도토리' },
-  { name: '수확', value: '수확' },
-  { name: '낙엽', value: '낙엽' },
-  { name: '호박', value: '호박' },
-  { name: '벼', value: '벼' },
-  { name: '코스모스', value: '코스모스' },
-  { name: '곶감', value: '곶감' },
-  { name: '김장', value: '김장' },
-  { name: '등산', value: '등산' },
-  { name: '운동회', value: '운동회' },
+  { name: '가을 나무 관찰', value: 'fall_trees' },
+  { name: '도토리와 밤 놀이', value: 'acorns_and_chestnuts' },
+  { name: '김장 담그기 체험', value: 'kimchi_making' },
+  { name: '겨울 새 관찰', value: 'winter_birds' },
+  { name: '크리스마스 카드 만들기', value: 'christmas_cards' },
+  { name: '눈송이 공작', value: 'snowflake_crafts' },
+  { name: '겨울 동화 읽기', value: 'winter_stories' },
+  { name: '따뜻한 차 만들기', value: 'warm_tea_making' },
+  { name: '겨울 옷 이야기', value: 'winter_clothing' },
+  { name: '눈사람 만들기', value: 'snowman_making' },
+  { name: '새해 소망', value: 'new_year_wishes' },
+  { name: '겨울 운동회', value: 'winter_sports' },
 ];

@@ -21,6 +21,7 @@ import PrecautionsSection from '@/app/lessonForm/_component/section/PrecautionSe
 import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSection';
 import SaveButtons from '@/app/lessonForm/_component/section/SaveButtonsSection';
 import submitLessonForm from '@/app/lessonForm/_lib/api';
+import { useRouter } from 'next/navigation';
 import { useSubjectStore } from '../../_store/useSubjectStore';
 
 export default function AiPlan() {
@@ -72,6 +73,8 @@ export default function AiPlan() {
   useEffect(() => {
     if (documentData) {
       titleInputRef.current?.focus();
+      setAge(documentData.data.age || 3);
+      setGroupSize(documentData.data.group_size || 'MEDIUM');
       setTitle(documentData.data.title || '');
       setSubject(documentData.data.subject || '');
       setDetailSubject(documentData.data.detail_subject || '');
@@ -119,7 +122,7 @@ export default function AiPlan() {
     { label: '중집단', value: 'MEDIUM', image: '/images/group/medium.png' },
     { label: '대집단', value: 'LARGE', image: '/images/group/large.png' },
   ];
-
+  const router = useRouter();
   const handleSubjectChange = (value: string) => {
     setSubject(value);
   };
@@ -182,7 +185,7 @@ export default function AiPlan() {
       try {
         const result = await submitLessonForm(formData, session.accessToken);
         toast.success('계획안 생성 성공!');
-        console.log(result);
+        router.push(`/lessonDetail/${result.data}`);
       } catch (error) {
         toast.error('계획안 생성 실패!');
         console.error('폼 제출 실패:', error);
