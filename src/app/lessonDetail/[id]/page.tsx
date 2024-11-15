@@ -2,12 +2,12 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import Loader from '@/app/ai/_component/loader/Loader';
 import CommentSection from './_component/commentSection/CommentSection';
 import LessonDetails from './_component/lessonDetails/LessonDetails';
 import { getPlanners } from '../_lib/getPlanners';
 import Profile from './_component/profileSection/Profile';
 import ButtonSection from './_component/buttonSection/ButtonSection';
-import Loader from '@/app/ai/_component/loader/Loader';
 
 export default function LessonPage({ params }: { params: { id: string } }) {
   const { data: session, status } = useSession();

@@ -21,7 +21,7 @@ export default function ErrorPage({ searchParams }: ErrorPageProps) {
           {decodeURIComponent(searchParams.message || '에러 메시지가 없습니다')}
         </h2>
         <Link
-          href="/"
+          href={'/'}
           className={
             'text-white bg-primary hover:bg-primary-dark font-bold py-2 px-4 rounded'
           }

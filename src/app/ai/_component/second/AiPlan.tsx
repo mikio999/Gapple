@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation';
 import { category } from '@/_lib/constants/category';
 import { useCurriculumHandlers } from '@/_lib/hooks/useNurriCurriculum';
 import { IContentItem } from '@/types/content';
@@ -21,7 +22,7 @@ import PrecautionsSection from '@/app/lessonForm/_component/section/PrecautionSe
 import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSection';
 import SaveButtons from '@/app/lessonForm/_component/section/SaveButtonsSection';
 import submitLessonForm from '@/app/lessonForm/_lib/api';
-import { useRouter } from 'next/navigation';
+import { validateFormData } from '@/app/lessonForm/_component/validation/validateFormData';
 import { useSubjectStore } from '../../_store/useSubjectStore';
 
 export default function AiPlan() {
@@ -193,6 +194,26 @@ export default function AiPlan() {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+
+    const isValid = validateFormData(
+      title,
+      subject,
+      detailSubject,
+      age,
+      groupSize,
+      activityType,
+      goals,
+      tools,
+      precautions,
+      evaluations,
+      contents,
+      curriculumComponents,
+    );
+
+    if (!isValid) {
+      return;
+    }
+
     setIsSaving(true);
 
     if (session) {

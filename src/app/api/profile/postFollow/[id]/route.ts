@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
-import extractUrlId from '@/_lib/utils/extractUrlId';
 
-export async function POST(request: NextRequest) {
-  const { id } = extractUrlId(request);
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  const { id } = params;
   const formData = await request.json();
 
   try {

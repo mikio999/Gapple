@@ -31,7 +31,7 @@ interface CurriculumComponent {
   selectedCurriculum: string;
 }
 
-const validateFormData = (
+export const validateFormData = (
   title: string,
   subject: string,
   detailSubject: string,

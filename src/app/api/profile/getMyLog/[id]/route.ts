@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { apiRequest } from '@/_lib/utils/api';
 
-export async function GET(req: NextRequest) {
-  const host = req.headers.get('host');
-  const url = new URL(req.url, `http://${host}`);
-  const id = url.pathname.split('/').pop();
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  const { id } = params;
 
   try {
     const data = await apiRequest(
