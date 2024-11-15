@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import ActionButtons from '@/_component/Item/ActionButtons';
 import { IFeed } from '@/types/feed';
-import { auth } from '@/auth';
+import { useSession } from 'next-auth/react';
 import formatRelativeTime from '../../_lib/formatRelativeTime';
 import PlanFeed from './PlanFeed';
 import LogFeed from './LogFeed';
@@ -16,8 +16,8 @@ interface Session {
   accessToken: string;
 }
 
-export default async function Feed({ feed }: FeedProps) {
-  const session: Session | null = await auth();
+export default function Feed({ feed }: FeedProps) {
+  const { data: session } = useSession();
 
   if (!session) {
     console.error('No session available, user might not be logged in');
