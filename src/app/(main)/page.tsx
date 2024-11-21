@@ -1,9 +1,16 @@
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 import FeedList from './_component/Feed/FeedList';
 import MainTop from './_component/MainTop/MainTop';
 import MonthlyTheme from './_component/MonthlyTheme/MonthlyTheme';
 import RecommendList from './_component/RecommendFeed/RecommendList';
 
-export default function MainPage() {
+async function MainPage() {
+  const session = await auth();
+
+  if (!session || !session?.user) {
+    redirect('/landing');
+  }
   return (
     <div>
       <div className={'flex flex-col text-sm'}>
@@ -24,3 +31,5 @@ export default function MainPage() {
     </div>
   );
 }
+
+export default MainPage;
