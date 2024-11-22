@@ -16,6 +16,7 @@ export default function SearchHeader({
   return (
     <div className="flex border-b pb-1 border-slate-200 p-4 relative">
       <button
+        type={'button'}
         className="absolute top-0 right-0 text-slate-600 hover:text-slate-900 focus:outline-none"
         onClick={onClose}
       >

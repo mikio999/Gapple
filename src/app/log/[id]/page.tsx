@@ -4,13 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { getLog } from '../_lib/getLog';
 import RecordSwiper from '@/app/profile/[id]/record/_component/RecordSwiper';
 import CommentSection from '@/app/lessonDetail/[id]/_component/commentSection/CommentSection';
+import { getLog } from '../_lib/getLog';
 
 export default function LogDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-
   const { data: session, status } = useSession();
 
   const {
@@ -33,7 +32,7 @@ export default function LogDetailPage({ params }: { params: { id: string } }) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        로딩 중...
+        {'로딩 중...'}
       </div>
     );
   }
@@ -41,26 +40,30 @@ export default function LogDetailPage({ params }: { params: { id: string } }) {
   if (isError || !logData || !logData.data) {
     return (
       <div className="flex flex-col justify-center items-center h-screen">
-        <p className="text-red-600">로그 데이터를 불러오는 데 실패했습니다.</p>
+        <p className="text-red-600">
+          {'로그 데이터를 불러오는 데 실패했습니다.'}
+        </p>
         <button
+          type="button"
           className="mt-4 bg-primary text-white px-4 py-2 rounded"
           onClick={() => router.back()}
         >
-          뒤로 가기
+          {'뒤로 가기'}
         </button>
       </div>
     );
   }
 
+  // Destructure the log data with camelCase conversion
   const {
     authorNickname,
     authorThumbnailImage,
-    class_log: { image, subject, activity_type, memo },
-    created_dt,
+    class_log: { image, subject, activity_type: activityType, memo },
+    created_dt: createdDt,
     viewCount,
   } = logData.data;
 
-  const formattedDate = new Date(created_dt).toLocaleString();
+  const formattedDate = new Date(createdDt).toLocaleString();
 
   return (
     <div className="flex flex-col justify-center desktop:max-w-2xl laptop:max-w-xl max-w-sm mx-auto p-4 bg-white shadow rounded-lg">
@@ -80,12 +83,14 @@ export default function LogDetailPage({ params }: { params: { id: string } }) {
 
       <div className="mb-4">
         <p className="text-slate-800 text-lg font-semibold">{subject}</p>
-        <p className="text-slate-600 text-sm mb-2">{activity_type}</p>
+        <p className="text-slate-600 text-sm mb-2">{activityType}</p>
         <p className="text-slate-700">{memo}</p>
       </div>
-      <div>{image?.length > 0 && <RecordSwiper images={image} />}</div>
+
+      {image?.length > 0 && <RecordSwiper images={image} />}
+
       <div className="flex justify-between items-center text-slate-600 text-sm mt-4">
-        <span>조회수: {viewCount}</span>
+        <span>{`조회수: ${viewCount}`}</span>
       </div>
 
       <CommentSection

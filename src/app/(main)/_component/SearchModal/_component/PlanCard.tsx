@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 
 interface PlanCardProps {
   result: {
@@ -12,8 +13,8 @@ interface PlanCardProps {
 
 export default function PlanCard({ result }: PlanCardProps) {
   const router = useRouter();
-  let parsedContent: { content: string; subtitle: string }[] = [];
 
+  let parsedContent: { content: string; subtitle: string }[] = [];
   try {
     parsedContent = JSON.parse(result.content);
   } catch (error) {
@@ -21,10 +22,7 @@ export default function PlanCard({ result }: PlanCardProps) {
   }
 
   const handleNavigation = () => {
-    router.back();
-    setTimeout(() => {
-      router.push(`/lessonDetail/${result.id}`);
-    }, 100);
+    router.push(`/lessonDetail/${result.id}`);
   };
 
   return (
@@ -33,23 +31,23 @@ export default function PlanCard({ result }: PlanCardProps) {
       onClick={handleNavigation}
     >
       <h3 className="text-xl font-semibold text-slate-800 mb-2">
-        {result.title}
+        {`${result.title}`}
       </h3>
 
       {parsedContent.length > 0 ? (
         <ul className="space-y-2">
-          {parsedContent.map((item, index) => (
+          {parsedContent.map((item) => (
             <li
-              key={index}
+              key={uuidv4()}
               className="bg-slate-50 p-3 rounded-md shadow-sm hover:bg-slate-100 transition-colors"
             >
-              <h4 className="text-slate-700 font-medium">{item.subtitle}</h4>
-              <p className="text-slate-600 text-sm mt-1">{item.content}</p>
+              <h4 className="text-slate-700 font-medium">{`${item.subtitle}`}</h4>
+              <p className="text-slate-600 text-sm mt-1">{`${item.content}`}</p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-slate-600 text-sm">내용이 없습니다.</p>
+        <p className="text-slate-600 text-sm">{`내용이 없습니다.`}</p>
       )}
     </div>
   );
