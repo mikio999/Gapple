@@ -22,7 +22,7 @@ const RecordSwiper = ({ images }: RecordSwiperProps) => {
       pagination={{
         clickable: true,
         renderBullet: (className) =>
-          `<span class="${className}" style="background-color: #ec7990;"></span>`,
+          `<span class="${className}" style="background-color: #ED4264;"></span>`,
       }}
       mousewheel
       keyboard
