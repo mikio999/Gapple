@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+interface SearchCategoryProps {
+  activeCategory: string;
+  setActiveCategory: (category: string) => void;
+}
 
-export default function SearchCategory() {
+export default function SearchCategory({
+  activeCategory,
+  setActiveCategory,
+}: SearchCategoryProps) {
   const categories = ['전체', '계획안', '기록', '사용자'];
-  const [activeCategory, setActiveCategory] = useState('');
-
-  const handleCategoryClick = (category: string) => {
-    setActiveCategory(category);
-  };
 
   return (
     <div
@@ -19,12 +20,12 @@ export default function SearchCategory() {
       {categories.map((category) => (
         <div
           key={category}
-          className={`flex justify-center cursor-pointer p-2 w-28 rounded-md ${
+          className={`flex justify-center cursor-pointer p-2 w-24 rounded-md ${
             activeCategory === category
               ? 'bg-slate-300 text-slate-800'
               : 'hover:bg-slate-300 hover:text-slate-800'
           }`}
-          onClick={() => handleCategoryClick(category)}
+          onClick={() => setActiveCategory(category)}
         >
           {category}
         </div>

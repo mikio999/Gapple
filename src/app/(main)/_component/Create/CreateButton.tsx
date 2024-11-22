@@ -34,7 +34,7 @@ const CreateButton = () => {
       <button
         type={'button'}
         className={
-          'hidden bg-primary text-white py-2 px-4 rounded-md laptop:block'
+          'hidden bg-primary text-white py-2 px-4 rounded-md laptop:block shadow-md hover:bg-primary500'
         }
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -42,7 +42,9 @@ const CreateButton = () => {
       </button>
       {isOpen && (
         <div
-          className={'absolute right-0 w-48 bg-white shadow-lg mt-2 rounded-md'}
+          className={
+            'absolute right-0 w-48 bg-white shadow-lg mt-2 rounded-md z-30'
+          }
         >
           {subMenuItems.map((item) => (
             <Link key={item.name} href={item.link}>

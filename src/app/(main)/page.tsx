@@ -18,7 +18,7 @@ async function MainPage() {
 
         <div
           className={
-            'flex flex-col desktop:flex-row tablet:flex-col laptop:flex-row justify-between w-full'
+            'flex flex-col desktop:flex-row tablet:flex-col laptop:flex-col justify-between w-full'
           }
         >
           <FeedList />
