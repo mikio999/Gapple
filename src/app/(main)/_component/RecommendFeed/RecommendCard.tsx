@@ -7,42 +7,38 @@ interface RecommendCardProps {
   profileImg: string;
   title: string;
   sentence: string;
-  like: number;
-  link: string; // 외부 링크
+  link: string;
 }
 
 function RecommendCard({
   profileImg,
   title,
   sentence,
-  like,
   link,
 }: RecommendCardProps) {
   return (
     <motion.a
       href={link}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={'_blank'}
+      rel={'noopener noreferrer'}
       className={
-        'block bg-white p-4 shadow rounded-lg mb-4 items-center space-x-4 transition-transform duration-300 transform hover:scale-105 hover:shadow-lg'
+        'flex flex-col bg-white p-4 shadow rounded-lg mb-4 items-center space-x-4 transition-transform duration-300 transform hover:scale-105 hover:shadow-lg'
       }
       whileHover={{ scale: 1.05 }}
     >
-      <Image
-        src={profileImg}
-        alt={'그림'}
-        className={'w-10 h-10 rounded-full'}
-        width={100}
-        height={100}
-      />
-      <div className={'flex-1'}>
-        <h3 className={'font-semibold'}>{title}</h3>
-        <p>{sentence}</p>
+      <div className={'grid grid-cols-[15%_85%] items-center w-full'}>
+        <Image
+          src={profileImg}
+          alt={'그림'}
+          className={'w-8 h-8 rounded-full shadow-md'}
+          width={100}
+          height={100}
+        />
+
+        <h3 className={'font-semibold ml-2 text-slate-800'}>{title}</h3>
       </div>
-      <div className={'text-gray-600'}>
-        {'👍 '}
-        {like}
-      </div>
+
+      <p className={'text-slate-600'}>{sentence}</p>
     </motion.a>
   );
 }

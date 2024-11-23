@@ -13,7 +13,7 @@ interface RecordSwiperProps {
 }
 
 const RecordSwiper = ({ images }: RecordSwiperProps) => {
-  const enableLoop = images.length > 1; // 이미지가 2개 이상일 때만 loop 활성화
+  const enableLoop = images.length > 1;
 
   return (
     <Swiper
@@ -21,12 +21,12 @@ const RecordSwiper = ({ images }: RecordSwiperProps) => {
       navigation
       pagination={{
         clickable: true,
-        renderBullet: (index, className) =>
+        renderBullet: (className) =>
           `<span class="${className}" style="background-color: #ED4264;"></span>`,
       }}
       mousewheel
       keyboard
-      loop={enableLoop} // loop 활성화 조건 적용
+      loop={enableLoop}
       modules={[Navigation, Pagination, Mousewheel, Keyboard]}
       className={'mySwiper'}
       style={{ objectFit: 'contain' }}

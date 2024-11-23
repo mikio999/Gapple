@@ -1,15 +1,35 @@
 'use client';
 
-import Image from 'next/image';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchCategory from './SearchCategory';
 
+import { useSearch } from './_lib/useSearch';
+import SearchResults from './_component/SearchResults';
+import SearchHeader from './_component/SearchHeader';
+
 export default function SearchModal() {
   const router = useRouter();
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('전체');
 
-  const handleInputClick = (e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
+  const mapCategoryToTypes = (category: string) => {
+    switch (category) {
+      case '계획안':
+        return 'PLAN';
+      case '기록':
+        return 'LOG';
+      case '사용자':
+        return 'USER';
+      default:
+        return 'LOG,USER,PLAN';
+    }
   };
+
+  const { data, isLoading, isError } = useSearch(
+    query,
+    mapCategoryToTypes(category),
+  );
 
   return (
     <div
@@ -20,27 +40,27 @@ export default function SearchModal() {
     >
       <div
         className={
-          'flex flex-col bg-slate-300 p-8 rounded-md shadow-md max-w-3xl w-full tablet:w-4/5 laptop:w-3/5 desktop:w-2/5 min-h-96 border-none mx-auto'
+          'relative flex flex-col bg-slate-300 p-4 rounded-md shadow-md w-full h-full max-w-3xl md:w-4/5 md:h-auto md:rounded-lg laptop:w-3/5 desktop:w-2/5 min-h-96 border-none mx-auto'
         }
-        onClick={handleInputClick}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className={'flex border-b pb-1 border-slate-200'}>
-          <Image
-            src={'/icons/searchWhite.png'}
-            width={30}
-            height={30}
-            alt={'search icon'}
-          />
-          <input
-            className={
-              'w-full pl-2 ml-2 bg-transparent focus:outline-none text-slate-900'
-            }
-          />
-        </div>
-        <SearchCategory />
-        <div className={'flex justify-center items-center h-96 text-slate-600'}>
-          {'무엇이 궁금하신가요?!'}
-        </div>
+        <SearchHeader
+          query={query}
+          setQuery={setQuery}
+          onClose={() => router.back()}
+        />
+
+        <SearchCategory
+          activeCategory={category}
+          setActiveCategory={setCategory}
+        />
+
+        <SearchResults
+          query={query}
+          isLoading={isLoading}
+          isError={isError}
+          data={data?.data}
+        />
       </div>
     </div>
   );

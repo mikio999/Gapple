@@ -22,6 +22,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'gapple-client.vercel.app',
       },
+      {
+        protocol: 'http',
+        hostname: 'k.kakaocdn.net',
+      },
     ],
   },
 };

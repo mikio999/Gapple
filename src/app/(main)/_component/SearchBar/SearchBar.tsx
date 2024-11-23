@@ -6,7 +6,7 @@ function SearchBar() {
     <Link href={'/search'} scroll={false}>
       <div
         className={
-          'flex justify-center items-center bg-white rounded-full border-4 p-2 desktop:w-96 h-12 border-primary500 shadow-lg shadow-primary200 hover:shadow-primary400 '
+          'flex justify-center items-center bg-white rounded-full border-4 p-2  h-12 border-primary500 shadow-lg shadow-primary200 hover:shadow-primary400 laptop:w-full'
         }
       >
         <input className={'flex pr-2 laptop:w-72 '} placeholder={'가을 놀이'} />
