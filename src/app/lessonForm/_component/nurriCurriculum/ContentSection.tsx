@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { IContentItem, ISubContentItem } from '@/types/content';
 import { useSubjectStore } from '@/app/ai/_store/useSubjectStore';
 import ContentItem from './ContentItem';
+import { transformActivityContent } from '@/app/updatePlan/[id]/_component/_utils/contentUtils';
 
 interface ContentSectionProps {
   contents: IContentItem[];
@@ -15,9 +16,10 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
   const { documentData } = useSubjectStore();
   const pathname = usePathname();
   const [isAdding, setIsAdding] = useState(false);
+  const plannerData = transformActivityContent(contents);
 
   useEffect(() => {
-    if (documentData && pathname === '/ai') {
+    if (contents.length === 0 && documentData && pathname === '/ai') {
       const loadedContents = documentData.data.activity_content.map((item) => ({
         id: uuidv4(),
         subtitle: item.subtitle,
@@ -26,18 +28,15 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
           text: text.trim(),
         })),
       }));
-
       setContents(loadedContents);
-    } else {
-      setContents([
-        {
-          id: uuidv4(),
-          subtitle: '',
-          contents: [{ id: uuidv4(), text: '' }],
-        },
-      ]);
     }
-  }, [documentData, pathname, setContents]);
+  }, [documentData, pathname, setContents, contents]);
+
+  useEffect(() => {
+    if (pathname.startsWith('/updatePlan')) {
+      setContents(plannerData);
+    }
+  }, [pathname]);
 
   const handleContentChange = (
     id: string,
@@ -155,6 +154,7 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
 
   return (
     <div>
+      <h1 className={'title-effect'}>{'세부내용'}</h1>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={'top-level'} type={'top-level'}>
           {(provided, snapshot) => (

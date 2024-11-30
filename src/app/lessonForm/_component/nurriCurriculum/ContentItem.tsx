@@ -114,7 +114,7 @@ const ContentItem = ({
                 {...provided.droppableProps}
                 className={`p-2 ${snapshot.isDraggingOver ? 'bg-gray-100' : 'bg-white'}`}
               >
-                {content.contents.map((item, contentIndex) => (
+                {content?.contents?.map((item, contentIndex) => (
                   <Draggable
                     key={item.id}
                     draggableId={item.id}
