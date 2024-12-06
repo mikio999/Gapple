@@ -22,20 +22,12 @@ export function transformNuriCurriculumToInitialState(
 
 export function buildNuriCurriculum(
   curriculumComponents: CurriculumItem[],
-): any {
-  const result: any = {};
-
-  curriculumComponents.forEach(
-    ({ selectedNurri, selectedSubNurri, selectedCurriculum }) => {
-      if (!result[selectedNurri]) {
-        result[selectedNurri] = {};
-      }
-      if (!result[selectedNurri][selectedSubNurri]) {
-        result[selectedNurri][selectedSubNurri] = [];
-      }
-      result[selectedNurri][selectedSubNurri].push(selectedCurriculum);
-    },
+): { main_category: string; sub_category: string; content: string }[] {
+  return curriculumComponents.map(
+    ({ selectedNurri, selectedSubNurri, selectedCurriculum }) => ({
+      main_category: selectedNurri,
+      sub_category: selectedSubNurri,
+      content: selectedCurriculum,
+    }),
   );
-
-  return result;
 }

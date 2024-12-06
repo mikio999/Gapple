@@ -46,8 +46,16 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
   const [tools, setTools] = useState([{ id: '1', value: '' }]);
   const [precautions, setPrecautions] = useState([{ id: '', text: '' }]);
   const [evaluations, setEvaluations] = useState([{ id: '', text: '' }]);
-  const [contents, setContents] = useState<IContentItem[]>([]);
+  const [contents, setContents] = useState<IContentItem[]>([
+    {
+      id: 'default',
+      subtitle: 'Default Subtitle',
+      contents: [],
+    },
+  ]);
+
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [fileUrls, setFileUrls] = useState<string[]>([]);
 
   const memoizedSetContents: React.Dispatch<
     React.SetStateAction<IContentItem[]>
@@ -84,6 +92,17 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
         );
         curriculumComponents.push(...transformedCurriculum);
 
+        const loadedContents = classPlan.activity_content.map((item: any) => ({
+          id: uuidv4(),
+          subtitle: item.subtitle,
+          contents: item.content.split(/(?<=[.?])\s*/).map((text: string) => ({
+            id: uuidv4(),
+            text: text.trim(),
+          })),
+        }));
+
+        setContents(loadedContents);
+
         setTitle(classPlan.title);
         setSubject(classPlan.subject);
         setDetailSubject(classPlan.detail_subject);
@@ -91,6 +110,11 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
         setGroupSize(classPlan.group_amount);
         setActivityType(classPlan.activity_type);
         setImageUrls(classPlan.images);
+        setFileUrls(
+          classPlan.attachments.map(
+            (attachment: { url: string }) => attachment.url,
+          ),
+        );
         setGoals(
           classPlan.activity_goal.map((goal: string) => ({
             id: uuidv4(),
@@ -118,9 +142,6 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
             text: criterion,
           })),
         );
-
-        setContents(classPlan.activity_content);
-        // setCurriculumComponents(classPlan.nuri_curriculum);
       },
       onError: () => {
         toast.error('계획안 데이터를 가져오지 못했습니다.');
@@ -176,7 +197,6 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
     age,
     image_id: imageId,
     attachment_id: fileId,
-    attachmentId: fileId,
     group_size: groupSize,
     activity_type: activityType,
     activity_goal: goals.map((goal) => goal.text),
@@ -268,6 +288,7 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
           name={'title'}
           value={title}
           ref={titleInputRef}
+          tabIndex={0}
           onChange={(e) => setTitle(e.target.value)}
           className={'text-xl laptop:text-3xl focus:outline-none w-full'}
           placeholder={'활동명을 입력하세요 '}
@@ -316,6 +337,7 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
               description={'업로드할 이미지를 드롭하거나 클릭해서 선택하세요.'}
             />
             <FileUploadSection
+              initialFileUrls={fileUrls}
               fileId={fileId}
               setFileId={setFileId}
               accessToken={session.accessToken}

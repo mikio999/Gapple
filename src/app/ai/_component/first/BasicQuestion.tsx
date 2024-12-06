@@ -28,6 +28,7 @@ const questions = [
 
 const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
   const [customSubject, setCustomSubject] = useState('');
+  const [retry, setRetry] = useState(false);
   const { data: session } = useSession();
   const accessToken = session?.accessToken;
 
@@ -77,19 +78,28 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
   const { question, options, field } = questions[currentStep];
 
   const handleGenerateAI = async () => {
+    setRetry(false);
     setLoading(true);
+
+    const previousStep = currentStep;
+
     if (accessToken && isCompleteAnswers(selectedAnswers)) {
       try {
         await addSubject(selectedAnswers);
         console.log('AI generation initiated.');
+        setCurrentStep(4);
       } catch (error) {
         console.error('Failed to generate AI:', error);
+        setRetry(true);
+        setCurrentStep(previousStep);
       } finally {
-        setCurrentStep(4);
         setLoading(false);
       }
     } else {
       console.error('Missing required information or access token');
+      setRetry(true);
+      setCurrentStep(previousStep);
+      setLoading(false);
     }
   };
 
@@ -117,11 +127,6 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
           >
             {'등록'}
           </button>
-          <OptionSelector
-            options={options}
-            onOptionSelect={handleOptionSelect}
-            hasImages={options.some((opt) => 'image' in opt)}
-          />
         </div>
       ) : (
         <OptionSelector
@@ -140,6 +145,23 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
         >
           {'AI 생성하기'}
         </button>
+      )}
+
+      {retry && (
+        <div className="mt-4">
+          <p className="text-red-500">
+            {'생성에 실패했습니다. 다시 시도해주세요.'}
+          </p>
+          <button
+            type={'button'}
+            onClick={handleGenerateAI}
+            className={
+              'py-2 px-4 bg-red-500 text-white rounded hover:bg-red-700'
+            }
+          >
+            {'다시 시도하기'}
+          </button>
+        </div>
       )}
     </div>
   );

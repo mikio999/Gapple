@@ -5,7 +5,6 @@ import { DragDropContext, Droppable, DropResult } from '@hello-pangea/dnd';
 import { IContentItem, ISubContentItem } from '@/types/content';
 import { useSubjectStore } from '@/app/ai/_store/useSubjectStore';
 import ContentItem from './ContentItem';
-import { transformActivityContent } from '@/app/updatePlan/[id]/_component/_utils/contentUtils';
 
 interface ContentSectionProps {
   contents: IContentItem[];
@@ -16,7 +15,6 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
   const { documentData } = useSubjectStore();
   const pathname = usePathname();
   const [isAdding, setIsAdding] = useState(false);
-  const plannerData = transformActivityContent(contents);
 
   useEffect(() => {
     if (contents.length === 0 && documentData && pathname === '/ai') {
@@ -31,12 +29,6 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
       setContents(loadedContents);
     }
   }, [documentData, pathname, setContents, contents]);
-
-  useEffect(() => {
-    if (pathname.startsWith('/updatePlan')) {
-      setContents(plannerData);
-    }
-  }, [pathname]);
 
   const handleContentChange = (
     id: string,

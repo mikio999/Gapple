@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang={'ko'}>
       <body
-        className={'flex justify-center items-center'}
+        className={'flex justify-center items-center mb-16'}
         style={{ fontFamily: 'Pretendard' }}
       >
         <AuthSession>
