@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import postFiles from '../../_lib/postFiles';
 
 interface ImageUploadProps {
+  initialImageUrls?: string[];
   imageId: number;
   setImageId: React.Dispatch<React.SetStateAction<number>>;
   id: string;
@@ -21,6 +22,7 @@ interface ImageWithPreview {
 }
 
 const ImageUploadSection = ({
+  initialImageUrls = [],
   setImageId,
   id,
   label,
@@ -28,6 +30,53 @@ const ImageUploadSection = ({
   accessToken,
 }: ImageUploadProps) => {
   const [images, setImages] = useState<ImageWithPreview[]>([]);
+
+  const convertUrlToFile = async (
+    url: string,
+    fileName: string,
+  ): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], fileName, { type: blob.type });
+  };
+
+  useEffect(() => {
+    const loadInitialImages = async () => {
+      const preloadedImages: ImageWithPreview[] = [];
+
+      for (const url of initialImageUrls) {
+        try {
+          const file = await convertUrlToFile(
+            url,
+            url.split('/').pop() || 'unknown',
+          );
+          const imagePreview = {
+            id: url,
+            name: file.name,
+            preview: URL.createObjectURL(file),
+            size: file.size,
+            type: file.type,
+            file,
+          };
+
+          preloadedImages.push(imagePreview);
+        } catch (error) {
+          console.error(`Failed to load image from URL ${url}:`, error);
+        }
+      }
+      setImages((prevImages) => {
+        const existingIds = new Set(prevImages.map((image) => image.name));
+        const uniqueImages = preloadedImages.filter(
+          (image) => !existingIds.has(image.name),
+        );
+        return [...prevImages, ...uniqueImages];
+      });
+    };
+
+    if (initialImageUrls.length > 0) {
+      loadInitialImages();
+    }
+  }, [initialImageUrls]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newImages = acceptedFiles.map((file) => ({
@@ -73,9 +122,10 @@ const ImageUploadSection = ({
       <div className={'relative w-24 h-24'}>
         <Image
           src={image.preview}
-          layout={'fill'}
-          objectFit={'cover'}
           alt={image.name}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          width={100}
+          height={100}
         />
       </div>
       <button

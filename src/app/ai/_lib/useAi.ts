@@ -17,7 +17,6 @@ export function useAi(
 
     {
       onSuccess: (data) => {
-        console.log('Subject posted successfully:', data);
         const { setSubjectData } = useSubjectStore.getState();
         setSubjectData(data);
         queryClient.invalidateQueries(['subject', subjectId]);
@@ -27,18 +26,22 @@ export function useAi(
       },
     },
   );
-
   const postDocumentMutation = useMutation(
     (documentData: IDocumentData) => postDocument(documentData, accessToken),
     {
+      retry: 3,
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000), // 지수적 증가 (최대 30초)
+
       onSuccess: (data) => {
-        console.log('Document posted successfully:', data);
         const { setDocumentData } = useSubjectStore.getState();
         setDocumentData(data);
         queryClient.invalidateQueries(['document', documentId]);
       },
+
       onError: (error) => {
         console.error('Error posting document:', error);
+
+        alert('문서 업로드에 실패했습니다. 다시 시도해주세요.');
       },
     },
   );

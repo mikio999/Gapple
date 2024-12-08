@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import postFiles from '../../_lib/postFiles';
 
 interface FileUploadProps {
+  initialFileUrls?: string[];
   fileId: number;
   setFileId: React.Dispatch<React.SetStateAction<number>>;
   id: string;
@@ -23,6 +24,7 @@ interface FileWithPreview {
 }
 
 const FileUploadSection = ({
+  initialFileUrls = [],
   setFileId,
   id,
   label,
@@ -30,6 +32,54 @@ const FileUploadSection = ({
   accessToken,
 }: FileUploadProps) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
+
+  const convertUrlToFile = async (
+    url: string,
+    fileName: string,
+  ): Promise<File> => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    return new File([blob], fileName, { type: blob.type });
+  };
+
+  useEffect(() => {
+    const loadInitialFiles = async () => {
+      const preloadedFiles: FileWithPreview[] = [];
+
+      for (const url of initialFileUrls) {
+        try {
+          const file = await convertUrlToFile(
+            url,
+            url.split('/').pop() || 'unknown',
+          );
+          const filePreview = {
+            id: uuidv4(),
+            name: file.name,
+            preview: URL.createObjectURL(file),
+            size: file.size,
+            type: file.type,
+            file,
+          };
+
+          preloadedFiles.push(filePreview);
+        } catch (error) {
+          console.error(`Failed to load file from URL ${url}:`, error);
+        }
+      }
+
+      setFiles((prevFiles) => {
+        const existingIds = new Set(prevFiles.map((file) => file.name));
+        const uniqueFiles = preloadedFiles.filter(
+          (file) => !existingIds.has(file.name),
+        );
+        return [...prevFiles, ...uniqueFiles];
+      });
+    };
+
+    if (initialFileUrls.length > 0) {
+      loadInitialFiles();
+    }
+  }, [initialFileUrls]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -50,7 +100,6 @@ const FileUploadSection = ({
 
       postFiles(formData, accessToken)
         .then((response) => {
-          console.log('Upload success:', response);
           setFileId(response.data);
         })
         .catch((error) => {

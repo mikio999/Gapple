@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import ItemSection from './ItemSection';
 
 interface Evaluation {
@@ -14,6 +15,10 @@ const EvaluationsSection = ({
   evaluations,
   setEvaluations,
 }: EvaluationsSectionProps) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <ItemSection
       title={'평가'}
