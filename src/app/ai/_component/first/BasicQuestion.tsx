@@ -37,6 +37,7 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
   const { selectedAnswers, updateSelectedAnswer, setLoading } =
     useSubjectStore();
 
+  console.log('selectedAnswers', selectedAnswers);
   const handleOptionSelect = useCallback(
     (option: IOption) => {
       const currentQuestion = questions[currentStep];
@@ -148,8 +149,8 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
       )}
 
       {retry && (
-        <div className="mt-4">
-          <p className="text-red-500">
+        <div className={'mt-4'}>
+          <p className={'text-red-500'}>
             {'생성에 실패했습니다. 다시 시도해주세요.'}
           </p>
           <button

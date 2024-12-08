@@ -30,7 +30,7 @@ export function useAi(
     (documentData: IDocumentData) => postDocument(documentData, accessToken),
     {
       retry: 3,
-      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000), // 지수적 증가 (최대 30초)
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30000),
 
       onSuccess: (data) => {
         const { setDocumentData } = useSubjectStore.getState();
@@ -40,8 +40,6 @@ export function useAi(
 
       onError: (error) => {
         console.error('Error posting document:', error);
-
-        alert('문서 업로드에 실패했습니다. 다시 시도해주세요.');
       },
     },
   );
