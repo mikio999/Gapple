@@ -26,7 +26,7 @@ import { validateFormData } from '@/app/lessonForm/_component/validation/validat
 import { useSubjectStore } from '../../_store/useSubjectStore';
 
 export default function AiPlan() {
-  const { documentData } = useSubjectStore();
+  const { selectedAnswers, documentData } = useSubjectStore();
   const { data: session } = useSession();
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
@@ -68,10 +68,6 @@ export default function AiPlan() {
   const titleInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     if (documentData) {
       titleInputRef.current?.focus();
       setAge(documentData.data.age || 3);
@@ -93,7 +89,7 @@ export default function AiPlan() {
       setTitle(documentData.data.title || '');
       setSubject(documentData.data.subject || '');
       setDetailSubject(documentData.data.detail_subject || '');
-      setActivityType(documentData.data.activity_type || '');
+      setActivityType(selectedAnswers.activityType);
       const loadedGoals = documentData.data.activity_goal.map(
         (goal: string) => ({
           id: uuidv4(),

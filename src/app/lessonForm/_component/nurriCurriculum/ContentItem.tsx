@@ -136,7 +136,7 @@ const ContentItem = ({
                             className={'mr-2 text-red-400 hover:text-red-800'}
                           >
                             <Image
-                              src={'/icons/deleteContent.png'}
+                              src={'/icons/deletecontent.png'}
                               width={12}
                               height={12}
                               alt={'Delete'}

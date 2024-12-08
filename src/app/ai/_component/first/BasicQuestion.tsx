@@ -37,7 +37,6 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
   const { selectedAnswers, updateSelectedAnswer, setLoading } =
     useSubjectStore();
 
-  console.log('selectedAnswers', selectedAnswers);
   const handleOptionSelect = useCallback(
     (option: IOption) => {
       const currentQuestion = questions[currentStep];
@@ -87,7 +86,6 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
     if (accessToken && isCompleteAnswers(selectedAnswers)) {
       try {
         await addSubject(selectedAnswers);
-        console.log('AI generation initiated.');
         setCurrentStep(4);
       } catch (error) {
         console.error('Failed to generate AI:', error);
@@ -109,25 +107,32 @@ const BasicQuestion = ({ currentStep, setCurrentStep }: BasicQuestionProps) => {
       <TypingEffect text={question} />
       {field === 'subject' ? (
         <div className={'flex flex-col items-center mt-4'}>
-          <input
-            type={'text'}
-            value={customSubject}
-            onChange={handleCustomSubjectChange}
-            placeholder={'직접 주제를 입력하세요'}
-            className={'py-2 px-4 h-10 border border-gray-300 rounded'}
+          <div className={'mb-4'}>
+            <input
+              type={'text'}
+              value={customSubject}
+              onChange={handleCustomSubjectChange}
+              placeholder={'직접 주제를 입력하세요'}
+              className={'py-2 px-4 h-10 border border-gray-300 rounded'}
+            />
+            <button
+              type={'button'}
+              onClick={handleCustomSubjectSubmit}
+              disabled={!customSubject}
+              className={`py-2 px-4 h-10 mt-2 bg-blue-500 text-white rounded ${
+                customSubject
+                  ? 'hover:bg-blue-700'
+                  : 'bg-gray-300 cursor-not-allowed'
+              }`}
+            >
+              {'등록'}
+            </button>
+          </div>
+          <OptionSelector
+            options={options}
+            onOptionSelect={handleOptionSelect}
+            hasImages={options.some((opt) => 'image' in opt)}
           />
-          <button
-            type={'button'}
-            onClick={handleCustomSubjectSubmit}
-            disabled={!customSubject}
-            className={`py-2 px-4 h-10 mt-2 bg-blue-500 text-white rounded ${
-              customSubject
-                ? 'hover:bg-blue-700'
-                : 'bg-gray-300 cursor-not-allowed'
-            }`}
-          >
-            {'등록'}
-          </button>
         </div>
       ) : (
         <OptionSelector
