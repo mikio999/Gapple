@@ -3,6 +3,7 @@ import { useReactToPrint } from 'react-to-print';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { IPlanner } from '@/types/plan';
+import { ClipLoader } from 'react-spinners';
 import ActivityContent from './ActivityContent';
 import ActivityTool from './ActivityTools';
 import BasicInfo from './BasicInfo';
@@ -12,7 +13,6 @@ import Precaution from './Precaution';
 import NuriCurriculum from './NurriCurriculum';
 import Attachments from './Attachments';
 import ImageGallery from './ImageGallery';
-import { ClipLoader } from 'react-spinners'; // ClipLoader 추가
 
 const LessonDetails = ({ planner }: { planner: IPlanner }) => {
   const printRef = useRef<HTMLDivElement>(null);
@@ -37,44 +37,47 @@ const LessonDetails = ({ planner }: { planner: IPlanner }) => {
   });
 
   const handlePrint = () => {
-    setForceExpandAll(true); // 모든 내용을 강제 확장
-    setIsLoading(true); // 로딩 상태 활성화
+    setForceExpandAll(true);
+    setIsLoading(true);
     setTimeout(() => {
       handlePrintNow();
-    }, 500); // DOM 업데이트를 기다리는 시간
+    }, 500);
   };
 
   return (
     <div>
-      {/* 로딩 오버레이 */}
       {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="text-center">
-            <ClipLoader color="#ffffff" size={50} /> {/* ClipLoader 스피너 */}
-            <p className="mt-4 text-white">PDF 변환 중...</p>
+        <div
+          className={
+            'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
+          }
+        >
+          <div className={'text-center'}>
+            <ClipLoader color={'#ffffff'} size={50} />
+            <p className={'mt-4 text-white'}>{'PDF 변환 중...'}</p>
           </div>
         </div>
       )}
 
-      <div ref={printRef} className="bg-white py-4 px-6 shadow rounded-lg">
-        <div className="my-4">
-          <h1 className="text-3xl font-bold">{planner.class_plan.title}</h1>
+      <div ref={printRef} className={'bg-white py-4 px-6 shadow rounded-lg'}>
+        <div className={'my-4'}>
+          <h1 className={'text-3xl font-bold'}>{planner.class_plan.title}</h1>
         </div>
         <BasicInfo
           subject={planner.class_plan.subject}
           detailSubject={planner.class_plan.detail_subject}
           activityType={planner.class_plan.activity_type}
         />
-        <GoalTable title="활동 목표">
+        <GoalTable title={'활동 목표'}>
           {Array.isArray(planner.class_plan.activity_goal) ? (
             planner.class_plan.activity_goal.map((goal) => (
-              <div key={goal} className="flex py-2">
+              <div key={goal} className={'flex py-2'}>
                 <Image
-                  src="/icons/idea.png"
+                  src={'/icons/idea.png'}
                   width={20}
                   height={20}
-                  alt="Goal icon"
-                  className="h-5 w-5 mr-2 text-slate-700"
+                  alt={'Goal icon'}
+                  className={'h-5 w-5 mr-2 text-slate-700'}
                 />
                 {goal}
               </div>
@@ -82,11 +85,11 @@ const LessonDetails = ({ planner }: { planner: IPlanner }) => {
           ) : (
             <div className="flex py-2">
               <Image
-                src="/icons/idea.png"
+                src={'/icons/idea.png'}
                 width={20}
                 height={20}
-                alt="Goal icon"
-                className="h-5 w-5 mr-2 text-slate-700"
+                alt={'Goal icon'}
+                className={'h-5 w-5 mr-2 text-slate-700'}
               />
               {planner.class_plan.activity_goal}
             </div>
@@ -111,9 +114,9 @@ const LessonDetails = ({ planner }: { planner: IPlanner }) => {
         )}
       </div>
 
-      <div className="flex justify-end">
+      <div className={'flex justify-end'}>
         <button
-          type="button"
+          type={'button'}
           onClick={handlePrint}
           disabled={!isReady}
           className={`mt-4 py-2 px-4 rounded ${
@@ -125,11 +128,11 @@ const LessonDetails = ({ planner }: { planner: IPlanner }) => {
           <Image
             width={30}
             height={30}
-            src="/icons/whitepdf.png"
-            alt="pdf"
-            className="mb-2"
+            src={'/icons/whitepdf.png'}
+            alt={'pdf'}
+            className={'mb-2'}
           />
-          <span>저장</span>
+          <span>{'저장'}</span>
         </button>
       </div>
     </div>

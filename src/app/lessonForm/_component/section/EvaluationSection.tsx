@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import ItemSection from './ItemSection';
 
 interface Evaluation {

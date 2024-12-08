@@ -44,36 +44,33 @@ const FileUploadSection = ({
 
   useEffect(() => {
     const loadInitialFiles = async () => {
-      const preloadedFiles: FileWithPreview[] = [];
-
-      for (const url of initialFileUrls) {
-        try {
-          const file = await convertUrlToFile(
-            url,
-            url.split('/').pop() || 'unknown',
-          );
-          const filePreview = {
-            id: uuidv4(),
-            name: file.name,
-            preview: URL.createObjectURL(file),
-            size: file.size,
-            type: file.type,
-            file,
-          };
-
-          preloadedFiles.push(filePreview);
-        } catch (error) {
-          console.error(`Failed to load file from URL ${url}:`, error);
-        }
-      }
-
-      setFiles((prevFiles) => {
-        const existingIds = new Set(prevFiles.map((file) => file.name));
-        const uniqueFiles = preloadedFiles.filter(
-          (file) => !existingIds.has(file.name),
+      try {
+        // 모든 파일 URL을 비동기적으로 변환
+        const filePromises = initialFileUrls.map((url) =>
+          convertUrlToFile(url, url.split('/').pop() || 'unknown').then(
+            (file) => ({
+              id: uuidv4(),
+              name: file.name,
+              preview: URL.createObjectURL(file),
+              size: file.size,
+              type: file.type,
+              file,
+            }),
+          ),
         );
-        return [...prevFiles, ...uniqueFiles];
-      });
+
+        const preloadedFiles = await Promise.all(filePromises);
+
+        setFiles((prevFiles) => {
+          const existingIds = new Set(prevFiles.map((file) => file.name));
+          const uniqueFiles = preloadedFiles.filter(
+            (file) => !existingIds.has(file.name),
+          );
+          return [...prevFiles, ...uniqueFiles];
+        });
+      } catch (error) {
+        console.error('Failed to load initial files:', error);
+      }
     };
 
     if (initialFileUrls.length > 0) {

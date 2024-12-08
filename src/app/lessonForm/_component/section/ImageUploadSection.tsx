@@ -42,35 +42,32 @@ const ImageUploadSection = ({
 
   useEffect(() => {
     const loadInitialImages = async () => {
-      const preloadedImages: ImageWithPreview[] = [];
-
-      for (const url of initialImageUrls) {
-        try {
-          const file = await convertUrlToFile(
-            url,
-            url.split('/').pop() || 'unknown',
-          );
-          const imagePreview = {
-            id: url,
-            name: file.name,
-            preview: URL.createObjectURL(file),
-            size: file.size,
-            type: file.type,
-            file,
-          };
-
-          preloadedImages.push(imagePreview);
-        } catch (error) {
-          console.error(`Failed to load image from URL ${url}:`, error);
-        }
-      }
-      setImages((prevImages) => {
-        const existingIds = new Set(prevImages.map((image) => image.name));
-        const uniqueImages = preloadedImages.filter(
-          (image) => !existingIds.has(image.name),
+      try {
+        // `initialImageUrls` 배열의 모든 URL을 비동기적으로 처리
+        const imagePromises = initialImageUrls.map((url) =>
+          convertUrlToFile(url, url.split('/').pop() || 'unknown').then(
+            (file) => ({
+              name: file.name,
+              preview: URL.createObjectURL(file),
+              size: file.size,
+              type: file.type,
+              file,
+            }),
+          ),
         );
-        return [...prevImages, ...uniqueImages];
-      });
+
+        const preloadedImages = await Promise.all(imagePromises);
+
+        setImages((prevImages) => {
+          const existingNames = new Set(prevImages.map((img) => img.name));
+          const uniqueImages = preloadedImages.filter(
+            (img) => !existingNames.has(img.name),
+          );
+          return [...prevImages, ...uniqueImages];
+        });
+      } catch (error) {
+        console.error('Failed to load initial images:', error);
+      }
     };
 
     if (initialImageUrls.length > 0) {
@@ -108,6 +105,7 @@ const ImageUploadSection = ({
     setImages((currentImages) =>
       currentImages.filter((image) => image !== imageToDelete),
     );
+    URL.revokeObjectURL(imageToDelete.preview);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
