@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import FollowList from './FollowList';
 import UserInfo from './UserInfo';
-import { useUserInfo } from '../../_lib/useUserInfo'; // Ensure it's correctly imported
+import { useUserInfo } from '../../_lib/useUserInfo';
 import { useFollowers, useFollowing } from '../../_lib/useFollow';
 
 const ProfileTop = () => {
@@ -20,7 +20,6 @@ const ProfileTop = () => {
   const { data: followersData } = useFollowers(userId, token);
   const { data: followingData } = useFollowing(userId, token);
 
-  console.log('session', session)
   return (
     <div className={'mb-6'}>
       <UserInfo

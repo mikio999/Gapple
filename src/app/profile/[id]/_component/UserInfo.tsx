@@ -48,7 +48,6 @@ const UserInfo = ({
     return <div>{'사용자 정보가 없습니다.'}</div>;
   }
 
-  console.log('userInfo', userInfo)
   return (
     <div
       className={
@@ -72,11 +71,9 @@ const UserInfo = ({
       </div>
       <div className={'flex flex-col laptop:ml-8'}>
         <h1 className={'text-xl font-semibold text-slate-800'}>
-        {userInfo.nickname || '닉네임 없음'}
+          {userInfo.nickname || '닉네임 없음'}
         </h1>
-        <div className={'text-sm text-slate-500'}>
-          {userInfo.email}
-        </div>
+        <div className={'text-sm text-slate-500'}>{userInfo.email}</div>
         <div className={'text-sm text-slate-600 mt-2'}>
           {userInfo.selfIntro || '교육의 가치를 믿습니다!'}
         </div>
