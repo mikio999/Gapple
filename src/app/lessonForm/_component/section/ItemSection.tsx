@@ -53,8 +53,6 @@ const ItemSection = ({
     }
   }, [items.length]);
 
-
-
   return (
     <>
       <h1 className={'title-effect'}>{title}</h1>
