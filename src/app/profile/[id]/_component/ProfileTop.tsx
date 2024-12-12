@@ -20,6 +20,7 @@ const ProfileTop = () => {
   const { data: followersData } = useFollowers(userId, token);
   const { data: followingData } = useFollowing(userId, token);
 
+  console.log('session', session)
   return (
     <div className={'mb-6'}>
       <UserInfo
