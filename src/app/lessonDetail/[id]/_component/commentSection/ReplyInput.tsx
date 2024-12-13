@@ -34,10 +34,12 @@ const ReplyInput = ({
 
   return (
     <div className={'flex flex-col mt-4 mb-2'}>
-      <div className="text-sm text-gray-500">
-        {replyText.length}/{maxLength}
+      <div className={'text-sm text-gray-500'}>
+        {replyText.length}
+        {'/'}
+        {maxLength}
         {replyText.length > maxLength && (
-          <span className="text-red-500 ml-2">
+          <span className={'text-red-500 ml-2'}>
             {'255자를 초과할 수 없습니다.'}
           </span>
         )}

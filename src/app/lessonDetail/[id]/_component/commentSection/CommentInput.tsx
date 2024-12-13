@@ -8,7 +8,7 @@ interface Props {
 
 const NewCommentInput = ({ onAddComment }: Props) => {
   const [newComment, setNewComment] = useState('');
-  const maxLength = 255; // 최대 글자 수
+  const maxLength = 255;
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewComment(event.target.value);
@@ -29,7 +29,9 @@ const NewCommentInput = ({ onAddComment }: Props) => {
             newComment.length > maxLength ? 'text-red-500' : 'text-gray-500'
           }`}
         >
-          {newComment.length}/{maxLength}
+          {newComment.length}
+          {'/'}
+          {maxLength}
         </span>
         {newComment.length > maxLength && (
           <span className={'text-red-500'}>
