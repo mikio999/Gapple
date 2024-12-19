@@ -32,25 +32,31 @@ export default function NotificationModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex justify-center items-center bg-slate-900 bg-opacity-50"
+      className={
+        'fixed inset-0 z-50 flex justify-center items-center bg-slate-900 bg-opacity-50'
+      }
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg w-full max-w-md p-6 relative"
+        className={'bg-white rounded-lg w-full max-w-md p-6 relative'}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b pb-2 mb-4">
-          <h2 className="text-lg font-semibold">알림</h2>
-          <button className="text-slate-500 hover:text-black" onClick={onClose}>
+        <div className={'flex justify-between items-center border-b pb-2 mb-4'}>
+          <h2 className={'text-lg font-semibold'}>알림</h2>
+          <button
+            type={'button'}
+            className={'text-slate-500 hover:text-black'}
+            onClick={onClose}
+          >
             ✕
           </button>
         </div>
-        <div className="space-y-4">
+        <div className={'space-y-4'}>
           {notifications.map((notification) => (
-            <div key={notification.id} className="border-b pb-4">
-              <h3 className="text-sm font-medium">{notification.author}</h3>
-              <p className="text-sm text-slate-500">{notification.date}</p>
-              <p className="mt-2">{notification.content}</p>
+            <div key={notification.id} className={'border-b pb-4'}>
+              <h3 className={'text-sm font-medium'}>{notification.author}</h3>
+              <p className={'text-sm text-slate-500'}>{notification.date}</p>
+              <p className={'mt-2'}>{notification.content}</p>
             </div>
           ))}
         </div>
