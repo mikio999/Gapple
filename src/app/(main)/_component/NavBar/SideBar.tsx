@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -7,7 +8,6 @@ import { usePathname } from 'next/navigation';
 import { MenuItemProps } from '@/types/menu';
 import MenuItem from './MenuItem';
 import ProfileIcon from './ProfileIcon';
-import { useState } from 'react';
 import NotificationModal from '../Notification/NotificationModal';
 
 export default function SideBar() {
