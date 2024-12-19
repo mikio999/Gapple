@@ -43,7 +43,7 @@ const ToolSection = ({ tools, setTools }: ToolSectionProps) => {
   };
 
   useEffect(() => {
-    const lastInput = inputRefs.current[tools?.length - 1];
+    const lastInput = inputRefs.current[tools.length - 1];
     if (lastInput) {
       lastInput.focus();
     }

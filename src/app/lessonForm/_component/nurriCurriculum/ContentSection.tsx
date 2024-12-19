@@ -17,6 +17,18 @@ const ContentSection = ({ contents, setContents }: ContentSectionProps) => {
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
+    if (contents.length === 0) {
+      setContents([
+        {
+          id: uuidv4(),
+          subtitle: '',
+          contents: [{ id: uuidv4(), text: '' }],
+        },
+      ]);
+    }
+  }, [contents, setContents]);
+
+  useEffect(() => {
     if (contents?.length === 0 && documentData && pathname === '/ai') {
       const loadedContents = documentData.data.activity_content.map((item) => ({
         id: uuidv4(),

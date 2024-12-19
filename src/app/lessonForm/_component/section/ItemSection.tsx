@@ -47,7 +47,7 @@ const ItemSection = ({
   };
 
   useEffect(() => {
-    const lastInput = inputRefs.current[items?.length - 1];
+    const lastInput = inputRefs.current[items.length - 1];
     if (lastInput) {
       lastInput.focus();
     }

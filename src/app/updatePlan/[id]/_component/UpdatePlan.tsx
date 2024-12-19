@@ -25,13 +25,12 @@ import ContentSection from '@/app/lessonForm/_component/nurriCurriculum/ContentS
 import PrecautionsSection from '@/app/lessonForm/_component/section/PrecautionSection';
 import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSection';
 import { getPlanners } from '@/app/lessonDetail/_lib/getPlanners';
-
+import modifyDraft from '@/app/drafts/_lib/modifyDraft';
+import postDraft from '@/app/lessonForm/_lib/postDraft';
 import {
   buildNuriCurriculum,
   transformNuriCurriculumToInitialState,
 } from './_utils/curriculumUtils';
-import modifyDraft from '@/app/drafts/_lib/modifyDraft';
-import postDraft from '@/app/lessonForm/_lib/postDraft';
 
 export default function UpdatePlan({ params }: { params: { id: string } }) {
   const [draftId, setDraftId] = useState<number | null>(null);
@@ -53,7 +52,7 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
   const [contents, setContents] = useState<IContentItem[]>([
     {
       id: 'default',
-      subtitle: 'Default Subtitle',
+      subtitle: '',
       contents: [],
     },
   ]);
@@ -82,7 +81,7 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
   } = useCurriculumHandlers([]);
 
   const titleInputRef = useRef<HTMLInputElement>(null);
-  const { isLoading, error } = useQuery(
+  const { error } = useQuery(
     ['planner', plannerId],
     () => getPlanners(plannerId, session?.accessToken || ''),
     {
@@ -133,7 +132,6 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
           ),
         );
 
-        // Tools 처리
         setTools(
           (classPlan.activity_tool || [{ id: uuidv4(), value: '' }]).map(
             (tool: any) =>
@@ -143,7 +141,6 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
           ),
         );
 
-        // Precautions 처리
         setPrecautions(
           (classPlan.precautions || [{ id: uuidv4(), text: '' }]).map(
             (precaution: any) =>
@@ -153,7 +150,6 @@ export default function UpdatePlan({ params }: { params: { id: string } }) {
           ),
         );
 
-        // Evaluations 처리
         setEvaluations(
           (classPlan.evaluation_criteria || [{ id: uuidv4(), text: '' }]).map(
             (criterion: any) =>

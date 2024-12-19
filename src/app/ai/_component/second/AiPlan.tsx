@@ -23,9 +23,9 @@ import EvaluationsSection from '@/app/lessonForm/_component/section/EvaluationSe
 import SaveButtons from '@/app/lessonForm/_component/section/SaveButtonsSection';
 import submitLessonForm from '@/app/lessonForm/_lib/api';
 import { validateFormData } from '@/app/lessonForm/_component/validation/validateFormData';
-import { useSubjectStore } from '../../_store/useSubjectStore';
-import postDraft from '@/app/lessonForm/_lib/postDraft';
 import modifyDraft from '@/app/drafts/_lib/modifyDraft';
+import postDraft from '@/app/lessonForm/_lib/postDraft';
+import { useSubjectStore } from '../../_store/useSubjectStore';
 
 export default function AiPlan() {
   const [draftId, setDraftId] = useState<number | null>(null);

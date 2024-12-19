@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getDrafts } from '../_lib/getDrafts';
 import deletePlanner from '@/app/lessonDetail/_lib/deletePlanner';
 import { toast } from 'react-toastify';
+import { getDrafts } from '../_lib/getDrafts';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Draft {
@@ -50,22 +50,24 @@ export default function DraftList() {
   const handleDelete = (id: number) => {
     toast.warn(
       <div>
-        <p>정말로 삭제하시겠습니까?</p>
-        <div className="flex justify-end gap-2">
+        <p>{'정말로 삭제하시겠습니까?'}</p>
+        <div className={'flex justify-end gap-2'}>
           <button
-            className="text-red-500 underline"
+            type={'button'}
+            className={'text-red-500 underline'}
             onClick={() => {
               toast.dismiss();
               deleteMutation.mutate(id);
             }}
           >
-            삭제
+            {'삭제'}
           </button>
           <button
-            className="text-slate-600 underline"
+            type={'button'}
+            className={'text-slate-600 underline'}
             onClick={() => toast.dismiss()}
           >
-            취소
+            {'취소'}
           </button>
         </div>
       </div>,
