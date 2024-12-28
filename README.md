@@ -49,7 +49,7 @@
 >
 > https://gapple-ai.io
 
-[![Gapple](./docs/pages/gappleBrowser.png)](https://gapple-ai.io)
+[![Gapple](./docs/pages/gapplebrowser.png)](https://gapple-ai.io)
 
 <br />
 
